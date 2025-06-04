@@ -1,17 +1,28 @@
 import React from 'react'
-import { StatusBar, Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
+import MainContainer from '../common/MainContainer'
+import { IMAGES } from '../Assets/Images'
+import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels'
 
 const Splash = () => {
 
     return (
         <>
-            <StatusBar barStyle={'dark-content'} backgroundColor={"transparent"} />
-            <View style={{
-                flex: 1,
-                backgroundColor: "black"
-            }}>
-                <Text style={{ color: "red" }}>Splash</Text>
-            </View>
+            <MainContainer statusBarHidden >
+                <View style={{
+                    flex: 1,
+                    backgroundColor: "black"
+                }}>
+                    <Image
+                        source={IMAGES.splash_bg}
+                        style={{
+                            resizeMode: "cover",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    />
+                </View>
+            </MainContainer>
         </ >
     )
 }
