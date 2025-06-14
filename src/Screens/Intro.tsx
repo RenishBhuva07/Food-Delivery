@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MainContainer from '../common/MainContainer';
 import { IMAGES } from '../Assets/Images';
 import { Colors } from '../Assets/StyleUtilities/Colors';
@@ -43,17 +43,6 @@ const Intro = () => {
 
     const handleSkip = () => navigate('Login');
 
-
-    const handleScroll = (event: any) => {
-        const slideSize = event.nativeEvent.layoutMeasurement.width;
-        const index = Math.floor(event.nativeEvent.contentOffset.x / slideSize);
-        setCurrentIndex(index);
-
-        if (currentIndex === introSlides.length - 1) {
-            navigate("Login");
-        }
-    };
-
     const renderDots = () => {
         return (
             <View style={styles.dotsContainer}>
@@ -63,9 +52,8 @@ const Intro = () => {
                         style={[
                             styles.dot,
                             {
-                                backgroundColor: index === currentIndex ? Colors.DefaultWhite : 'rgba(255, 255, 255, 0.3)',
-                                width: index === currentIndex ? 24 : 8,
-                                height: 8,
+                                backgroundColor: index === currentIndex ? Colors.DefaultWhite : '#C2C2C2',
+                                width: ResponsivePixels.size25,
                             },
                         ]}
                     />
@@ -98,11 +86,24 @@ const Intro = () => {
                             <TouchableOpacity onPress={handleSkip}>
                                 <Text style={styles.skipText}>Skip</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleNext} style={styles.nextButton}>
-                                <Text style={styles.nextText}>
-                                    {currentIndex === introSlides.length - 1 ? 'Get Started' : 'Next'}
-                                </Text>
-                            </TouchableOpacity>
+
+                            {(currentIndex === introSlides.length - 1) &&
+                                (<TouchableOpacity onPress={handleSkip} style={{
+                                    marginRight: 45,
+                                }}>
+                                    <Image
+                                        source={IMAGES.ic_Progress_button}
+                                        style={{ width: ResponsivePixels.size70, height: ResponsivePixels.size70 }}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>)}
+
+                            {(currentIndex !== introSlides.length - 1) ?
+                                (<TouchableOpacity onPress={handleNext} style={styles.nextButton}>
+                                    <Text style={styles.nextText}>Next</Text>
+                                </TouchableOpacity>) : (
+                                    <View />
+                                )}
                         </View>
                     </View>
                 </ImageBackground>
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     },
     dot: {
         height: ResponsivePixels.size8,
-        borderRadius: 4,
+        borderRadius: 50,
         marginHorizontal: ResponsivePixels.size4,
     },
     nextButton: {
