@@ -6,4 +6,6 @@ export const IMAGES = {
     ic_Apple: require("../Assets/Images/ic_Apple.png"),
     ic_Facebook: require("../Assets/Images/ic_Facebook.png"),
     ic_Google: require("../Assets/Images/ic_Google.png"),
+    ic_Whatsapp: require("../Assets/Images/ic_Whatsapp.png"),
+    ic_Email: require("../Assets/Images/ic_Email.png"),
 }

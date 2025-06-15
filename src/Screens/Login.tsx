@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import MainContainer from '../common/MainContainer'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
 import { IMAGES } from '../Assets/Images';
+import CustomActionSheet from '../common/CustomActionSheet';
+import { ActionSheetRef } from 'react-native-actions-sheet';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState(''),
+        [password, setPassword] = useState(''),
+        [showPassword, setShowPassword] = useState(false),
+        actionSheetRef = useRef<ActionSheetRef>(null),
+        [selectedOption, setSelectedOption] = useState('whatsapp');
 
     return (
         <>
@@ -42,7 +46,7 @@ const Login = () => {
                             />
                         </View>
 
-                        <TouchableOpacity style={styles.forgotPassword}>
+                        <TouchableOpacity style={styles.forgotPassword} onPress={() => actionSheetRef?.current?.show()}>
                             <Text style={styles.forgotPasswordText}>Forgot password?</Text>
                         </TouchableOpacity>
                     </View>
@@ -89,10 +93,82 @@ const Login = () => {
                             Don't have an account?
                         </Text>
                         <TouchableOpacity>
-                            <Text style={styles.signUpLink}> Sign up</Text>
+                            <Text style={styles.signUpLink}> Register</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+
+                <CustomActionSheet ref={actionSheetRef}>
+                    <View style={styles.actionSheetContent}>
+                        <Text style={styles.actionSheetTitle}>Forgot password?</Text>
+
+                        <Text style={styles.description}>
+                            Select which contact details should we use to reset your password
+                        </Text>
+
+                        <View style={styles.optionsContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.optionCard,
+                                    selectedOption === 'whatsapp' && styles.selectedCard
+                                ]}
+                                onPress={() => setSelectedOption('whatsapp')}
+                            >
+                                <View style={styles.optionContent}>
+                                    <View style={styles.iconContainer}>
+                                        <Image source={IMAGES.ic_Whatsapp} style={styles.actionSheetIconStyle} />
+                                    </View>
+                                    <View style={styles.optionText}>
+                                        <Text style={[
+                                            styles.optionLabel,
+                                            selectedOption === 'whatsapp' && {
+                                                color: Colors.SunburstFlame,
+                                            }
+                                        ]}>Send via WhatsApp</Text>
+                                        <Text style={styles.optionValue}>+12 8347 2838 28</Text>
+                                    </View>
+                                    {selectedOption === 'whatsapp' && (
+                                        <View style={styles.checkmark}>
+                                            <Text style={styles.checkmarkText}>✓</Text>
+                                        </View>
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[
+                                    styles.optionCard,
+                                    selectedOption === 'email' && styles.selectedCard
+                                ]}
+                                onPress={() => setSelectedOption('email')}
+                            >
+                                <View style={styles.optionContent}>
+                                    <View style={styles.iconContainer}>
+                                        <Image source={IMAGES.ic_Email} style={styles.actionSheetIconStyle} />
+                                    </View>
+                                    <View style={styles.optionText}>
+                                        <Text style={[
+                                            styles.optionLabel,
+                                            selectedOption === 'email' && {
+                                                color: Colors.SunburstFlame,
+                                            }
+                                        ]}>Send via Email</Text>
+                                        <Text style={styles.optionValue}>Albertstevano@gmail.com</Text>
+                                    </View>
+                                    {selectedOption === 'email' && (
+                                        <View style={styles.checkmark}>
+                                            <Text style={styles.checkmarkText}>✓</Text>
+                                        </View>
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                        <TouchableOpacity style={styles.continueButton}>
+                            <Text style={styles.continueButtonText}>Continue</Text>
+                        </TouchableOpacity>
+                    </View>
+                </CustomActionSheet>
             </MainContainer>
         </>
     )
@@ -108,9 +184,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size24,
         paddingTop: ResponsivePixels.size50,
     },
-    header: {
-        // marginBottom: ResponsivePixels.size40,
-    },
+    header: {},
     title: {
         fontSize: ResponsivePixels.size32,
         fontWeight: '600',
@@ -139,7 +213,7 @@ const styles = StyleSheet.create({
     signInButton: {
         backgroundColor: Colors.SunburstFlame,
         paddingVertical: ResponsivePixels.size16,
-        borderRadius: 25,
+        borderRadius: 50,
         alignItems: 'center',
         marginBottom: ResponsivePixels.size30,
     },
@@ -202,6 +276,99 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    actionSheetContent: {
+        // flex: 1,
+    },
+    description: {
+        fontSize: ResponsivePixels.size15,
+        color: Colors.SteelMist,
+        lineHeight: 24,
+        marginBottom: ResponsivePixels.size40,
+    },
+    optionsContainer: {
+        marginBottom: ResponsivePixels.size25,
+    },
+    optionCard: {
+        borderWidth: 1,
+        borderColor: Colors.CloudWhisper,
+        borderRadius: 16,
+        padding: ResponsivePixels.size20,
+        marginBottom: ResponsivePixels.size16,
+        backgroundColor: Colors.DefaultWhite,
+    },
+    selectedCard: {
+        borderColor: Colors.SunburstFlame,
+        backgroundColor: Colors.SunlitAlmond,
+    },
+    optionContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    iconContainer: {
+        width: ResponsivePixels.size40,
+        height: ResponsivePixels.size40,
+        borderRadius: 12,
+        backgroundColor: Colors.FrostedLilacMist,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: ResponsivePixels.size16,
+    },
+    optionText: {
+        flex: 1,
+    },
+    optionLabel: {
+        fontSize: ResponsivePixels.size12,
+        color: Colors.SteelMist,
+        marginBottom: ResponsivePixels.size4,
+    },
+    optionValue: {
+        fontSize: ResponsivePixels.size14,
+        color: '#000',
+        fontWeight: '500',
+    },
+    checkmark: {
+        width: ResponsivePixels.size24,
+        height: ResponsivePixels.size24,
+        borderRadius: 50,
+        backgroundColor: Colors.SunburstFlame,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    checkmarkText: {
+        color: Colors.DefaultWhite,
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    continueButton: {
+        backgroundColor: Colors.SunburstFlame,
+        paddingVertical: ResponsivePixels.size16,
+        borderRadius: 50,
+        alignItems: 'center',
+        marginBottom: ResponsivePixels.size10,
+    },
+    continueButtonText: {
+        color: Colors.DefaultWhite,
+        fontSize: ResponsivePixels.size18,
+        fontWeight: '600',
+    },
+    bottomIndicator: {
+        width: ResponsivePixels.size134,
+        height: ResponsivePixels.size5,
+        backgroundColor: '#000',
+        borderRadius: 2.5,
+        alignSelf: 'center',
+        marginBottom: ResponsivePixels.size20,
+    },
+    actionSheetTitle: {
+        fontSize: ResponsivePixels.size26,
+        fontWeight: '600',
+        color: Colors.NoirBlack,
+        marginBottom: ResponsivePixels.size10,
+    },
+    actionSheetIconStyle: {
+        width: ResponsivePixels.size24,
+        height: ResponsivePixels.size24,
+    }
 });
 
 export default Login
