@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MainContainer from '../common/MainContainer';
 import { IMAGES } from '../Assets/Images';
 import { Colors } from '../Assets/StyleUtilities/Colors';
@@ -47,7 +47,8 @@ const Intro = () => {
         return (
             <View style={styles.dotsContainer}>
                 {introSlides.map((_, index) => (
-                    <View
+                    <Pressable
+                        onPress={() => setCurrentIndex(index)}
                         key={index}
                         style={[
                             styles.dot,
