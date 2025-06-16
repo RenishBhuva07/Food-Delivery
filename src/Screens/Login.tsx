@@ -1,24 +1,30 @@
 import React, { useRef, useState } from 'react'
 import MainContainer from '../common/MainContainer'
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
 import { IMAGES } from '../Assets/Images';
 import CustomActionSheet from '../common/CustomActionSheet';
 import { ActionSheetRef } from 'react-native-actions-sheet';
+import { navigate } from '../Navigators/Navigator';
 
-const Login = () => {
+const Login: React.FC = () => {
     const [email, setEmail] = useState(''),
         [password, setPassword] = useState(''),
         [showPassword, setShowPassword] = useState(false),
         actionSheetRef = useRef<ActionSheetRef>(null),
         [selectedOption, setSelectedOption] = useState('whatsapp');
 
+    const navigateToForgotPin = () => {
+        actionSheetRef?.current?.hide();
+        navigate('ForgotPin');
+    };
+
     return (
         <>
             <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={"transparent"}>
-                <View style={styles.content}>
+                <View style={styles.contentWrapper}>
                     <View style={styles.header}>
                         <Text style={styles.title}>Login to your account.</Text>
                         <Text style={styles.subtitle}>Please sign in to your account</Text>
@@ -164,7 +170,7 @@ const Login = () => {
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity style={styles.continueButton}>
+                        <TouchableOpacity style={styles.continueButton} onPress={navigateToForgotPin}>
                             <Text style={styles.continueButtonText}>Continue</Text>
                         </TouchableOpacity>
                     </View>
@@ -175,11 +181,7 @@ const Login = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.DefaultWhite,
-    },
-    content: {
+    contentWrapper: {
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
         paddingTop: ResponsivePixels.size50,
