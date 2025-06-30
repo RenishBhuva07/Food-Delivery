@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import MainContainer from '../common/MainContainer'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
@@ -8,22 +8,26 @@ import { IMAGES } from '../Assets/Images';
 import CustomActionSheet from '../common/CustomActionSheet';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 import { navigate } from '../Navigators/Navigator';
+import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
+import CustomButton from '../common/CustomButton';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState(''),
         [password, setPassword] = useState(''),
         [showPassword, setShowPassword] = useState(false),
         actionSheetRef = useRef<ActionSheetRef>(null),
-        [selectedOption, setSelectedOption] = useState('whatsapp');
+        [selectedOption, setSelectedOption] = useState('whatsapp'),
+        passwordRef = useRef();
 
     const navigateToForgotPin = () => {
         actionSheetRef?.current?.hide();
         navigate('ForgotPin');
     };
+    const navigateToRegister = () => navigate('Register');
 
     return (
         <>
-            <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={"transparent"}>
+            <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={Colors.DefaultWhite}>
                 <View style={styles.contentWrapper}>
                     <View style={styles.header}>
                         <Text style={styles.title}>Login to your account.</Text>
@@ -31,35 +35,37 @@ const Login: React.FC = () => {
                     </View>
 
                     <View style={styles.form}>
-                        <View style={styles.inputGroup}>
-                            <FloatingTextInput
-                                label="Email Address"
-                                value={email}
-                                onChangeText={setEmail}
-                                keyboardType="email-address"
-                            />
-                        </View>
 
-                        <View style={styles.inputGroup}>
-                            <FloatingTextInput
-                                label="Password"
-                                value={password}
-                                onChangeText={setPassword}
-                                keyboardType='default'
-                                rightIcon={showPassword ? IMAGES.ic_Eye_Off : IMAGES.ic_Eye_On}
-                                onPressRightIcon={() => setShowPassword(!showPassword)}
-                                secureTextEntry={!showPassword}
-                            />
-                        </View>
+                        <FloatingTextInput
+                            label="Email Address"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            onSubmitEditing={() => passwordRef?.current?.focus()}
+                            returnKeyType='next'
+                        />
+
+                        <FloatingTextInput
+                            ref={passwordRef}
+                            label="Password"
+                            value={password}
+                            onChangeText={setPassword}
+                            keyboardType='default'
+                            rightIcon={showPassword ? IMAGES.ic_Eye_Off : IMAGES.ic_Eye_On}
+                            onPressRightIcon={() => setShowPassword(!showPassword)}
+                            secureTextEntry={!showPassword}
+                            onSubmitEditing={() => Keyboard.dismiss()}
+                        />
 
                         <TouchableOpacity style={styles.forgotPassword} onPress={() => actionSheetRef?.current?.show()}>
                             <Text style={styles.forgotPasswordText}>Forgot password?</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={styles.signInButton}>
-                        <Text style={styles.signInButtonText}>Sign in</Text>
-                    </TouchableOpacity>
+                    <View style={styles.signInButtonWrapper}>
+                        <CustomButton title="Sign in" onPress={{}} />
+                    </View>
+
 
                     <View style={styles.socialSection}>
 
@@ -98,17 +104,17 @@ const Login: React.FC = () => {
                         <Text style={styles.footerText}>
                             Don't have an account?
                         </Text>
-                        <TouchableOpacity>
-                            <Text style={styles.signUpLink}> Register</Text>
+                        <TouchableOpacity onPress={navigateToRegister}>
+                            <Text style={styles.signUpLink}> Sign Up</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 <CustomActionSheet ref={actionSheetRef}>
-                    <View style={styles.actionSheetContent}>
-                        <Text style={styles.actionSheetTitle}>Forgot password?</Text>
+                    <View style={ActionSheetStyles.actionSheetContent}>
+                        <Text style={ActionSheetStyles.actionSheetTitle}>Forgot password?</Text>
 
-                        <Text style={styles.description}>
+                        <Text style={ActionSheetStyles.description}>
                             Select which contact details should we use to reset your password
                         </Text>
 
@@ -170,9 +176,9 @@ const Login: React.FC = () => {
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity style={styles.continueButton} onPress={navigateToForgotPin}>
-                            <Text style={styles.continueButtonText}>Continue</Text>
-                        </TouchableOpacity>
+                        <View style={styles.continueButtonWrapper}>
+                            <CustomButton title="Continue" onPress={navigateToForgotPin} />
+                        </View>
                     </View>
                 </CustomActionSheet>
             </MainContainer>
@@ -185,6 +191,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
         paddingTop: ResponsivePixels.size50,
+        backgroundColor: Colors.DefaultWhite,
     },
     header: {},
     title: {
@@ -201,9 +208,6 @@ const styles = StyleSheet.create({
         marginTop: ResponsivePixels.size20,
         marginBottom: ResponsivePixels.size30,
     },
-    inputGroup: {
-        marginBottom: ResponsivePixels.size10,
-    },
     forgotPassword: {
         alignSelf: 'flex-end',
         marginTop: ResponsivePixels.size8,
@@ -212,17 +216,8 @@ const styles = StyleSheet.create({
         color: Colors.SunburstFlame,
         fontSize: ResponsivePixels.size14,
     },
-    signInButton: {
-        backgroundColor: Colors.SunburstFlame,
-        paddingVertical: ResponsivePixels.size16,
-        borderRadius: 50,
-        alignItems: 'center',
+    signInButtonWrapper: {
         marginBottom: ResponsivePixels.size30,
-    },
-    signInButtonText: {
-        color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
     },
     socialSection: {
         alignItems: 'center',
@@ -278,15 +273,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    actionSheetContent: {
-        // flex: 1,
-    },
-    description: {
-        fontSize: ResponsivePixels.size15,
-        color: Colors.SteelMist,
-        lineHeight: 24,
-        marginBottom: ResponsivePixels.size40,
-    },
     optionsContainer: {
         marginBottom: ResponsivePixels.size25,
     },
@@ -341,11 +327,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
     },
-    continueButton: {
-        backgroundColor: Colors.SunburstFlame,
-        paddingVertical: ResponsivePixels.size16,
-        borderRadius: 50,
-        alignItems: 'center',
+    continueButtonWrapper: {
         marginBottom: ResponsivePixels.size10,
     },
     continueButtonText: {
@@ -360,12 +342,6 @@ const styles = StyleSheet.create({
         borderRadius: 2.5,
         alignSelf: 'center',
         marginBottom: ResponsivePixels.size20,
-    },
-    actionSheetTitle: {
-        fontSize: ResponsivePixels.size26,
-        fontWeight: '600',
-        color: Colors.NoirBlack,
-        marginBottom: ResponsivePixels.size10,
     },
     actionSheetIconStyle: {
         width: ResponsivePixels.size24,

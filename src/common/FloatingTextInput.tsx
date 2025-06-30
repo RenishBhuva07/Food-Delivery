@@ -43,6 +43,7 @@ type IFloatingTextInputProps = {
     autoFocus?: boolean;
     rightIconStyle?: ImageProps['style'];
     rightIconContainerStyle?: ViewStyle;
+    blurOnSubmit?: boolean;
 };
 
 export const FloatingTextInput = forwardRef<TextInput, IFloatingTextInputProps>(
@@ -75,6 +76,7 @@ export const FloatingTextInput = forwardRef<TextInput, IFloatingTextInputProps>(
             autoFocus = false,
             rightIconStyle,
             rightIconContainerStyle,
+            blurOnSubmit = false,
         },
         ref
     ) => {
@@ -103,6 +105,7 @@ export const FloatingTextInput = forwardRef<TextInput, IFloatingTextInputProps>(
                 containerStyle,
                 {
                     marginTop: ResponsivePixels.size35,
+                    marginBottom: ResponsivePixels.size10,
                 }
             ]}>
                 <View style={{
@@ -156,6 +159,7 @@ export const FloatingTextInput = forwardRef<TextInput, IFloatingTextInputProps>(
                             inputMode={inputMode}
                             returnKeyLabel={returnKeyLabel}
                             autoFocus={autoFocus}
+                            blurOnSubmit={blurOnSubmit}
                         />
                     </View>
                     {rightIcon && rightIcon !== null ? (
