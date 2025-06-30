@@ -4,17 +4,25 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    Keyboard,
 } from 'react-native';
 import MainContainer from '../common/MainContainer';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
+import CustomButton from '../common/CustomButton';
 
-const ForgotPin: React.FC = () => {
-    const [email, setEmail] = useState('Alberteinstein@gmail.com');
+interface IForgotPinProps {
+    route: any;
+    forgotPinOption: any;
+}
+
+const ForgotPin: React.FC<IForgotPinProps> = (props) => {
+    const { forgotPinOption } = props?.route?.params,
+        [selectedForgotPinOption, setSelectedForgotPinOption] = useState(forgotPinOption);
 
     return (
-        <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={"transparent"}>
+        <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={Colors.DefaultWhite}>
 
             <View style={styles.contentWrapper}>
                 <View style={styles.header}>
@@ -26,18 +34,21 @@ const ForgotPin: React.FC = () => {
 
                 <View style={styles.form}>
                     <View style={styles.inputGroup}>
+
                         <FloatingTextInput
-                            label="Email Address"
-                            value={email}
-                            onChangeText={setEmail}
+                            label={selectedForgotPinOption?.label}
+                            value={selectedForgotPinOption?.forgot_value}
+                            onChangeText={setSelectedForgotPinOption}
                             keyboardType="email-address"
+                            onSubmitEditing={() => Keyboard?.dismiss()}
                         />
+
                     </View>
                 </View>
 
             </View>
-            <TouchableOpacity style={styles.continueButton}>
-                <Text style={styles.continueButtonText}>CONTINUE</Text>
+            <TouchableOpacity style={styles.continueButtonWrapper}>
+                <CustomButton title="Continue" onPress={{}} />
             </TouchableOpacity>
         </MainContainer>
 
@@ -82,13 +93,9 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size16,
         color: Colors.NoirBlack,
     },
-    continueButton: {
-        backgroundColor: Colors.SunburstFlame,
-        paddingVertical: ResponsivePixels.size16,
+    continueButtonWrapper: {
         marginHorizontal: ResponsivePixels.size24,
         marginBottom: ResponsivePixels.size24,
-        borderRadius: 50,
-        alignItems: 'center',
     },
     continueButtonText: {
         color: Colors.DefaultWhite,

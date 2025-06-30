@@ -86,7 +86,7 @@ const Register: React.FC = () => {
                         rightIcon={showPassword ? IMAGES.ic_Eye_Off : IMAGES.ic_Eye_On}
                         onPressRightIcon={() => setShowPassword(!showPassword)}
                         secureTextEntry={!showPassword}
-                        onSubmitEditing={() => Keyboard.dismiss()}
+                        onSubmitEditing={() => Keyboard?.dismiss()}
                     />
 
                     <View style={styles.termsContainer}>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import MainContainer from '../common/MainContainer'
-import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
@@ -10,20 +10,75 @@ import { ActionSheetRef } from 'react-native-actions-sheet';
 import { navigate } from '../Navigators/Navigator';
 import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
 import CustomButton from '../common/CustomButton';
+import { FORGOT_PIN_OPTIONS } from '../Utils/Constants';
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState(''),
+
+    type ForgotPinOption = typeof FORGOT_PIN_OPTIONS[keyof typeof FORGOT_PIN_OPTIONS];
+
+    const [forgotPinOptions, setForgotPinOptions] = useState([
+        {
+            id: 1,
+            icon: IMAGES.ic_Whatsapp,
+            title: "WhatsApp",
+            label: "WhatsApp Number",
+            forgot_option: FORGOT_PIN_OPTIONS.WHATSAPP,
+            forgot_value: "+12 8347 2838 28",
+        },
+        {
+            id: 1,
+            icon: IMAGES.ic_Email,
+            title: "Email",
+            label: "Email Address",
+            forgot_option: FORGOT_PIN_OPTIONS.EMAIL,
+            forgot_value: "Albertstevano@gmail.com",
+        }
+    ]),
+        [email, setEmail] = useState(''),
         [password, setPassword] = useState(''),
         [showPassword, setShowPassword] = useState(false),
         actionSheetRef = useRef<ActionSheetRef>(null),
-        [selectedOption, setSelectedOption] = useState('whatsapp'),
-        passwordRef = useRef();
+        [selectedOption, setSelectedOption] = useState(forgotPinOptions[0]),
+        passwordRef = useRef<{ focus: () => void }>(null);
 
     const navigateToForgotPin = () => {
         actionSheetRef?.current?.hide();
-        navigate('ForgotPin');
+        navigate('ForgotPin', {
+            forgotPinOption: selectedOption
+        });
     };
     const navigateToRegister = () => navigate('Register');
+
+    const renderForgotPinOptions = ({ item }: any) => (
+        <TouchableOpacity
+            style={[
+                styles.optionCard,
+                (selectedOption?.forgot_option === item?.forgot_option) && styles.selectedCard
+            ]}
+            onPress={() => setSelectedOption(item)}
+        >
+            <View style={styles.optionContent}>
+                <View style={styles.iconContainer}>
+                    <Image source={item?.icon} style={styles.actionSheetIconStyle} />
+                </View>
+                <View style={styles.optionText}>
+                    <Text style={[
+                        styles.optionLabel,
+                        (selectedOption?.forgot_option === item?.forgot_option) && {
+                            color: Colors.SunburstFlame,
+                        }
+                    ]}>{`Send via ${item?.title}`}</Text>
+                    <Text style={styles.optionValue}>{item?.forgot_value}</Text>
+                </View>
+                {(selectedOption?.forgot_option === item?.forgot_option) && (
+                    <View style={styles.checkmark}>
+                        <Text style={styles.checkmarkText}>✓</Text>
+                    </View>
+                )}
+            </View>
+        </TouchableOpacity>
+    );
+
 
     return (
         <>
@@ -54,7 +109,7 @@ const Login: React.FC = () => {
                             rightIcon={showPassword ? IMAGES.ic_Eye_Off : IMAGES.ic_Eye_On}
                             onPressRightIcon={() => setShowPassword(!showPassword)}
                             secureTextEntry={!showPassword}
-                            onSubmitEditing={() => Keyboard.dismiss()}
+                            onSubmitEditing={() => Keyboard?.dismiss()}
                         />
 
                         <TouchableOpacity style={styles.forgotPassword} onPress={() => actionSheetRef?.current?.show()}>
@@ -119,61 +174,13 @@ const Login: React.FC = () => {
                         </Text>
 
                         <View style={styles.optionsContainer}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.optionCard,
-                                    selectedOption === 'whatsapp' && styles.selectedCard
-                                ]}
-                                onPress={() => setSelectedOption('whatsapp')}
-                            >
-                                <View style={styles.optionContent}>
-                                    <View style={styles.iconContainer}>
-                                        <Image source={IMAGES.ic_Whatsapp} style={styles.actionSheetIconStyle} />
-                                    </View>
-                                    <View style={styles.optionText}>
-                                        <Text style={[
-                                            styles.optionLabel,
-                                            selectedOption === 'whatsapp' && {
-                                                color: Colors.SunburstFlame,
-                                            }
-                                        ]}>Send via WhatsApp</Text>
-                                        <Text style={styles.optionValue}>+12 8347 2838 28</Text>
-                                    </View>
-                                    {selectedOption === 'whatsapp' && (
-                                        <View style={styles.checkmark}>
-                                            <Text style={styles.checkmarkText}>✓</Text>
-                                        </View>
-                                    )}
-                                </View>
-                            </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={[
-                                    styles.optionCard,
-                                    selectedOption === 'email' && styles.selectedCard
-                                ]}
-                                onPress={() => setSelectedOption('email')}
-                            >
-                                <View style={styles.optionContent}>
-                                    <View style={styles.iconContainer}>
-                                        <Image source={IMAGES.ic_Email} style={styles.actionSheetIconStyle} />
-                                    </View>
-                                    <View style={styles.optionText}>
-                                        <Text style={[
-                                            styles.optionLabel,
-                                            selectedOption === 'email' && {
-                                                color: Colors.SunburstFlame,
-                                            }
-                                        ]}>Send via Email</Text>
-                                        <Text style={styles.optionValue}>Albertstevano@gmail.com</Text>
-                                    </View>
-                                    {selectedOption === 'email' && (
-                                        <View style={styles.checkmark}>
-                                            <Text style={styles.checkmarkText}>✓</Text>
-                                        </View>
-                                    )}
-                                </View>
-                            </TouchableOpacity>
+                            <FlatList
+                                data={forgotPinOptions}
+                                renderItem={renderForgotPinOptions}
+                                keyExtractor={(item) => item?.id.toString()}
+                            />
+
                         </View>
 
                         <View style={styles.continueButtonWrapper}>

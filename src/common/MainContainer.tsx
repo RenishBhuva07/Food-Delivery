@@ -1,5 +1,6 @@
 import React from 'react';
 import { ColorValue, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StatusBarStyle, TouchableWithoutFeedback, View } from 'react-native';
+import { Colors } from '../Assets/StyleUtilities/Colors';
 
 interface IMainContainerProps {
     children: any;
@@ -20,7 +21,7 @@ const MainContainer = (props: IMainContainerProps) => {
     } = props;
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <TouchableWithoutFeedback onPress={Keyboard?.dismiss} accessible={false}>
             <View style={{ flex: 1 }}>
                 <StatusBar
                     barStyle={statusBarStyle}
@@ -33,7 +34,7 @@ const MainContainer = (props: IMainContainerProps) => {
                     keyboardVerticalOffset={keyboardVerticalOffset}
                 >
                     <SafeAreaView style={{ flex: 1 }}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, backgroundColor: Colors.DefaultWhite, }}>
                             {children}
                         </View>
                     </SafeAreaView>
