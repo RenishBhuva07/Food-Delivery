@@ -11,6 +11,7 @@ import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
 import CustomButton from '../common/CustomButton';
+import { navigate } from '../Navigators/Navigator';
 
 interface IForgotPinProps {
     route: any;
@@ -48,7 +49,7 @@ const ForgotPin: React.FC<IForgotPinProps> = (props) => {
 
             </View>
             <TouchableOpacity style={styles.continueButtonWrapper}>
-                <CustomButton title="Continue" onPress={{}} />
+                <CustomButton title="Continue" onPress={() => navigate("OtpVerification")} />
             </TouchableOpacity>
         </MainContainer>
 
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
         paddingTop: ResponsivePixels.size50,
     },
     header: {
-        marginBottom: 40,
+        marginBottom: ResponsivePixels.size40,
     },
     title: {
         fontSize: ResponsivePixels.size32,

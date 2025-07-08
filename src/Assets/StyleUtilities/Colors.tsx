@@ -10,4 +10,6 @@ export const Colors = {
     SunlitAlmond: "#FFF8F0",
     CloudWhisper: "#E5E5E5",
     FrostedLilacMist: "#F5F5FF",
+    SoftSilver: "#EAEAEA",
+    PeachWhisper: "#FFF5F2"
 };

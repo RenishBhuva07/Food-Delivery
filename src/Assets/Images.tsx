@@ -8,4 +8,6 @@ export const IMAGES = {
     ic_Google: require("../Assets/Images/ic_Google.png"),
     ic_Whatsapp: require("../Assets/Images/ic_Whatsapp.png"),
     ic_Email: require("../Assets/Images/ic_Email.png"),
+    ic_Back: require("../Assets/Images/ic_Back.png"),
+    ic_Timer: require("../Assets/Images/ic_Timer.png"),
 }
