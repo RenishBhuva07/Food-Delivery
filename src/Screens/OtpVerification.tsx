@@ -122,7 +122,7 @@ const OtpVerification: React.FC<IOtpVerificationProps> = (props) => {
 
             </View>
             <TouchableOpacity style={styles.continueButtonWrapper}>
-                <CustomButton title="Continue" onPress={{}} />
+                <CustomButton title="Continue" onPress={handleContinue} />
             </TouchableOpacity>
         </MainContainer>
 

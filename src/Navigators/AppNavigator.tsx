@@ -9,6 +9,7 @@ import Login from "../Screens/Login";
 import ForgotPin from "../Screens/ForgotPin";
 import Register from "../Screens/Register";
 import OtpVerification from "../Screens/OtpVerification";
+import ResetPassword from "../Screens/ResetPassword";
 
 const Stack = createNativeStackNavigator()
 
@@ -23,6 +24,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="ForgotPin" component={ForgotPin} />
                 <Stack.Screen name="OtpVerification" component={OtpVerification} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword} />
             </Stack.Navigator>
         </NavigationContainer>
     )
