@@ -1,13 +1,18 @@
 import { useRef, useState } from "react";
 import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { navigate } from "../Navigators/Navigator";
+import { resetNavigation } from "../Navigators/Navigator";
 import MainContainer from "../common/MainContainer";
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { Colors } from "../Assets/StyleUtilities/Colors";
 import { FloatingTextInput } from "../common/FloatingTextInput";
 import { IMAGES } from "../Assets/Images";
 import CustomButton from "../common/CustomButton";
+import CustomActionSheet from "../common/CustomActionSheet";
+import { ActionSheetRef } from "react-native-actions-sheet";
+import ActionSheetStyles from "../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles";
+import { CustomAnimation } from "../common/CustomAnimation";
+import { ANIMATIONS } from "../Animations";
 
 interface IResetPasswordProps {
     route: any;
@@ -21,19 +26,21 @@ const ResetPassword: React.FC<IResetPasswordProps> = (props) => {
         [confirmPassword, setConfirmPassword] = useState(""),
         [showNewPassword, setShowNewPassword] = useState(false),
         [showConfirmPassword, setShowConfirmPassword] = useState(false),
-        confirmPasswordRef = useRef<{ focus: () => void }>(null);
+        confirmPasswordRef = useRef<{ focus: () => void }>(null),
+        resetPasswordSuccessRef = useRef<ActionSheetRef>(null);
 
     const isPasswordValid = newPassword.length >= 8
     const doPasswordsMatch = newPassword === confirmPassword && confirmPassword !== ""
 
     const handleVerifyAccount = () => {
-        if (isPasswordValid && doPasswordsMatch) {
-            navigate("Success", {
-                title: "Password Changed",
-                subtitle: "Password changed successfully, you can login again with a new password",
-                buttonText: "Verify account",
-            })
-        }
+        resetPasswordSuccessRef.current?.show();
+        // if (isPasswordValid && doPasswordsMatch) {
+        // }
+    }
+
+    const navigateToLogin = () => {
+        resetPasswordSuccessRef.current?.hide();
+        resetNavigation("Login");
     }
 
     return (
@@ -89,17 +96,36 @@ const ResetPassword: React.FC<IResetPasswordProps> = (props) => {
 
             </View>
             <View style={styles.continueButtonWrapper}>
-                <CustomButton title="Verify Account" onPress={handleVerifyAccount} disabled={!(isPasswordValid && doPasswordsMatch)} />
+                <CustomButton title="Verify Account" onPress={handleVerifyAccount} /> //disabled={!(isPasswordValid && doPasswordsMatch)}
             </View>
+
+            <CustomActionSheet ref={resetPasswordSuccessRef}>
+                <View style={ActionSheetStyles.actionSheetContent}>
+                    <View style={styles.content}>
+                        <View style={styles.animationContainer}>
+                            <CustomAnimation
+                                animationFile={ANIMATIONS.Success}
+                                animationStyle={{
+                                    width: ResponsivePixels.size200,
+                                    height: ResponsivePixels.size200,
+                                }}
+                            />
+                        </View>
+
+                        <Text style={styles.successTitle}>Password Changed</Text>
+                        <Text style={styles.successSubtitle}>Password changed successfully, you can login again with a new password</Text>
+
+
+                    </View>
+                    <CustomButton style={{ marginBottom: ResponsivePixels.size10 }} title="Let's Go" onPress={navigateToLogin} />
+                </View>
+            </CustomActionSheet>
+
         </MainContainer>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-    },
     contentWrapper: {
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
@@ -122,18 +148,38 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size40,
     },
     validationText: {
-        fontSize: 12,
-        color: "#666",
-        marginTop: 5,
+        fontSize: ResponsivePixels.size12,
+        color: Colors.SteelMist,
+        marginTop: ResponsivePixels.size5,
     },
     errorText: {
-        fontSize: 12,
-        color: "#FF3B30",
-        marginTop: 5,
+        fontSize: ResponsivePixels.size12,
+        color: Colors.ErrorRed,
+        marginTop: ResponsivePixels.size5,
     },
     continueButtonWrapper: {
         marginHorizontal: ResponsivePixels.size24,
         marginBottom: ResponsivePixels.size24,
+    },
+    content: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    animationContainer: {
+        marginBottom: ResponsivePixels.size5,
+    },
+    successTitle: {
+        fontSize: ResponsivePixels.size24,
+        fontWeight: "700",
+        color: "#000",
+        textAlign: "center",
+        marginBottom: ResponsivePixels.size10,
+    },
+    successSubtitle: {
+        fontSize: ResponsivePixels.size16,
+        color: "#666",
+        textAlign: "center",
+        marginBottom: ResponsivePixels.size30,
     },
 })
 

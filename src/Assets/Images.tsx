@@ -10,4 +10,16 @@ export const IMAGES = {
     ic_Email: require("../Assets/Images/ic_Email.png"),
     ic_Back: require("../Assets/Images/ic_Back.png"),
     ic_Timer: require("../Assets/Images/ic_Timer.png"),
+    hero_background: require("../Assets/Images/hero_background.png"),
+    ic_location: require("../Assets/Images/ic_location.png"),
+    ic_Search: require("../Assets/Images/ic_Search.png"),
+    ic_Notification: require("../Assets/Images/ic_Notification.png"),
+    ic_home: require("../Assets/Images/ic_home.png"),
+    ic_cart: require("../Assets/Images/ic_cart.png"),
+    ic_chat: require("../Assets/Images/ic_chat.png"),
+    ic_profile: require("../Assets/Images/ic_profile.png"),
+    ic_Like: require("../Assets/Images/ic_Like.png"),
+    ic_down_arrow: require("../Assets/Images/ic_down_arrow.png"),
+
+    ordinary_burgers: require("../Assets/Images/ordinary_burgers.png"),
 }

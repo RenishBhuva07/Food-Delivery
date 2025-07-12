@@ -1,5 +1,3 @@
-"use client"
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./Navigator";
@@ -10,6 +8,7 @@ import ForgotPin from "../Screens/ForgotPin";
 import Register from "../Screens/Register";
 import OtpVerification from "../Screens/OtpVerification";
 import ResetPassword from "../Screens/ResetPassword";
+import Dashboard from "../Screens/Dashboard";
 
 const Stack = createNativeStackNavigator()
 
@@ -25,6 +24,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="ForgotPin" component={ForgotPin} />
                 <Stack.Screen name="OtpVerification" component={OtpVerification} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                <Stack.Screen name="Dashboard" component={Dashboard} />
             </Stack.Navigator>
         </NavigationContainer>
     )

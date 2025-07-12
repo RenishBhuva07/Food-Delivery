@@ -14,8 +14,6 @@ import { FORGOT_PIN_OPTIONS } from '../Utils/Constants';
 
 const Login: React.FC = () => {
 
-    type ForgotPinOption = typeof FORGOT_PIN_OPTIONS[keyof typeof FORGOT_PIN_OPTIONS];
-
     const [forgotPinOptions, setForgotPinOptions] = useState([
         {
             id: 1,
@@ -48,6 +46,7 @@ const Login: React.FC = () => {
         });
     };
     const navigateToRegister = () => navigate('Register');
+    const navigateToDashboard = () => navigate('Dashboard');
 
     const renderForgotPinOptions = ({ item }: any) => (
         <TouchableOpacity
@@ -118,7 +117,7 @@ const Login: React.FC = () => {
                     </View>
 
                     <View style={styles.signInButtonWrapper}>
-                        <CustomButton title="Sign in" onPress={{}} />
+                        <CustomButton title="Sign in" onPress={navigateToDashboard} />
                     </View>
 
 
@@ -331,7 +330,7 @@ const styles = StyleSheet.create({
     },
     checkmarkText: {
         color: Colors.DefaultWhite,
-        fontSize: 14,
+        fontSize: ResponsivePixels.size14,
         fontWeight: 'bold',
     },
     continueButtonWrapper: {

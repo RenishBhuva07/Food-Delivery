@@ -23,6 +23,7 @@ interface IMainContainerProps {
     statusBarHidden?: boolean;
     keyboardVerticalOffset?: number;
     containerBackgroundColor?: string;
+    translucent?: boolean;
 
     // Header props
     showHeader?: boolean
@@ -38,6 +39,7 @@ const MainContainer = (props: IMainContainerProps) => {
         statusBarHidden = false,
         keyboardVerticalOffset = 0,
         containerBackgroundColor = Colors.DefaultWhite,
+        translucent = false,
 
         // Header props
         showHeader = false,
@@ -48,7 +50,7 @@ const MainContainer = (props: IMainContainerProps) => {
         <TouchableWithoutFeedback onPress={Keyboard?.dismiss} accessible={false}>
             <View style={{ flex: 1 }}>
 
-                <StatusBar barStyle={statusBarStyle} backgroundColor={statusBarBackgroundColor} hidden={statusBarHidden} />
+                <StatusBar barStyle={statusBarStyle} backgroundColor={statusBarBackgroundColor} hidden={statusBarHidden} translucent={translucent} />
 
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}

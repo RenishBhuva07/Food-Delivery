@@ -11,5 +11,7 @@ export const Colors = {
     CloudWhisper: "#E5E5E5",
     FrostedLilacMist: "#F5F5FF",
     SoftSilver: "#EAEAEA",
-    PeachWhisper: "#FFF5F2"
+    PeachWhisper: "#FFF5F2",
+    ErrorRed: "#FF3B30",
+    SunburstFlameLight: "#FEAD1D05"
 };

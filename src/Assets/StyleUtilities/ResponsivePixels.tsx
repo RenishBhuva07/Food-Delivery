@@ -206,6 +206,8 @@ export default ResponsivePixels = {
     size220: RFPercentage(0.135 * 220),
     size235: RFPercentage(0.135 * 235),
     size238: RFPercentage(0.135 * 238),
+    size240: RFPercentage(0.135 * 240),
+    size241: RFPercentage(0.135 * 241),
     size242: RFPercentage(0.135 * 242),
     size243: RFPercentage(0.135 * 243),
     size244: RFPercentage(0.135 * 244),
