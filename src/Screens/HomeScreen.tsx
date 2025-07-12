@@ -1,96 +1,82 @@
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ImageBackground, Dimensions } from "react-native";
 import { Colors } from "../Assets/StyleUtilities/Colors";
 import MainContainer from "../common/MainContainer";
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { IMAGES } from "../Assets/Images";
+import { FOOD_ITEMS } from "../Database/FoodItems";
 
-const ScreenWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width,
+    foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
+
+type FoodItems = {
+    id: number | string;
+    name: string;
+    rating: number;
+    distance: string;
+    price: string;
+    image: any;
+    isFavorite: boolean;
+    category: string;
+};
 
 const HomeScreen: React.FC = () => {
-    const [selectedCategory, setSelectedCategory] = useState("Burger");
+    const [selectedCategory, setSelectedCategory] = useState("Burger"),
+        [selectedFoodItem, setSelectedFoodItem] = useState<FoodItems[]>([]);
+
+    useEffect(() => {
+        const filteredItems = FOOD_ITEMS?.filter(item => item.category === selectedCategory);
+        setSelectedFoodItem(filteredItems);
+    }, [selectedCategory]);
 
     const categories = [
-        { id: 1, name: "Burger", icon: "🍔", isSelected: false },
+        { id: 1, name: "Burger", icon: "🍔", isSelected: false, },
         { id: 2, name: "Taco", icon: "🌮", isSelected: false },
         { id: 3, name: "Drink", icon: "🥤", isSelected: false },
         { id: 4, name: "Pizza", icon: "🍕", isSelected: false },
         { id: 5, name: "Fries", icon: "🍟", isSelected: false },
-    ]
+        { id: 6, name: "Salad", icon: "🥗", isSelected: false },
+        { id: 7, name: "Dessert", icon: "🍰", isSelected: false },
+        { id: 8, name: "Sushi", icon: "🍣", isSelected: false },
+        { id: 9, name: "Pasta", icon: "🍝", isSelected: false },
+        { id: 10, name: "Sandwich", icon: "🥪", isSelected: false },
+    ];
 
-    const foodItems = [
-        {
-            id: 1,
-            name: "Ordinary Burgers",
-            rating: 4.9,
-            distance: "190m",
-            price: "$17,230",
-            image: "/placeholder.svg?height=120&width=120",
-            isFavorite: false,
-        },
-        {
-            id: 2,
-            name: "Burger With Meat",
-            rating: 4.9,
-            distance: "190m",
-            price: "$17,230",
-            image: "/placeholder.svg?height=120&width=120",
-            isFavorite: false,
-        },
-        {
-            id: 3,
-            name: "Deluxe Burger",
-            rating: 4.8,
-            distance: "250m",
-            price: "$19,500",
-            image: "/placeholder.svg?height=120&width=120",
-            isFavorite: false,
-        },
-        {
-            id: 4,
-            name: "Classic Burger",
-            rating: 4.7,
-            distance: "300m",
-            price: "$15,800",
-            image: "/placeholder.svg?height=120&width=120",
-            isFavorite: false,
-        },
-    ]
-
-    const renderCategory = ({ item }: any) => (
+    const renderCategoryCard = ({ item }: any) => (
         <TouchableOpacity
-            style={[styles.categoryCard, selectedCategory === item.name && styles.selectedCategoryCard]}
-            onPress={() => setSelectedCategory(item.name)}
+            style={[styles.categoryCard, selectedCategory === item?.name && styles.selectedCategoryCard]}
+            onPress={() => setSelectedCategory(item?.name)}
         >
-            <Text style={styles.categoryIcon}>{item.icon}</Text>
-            <Text style={[styles.categoryText, selectedCategory === item.name && styles.selectedCategoryText]}>
+            <Text style={styles.categoryIcon}>{item?.icon}</Text>
+            <Text style={[styles.categoryText, selectedCategory === item?.name && styles.selectedCategoryText]}>
                 {item?.name}
             </Text>
         </TouchableOpacity>
     )
 
-    const renderFoodItem = ({ item }: any) => (
+    const renderFoodCard = ({ item }: any) => (
         <View style={styles.foodCard}>
             <View style={styles.foodImageContainer}>
-                <Image source={{ uri: item.image }} style={styles.foodImage} />
+                <Image source={item?.image} style={styles.foodImage} />
                 <TouchableOpacity style={styles.favoriteButton}>
-                    <Text style={styles.favoriteIcon}>♡</Text>
+                    {/* <Text style={styles.favoriteIcon}>♡</Text> */}
+                    <Image source={IMAGES.ic_Like} style={{ width: 27, height: 27 }} />
                 </TouchableOpacity>
             </View>
             <View style={styles.foodInfo}>
-                <Text style={styles.foodName}>{item.name}</Text>
+                <Text style={styles.foodName}>{item?.name}</Text>
                 <View style={styles.foodDetails}>
                     <View style={styles.ratingContainer}>
                         <Text style={styles.starIcon}>⭐</Text>
-                        <Text style={styles.rating}>{item.rating}</Text>
+                        <Text style={styles.rating}>{item?.rating}</Text>
                     </View>
                     <View style={styles.distanceContainer}>
-                        <Text style={styles.locationIcon}>📍</Text>
-                        <Text style={styles.distance}>{item.distance}</Text>
+                        <Image source={IMAGES.ic_location_small} style={{ width: 15, height: 15 }} />
+                        <Text style={styles.distance}>{item?.distance}</Text>
                     </View>
                 </View>
-                <Text style={styles.price}>{item.price}</Text>
+                <Text style={styles.price}>{item?.price}</Text>
             </View>
         </View>
     )
@@ -146,7 +132,7 @@ const HomeScreen: React.FC = () => {
                     </View>
                     <FlatList
                         data={categories}
-                        renderItem={renderCategory}
+                        renderItem={renderCategoryCard}
                         keyExtractor={(item) => item.id.toString()}
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -157,12 +143,37 @@ const HomeScreen: React.FC = () => {
                 {/* Food Items Grid */}
                 <View style={styles.foodGrid}>
                     <FlatList
-                        data={foodItems}
-                        renderItem={renderFoodItem}
+                        data={selectedFoodItem}
+                        renderItem={renderFoodCard}
                         keyExtractor={(item) => item.id.toString()}
                         numColumns={2}
                         columnWrapperStyle={styles.foodRow}
-                        scrollEnabled={false}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            paddingBottom: 440,
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        scrollEnabled
+                        nestedScrollEnabled
+                        ListEmptyComponent={() => (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: Colors.NoirBlack,
+                                        fontSize: ResponsivePixels.size16,
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    No food items available in this category.
+                                </Text>
+                            </View>
+                        )}
                     />
                 </View>
             </View>
@@ -175,22 +186,22 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     heroWrapper: {
-        borderBottomLeftRadius: ResponsivePixels.size20,
-        borderBottomRightRadius: ResponsivePixels.size20,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
         overflow: 'hidden',
 
         elevation: 10,
     },
     heroSection: {
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size20,
         paddingTop: ResponsivePixels.size50,
         paddingBottom: ResponsivePixels.size20,
     },
     heroImageBackground: {
         width: ScreenWidth,
         justifyContent: 'flex-end',
-        borderBottomStartRadius: ResponsivePixels.size20,
-        borderBottomEndRadius: ResponsivePixels.size20,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
         overflow: 'hidden',
     },
     headerRow: {
@@ -244,16 +255,16 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size32,
         fontWeight: "bold",
         lineHeight: ResponsivePixels.size40,
+        marginRight: ResponsivePixels.size50,
     },
     categoriesSection: {
-        paddingTop: ResponsivePixels.size24,
+        paddingTop: ResponsivePixels.size20,
     },
     sectionHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: ResponsivePixels.size16,
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size20,
     },
     sectionTitle: {
         fontSize: ResponsivePixels.size20,
@@ -266,16 +277,22 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     categoriesList: {
-        gap: ResponsivePixels.size20,
-        paddingHorizontal: ResponsivePixels.size24,
+        gap: ResponsivePixels.size10,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingVertical: ResponsivePixels.size10,
     },
     categoryCard: {
         alignItems: "center",
         justifyContent: "center",
         width: ResponsivePixels.size60,
         height: ResponsivePixels.size60,
-        borderRadius: ResponsivePixels.size16,
+        borderRadius: 16,
         backgroundColor: Colors.DefaultWhite,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
     },
     selectedCategoryCard: {
         backgroundColor: Colors.SunburstFlame,
@@ -292,41 +309,44 @@ const styles = StyleSheet.create({
         color: Colors.DefaultWhite,
     },
     foodGrid: {
-        paddingHorizontal: ResponsivePixels.size24,
-        paddingTop: ResponsivePixels.size20,
-        paddingBottom: ResponsivePixels.size100,
+        // flex: 1,
     },
     foodRow: {
         justifyContent: "space-between",
-        marginBottom: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingTop: ResponsivePixels.size10,
     },
     foodCard: {
-        width: "48%",
+        width: foodCardWidth,
         backgroundColor: Colors.DefaultWhite,
-        borderRadius: ResponsivePixels.size16,
-        shadowColor: Colors.NoirBlack,
+        borderRadius: 16,
+        padding: ResponsivePixels.size10,
 
+        shadowColor: Colors.NoirBlack,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 8,
         elevation: 4,
     },
     foodImageContainer: {
+        // width: ResponsivePixels.size135,
+        height: ResponsivePixels.size120,
+        borderRadius: 12,
+        overflow: "hidden",
         position: "relative",
     },
     foodImage: {
         width: "100%",
-        height: ResponsivePixels.size120,
-        borderTopLeftRadius: ResponsivePixels.size16,
-        borderTopRightRadius: ResponsivePixels.size16,
+        height: "100%",
+        resizeMode: "cover",
+        borderRadius: 12,
     },
     favoriteButton: {
         position: "absolute",
-        top: ResponsivePixels.size12,
-        right: ResponsivePixels.size12,
-        width: ResponsivePixels.size32,
-        height: ResponsivePixels.size32,
-        borderRadius: ResponsivePixels.size16,
+        top: ResponsivePixels.size8,
+        right: ResponsivePixels.size8,
+        padding: 3,
+        borderRadius: 50,
         backgroundColor: Colors.DefaultWhite,
         alignItems: "center",
         justifyContent: "center",
@@ -336,27 +356,28 @@ const styles = StyleSheet.create({
         color: Colors.SteelMist,
     },
     foodInfo: {
-        padding: ResponsivePixels.size16,
+        paddingTop: ResponsivePixels.size10,
     },
     foodName: {
         fontSize: ResponsivePixels.size16,
         fontWeight: "600",
         color: Colors.NoirBlack,
-        marginBottom: ResponsivePixels.size8,
+        // marginBottom: ResponsivePixels.size4,
     },
     foodDetails: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: ResponsivePixels.size8,
+        justifyContent: "space-between",
+        marginBottom: ResponsivePixels.size4,
     },
     ratingContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginRight: ResponsivePixels.size16,
+        gap: ResponsivePixels.size4,
     },
     starIcon: {
         fontSize: ResponsivePixels.size12,
-        marginRight: ResponsivePixels.size4,
+        // marginRight: ResponsivePixels.size4,
     },
     rating: {
         fontSize: ResponsivePixels.size12,
@@ -366,6 +387,7 @@ const styles = StyleSheet.create({
     distanceContainer: {
         flexDirection: "row",
         alignItems: "center",
+        gap: ResponsivePixels.size4,
     },
     distance: {
         fontSize: ResponsivePixels.size12,

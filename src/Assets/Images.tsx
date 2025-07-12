@@ -20,6 +20,8 @@ export const IMAGES = {
     ic_profile: require("../Assets/Images/ic_profile.png"),
     ic_Like: require("../Assets/Images/ic_Like.png"),
     ic_down_arrow: require("../Assets/Images/ic_down_arrow.png"),
+    ic_Star: require("../Assets/Images/ic_Star.png"),
+    ic_location_small: require("../Assets/Images/ic_location_small.png"),
 
     ordinary_burgers: require("../Assets/Images/ordinary_burgers.png"),
 }
