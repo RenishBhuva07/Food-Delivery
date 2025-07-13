@@ -48,6 +48,11 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         justifyContent: 'center',
         opacity: disabled ? 0.5 : 1,
         ...style,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
     };
 
     const textStyles: TextStyle = {

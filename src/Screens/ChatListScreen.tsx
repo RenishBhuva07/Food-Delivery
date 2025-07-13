@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native"
@@ -99,8 +97,9 @@ const ChatListScreen: React.FC = () => {
     return (
         <MainContainer
             statusBarStyle="dark-content"
-            statusBarBackgroundColor={Colors.DefaultWhite}
+            statusBarBackgroundColor="transparent"
             containerBackgroundColor={Colors.SunburstFlameLight}
+            translucent={true}
         >
             <View style={styles.container}>
                 {/* Header */}

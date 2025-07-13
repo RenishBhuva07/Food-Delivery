@@ -22,6 +22,12 @@ export const IMAGES = {
     ic_down_arrow: require("../Assets/Images/ic_down_arrow.png"),
     ic_Star: require("../Assets/Images/ic_Star.png"),
     ic_location_small: require("../Assets/Images/ic_location_small.png"),
+    ic_Add: require("../Assets/Images/ic_Add.png"),
+    ic_Delete: require("../Assets/Images/ic_Delete.png"),
+    ic_Menu: require("../Assets/Images/ic_Menu.png"),
+    ic_Minus: require("../Assets/Images/ic_Minus.png"),
+    ic_promo_code: require("../Assets/Images/ic_promo_code.png"),
 
     ordinary_burgers: require("../Assets/Images/ordinary_burgers.png"),
+    no_order_Illustration: require("../Assets/Images/no_order_Illustration.png"),
 }

@@ -60,7 +60,6 @@ const HomeScreen: React.FC = () => {
             <View style={styles.foodImageContainer}>
                 <Image source={item?.image} style={styles.foodImage} />
                 <TouchableOpacity style={styles.favoriteButton}>
-                    {/* <Text style={styles.favoriteIcon}>♡</Text> */}
                     <Image source={IMAGES.ic_Like} style={{ width: 27, height: 27 }} />
                 </TouchableOpacity>
             </View>
@@ -149,8 +148,8 @@ const HomeScreen: React.FC = () => {
                         numColumns={2}
                         columnWrapperStyle={styles.foodRow}
                         contentContainerStyle={{
-                            flexGrow: 1,
-                            paddingBottom: 440,
+                            // flexGrow: 1,
+                            paddingBottom: 480,
                         }}
                         showsVerticalScrollIndicator={false}
                         scrollEnabled

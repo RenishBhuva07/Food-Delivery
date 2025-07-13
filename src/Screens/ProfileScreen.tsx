@@ -57,8 +57,9 @@ const ProfileScreen: React.FC = () => {
     return (
         <MainContainer
             statusBarStyle="dark-content"
-            statusBarBackgroundColor={Colors.DefaultWhite}
+            statusBarBackgroundColor="transparent"
             containerBackgroundColor={Colors.SunburstFlameLight}
+            translucent={true}
         >
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 {/* Header */}

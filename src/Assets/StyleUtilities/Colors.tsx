@@ -13,5 +13,7 @@ export const Colors = {
     SoftSilver: "#EAEAEA",
     PeachWhisper: "#FFF5F2",
     ErrorRed: "#FF3B30",
-    SunburstFlameLight: "#FEAD1D05"
+    SunburstFlameLight: "#FEAD1D05",
+    SilverHaze: "#C2C2C2",
+    FrostedMist: "#EDEDED",
 };

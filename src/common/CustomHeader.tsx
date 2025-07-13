@@ -23,12 +23,8 @@ interface CustomHeaderProps {
 const CustomHeader: React.FC<CustomHeaderProps> = ({
     headerTitle = "Header Title",
     headerTitleColor = Colors.NoirBlack,
-    backgroundColor = Colors.DefaultWhite,
-    headerLeft = {
-        icon: IMAGES.ic_Back,
-        onPress: () => console.log("Back pressed"),
-        color: Colors.NoirBlack
-    },
+    backgroundColor,
+    headerLeft,
     headerRight,
     showHeader = false
 }) => {
@@ -46,7 +42,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             >
                 <Image
                     source={headerLeft?.icon}
-                    style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24 }}
+                    style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24, tintColor: headerLeft?.color }}
                     resizeMode="contain"
                 />
             </TouchableOpacity>
@@ -64,7 +60,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             >
                 <Image
                     source={headerRight?.icon}
-                    style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24 }}
+                    style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24, tintColor: headerRight?.color }}
                     resizeMode="contain"
                 />
             </TouchableOpacity>

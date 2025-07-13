@@ -1,32 +1,53 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput } from "react-native"
 import { Colors } from "../Assets/StyleUtilities/Colors"
 import MainContainer from "../common/MainContainer"
 import CustomButton from "../common/CustomButton"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
+import { IMAGES } from "../Assets/Images"
+import { navigate } from "../Navigators/Navigator"
 
-const CartScreen: React.FC = () => {
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: "Burger With Meat",
-            price: 12230,
-            quantity: 1,
-            image: "/placeholder.svg?height=80&width=80",
-            isSelected: true,
-        },
-        {
-            id: 2,
-            name: "Ordinary Burgers",
-            price: 12230,
-            quantity: 1,
-            image: "/placeholder.svg?height=80&width=80",
-            isSelected: true,
-        },
-    ])
+interface ICartScreenProps {
+    route: any;
+}
+
+const CartScreen: React.FC<ICartScreenProps> = (props) => {
+    const { } = props?.route?.params,
+        [cartItems, setCartItems] = useState([
+            {
+                id: 1,
+                name: "Burger With Meat",
+                price: 12230,
+                quantity: 1,
+                image: "/placeholder.svg?height=80&width=80",
+                isSelected: true,
+            },
+            {
+                id: 2,
+                name: "Ordinary Burgers",
+                price: 12230,
+                quantity: 1,
+                image: "/placeholder.svg?height=80&width=80",
+                isSelected: true,
+            },
+            {
+                id: 3,
+                name: "Ordinary Burgers",
+                price: 12230,
+                quantity: 1,
+                image: "/placeholder.svg?height=80&width=80",
+                isSelected: true,
+            },
+            {
+                id: 4,
+                name: "Ordinary Burgers",
+                price: 12230,
+                quantity: 1,
+                image: "/placeholder.svg?height=80&width=80",
+                isSelected: true,
+            },
+        ])
 
     const [promoCode, setPromoCode] = useState("")
 
@@ -47,44 +68,61 @@ const CartScreen: React.FC = () => {
     }
 
     const calculateTotal = () => {
-        const subtotal = cartItems
-            .filter((item) => item.isSelected)
-            .reduce((sum, item) => sum + item.price * item.quantity, 0)
+        const subtotal = cartItems?.filter((item) => item.isSelected)?.reduce((sum, item) => sum + item.price * item.quantity, 0)
         const discount = 10900
         return subtotal - discount
     }
 
     const renderCartItem = ({ item }: any) => (
         <View style={styles.cartItem}>
-            <TouchableOpacity
-                style={[styles.checkbox, item.isSelected && styles.checkedBox]}
-                onPress={() => toggleItemSelection(item.id)}
-            >
-                {item.isSelected && <Text style={styles.checkmark}>✓</Text>}
-            </TouchableOpacity>
 
-            <Image source={{ uri: item.image }} style={styles.itemImage} />
+            <View style={{
+                // flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+            }}>
+                <TouchableOpacity
+                    style={[styles.checkbox, item.isSelected && styles.checkedBox]}
+                    onPress={() => toggleItemSelection(item.id)}
+                >
+                    {item.isSelected && <Text style={styles.checkmark}>✓</Text>}
+                </TouchableOpacity>
+
+                <View style={{
+                    borderRadius: ResponsivePixels.size8,
+                    marginRight: ResponsivePixels.size12,
+                }}>
+                    <Image source={IMAGES.ordinary_burgers} style={styles.itemImage} />
+                </View>
+            </View>
 
             <View style={styles.itemDetails}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemPrice}>${item.price.toLocaleString()}</Text>
+                <Text style={styles.itemName}>{item?.name}</Text>
+                <Text style={styles.itemPrice}>$ {item.price.toLocaleString()}</Text>
+                <View style={styles.quantityControls}>
+
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}>
+                        <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, false)}>
+                            <Image source={IMAGES.ic_Minus} style={{ width: ResponsivePixels.size28, height: ResponsivePixels.size28, tintColor: Colors.NoirBlack }} />
+                        </TouchableOpacity>
+
+                        <Text style={styles.quantity}>{item.quantity}</Text>
+
+                        <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, true)}>
+                            <Image source={IMAGES.ic_Add} style={{ width: ResponsivePixels.size28, height: ResponsivePixels.size28, tintColor: Colors.NoirBlack }} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.deleteButton} onPress={() => removeItem(item.id)}>
+                        <Image source={IMAGES.ic_Delete} style={{ width: ResponsivePixels.size25, height: ResponsivePixels.size25 }} />
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            <View style={styles.quantityControls}>
-                <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, false)}>
-                    <Text style={styles.quantityButtonText}>−</Text>
-                </TouchableOpacity>
 
-                <Text style={styles.quantity}>{item.quantity}</Text>
-
-                <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, true)}>
-                    <Text style={styles.quantityButtonText}>+</Text>
-                </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={styles.deleteButton} onPress={() => removeItem(item.id)}>
-                <Text style={styles.deleteIcon}>🗑️</Text>
-            </TouchableOpacity>
         </View>
     )
 
@@ -92,33 +130,33 @@ const CartScreen: React.FC = () => {
         return (
             <MainContainer
                 statusBarStyle="dark-content"
-                statusBarBackgroundColor={Colors.DefaultWhite}
-                showHeader={true}
+                statusBarBackgroundColor="transparent"
+                containerBackgroundColor={Colors.SunburstFlameLight}
+                showHeader
+                translucent={true}
                 header={{
                     headerTitle: "My Cart",
                     headerTitleColor: Colors.NoirBlack,
-                    headerLeft: {
-                        icon: "←",
-                        onPress: () => console.log("Back pressed"),
-                        color: Colors.NoirBlack,
-                    },
                     headerRight: {
-                        icon: "⋯",
+                        icon: IMAGES.ic_Menu,
                         onPress: () => console.log("Menu pressed"),
-                        color: Colors.NoirBlack,
                     },
                 }}
             >
                 <View style={styles.emptyContainer}>
                     <View style={styles.emptyIllustration}>
-                        <View style={[styles.circle, styles.circle1]} />
-                        <View style={[styles.circle, styles.circle2]} />
-                        <View style={[styles.circle, styles.circle3]} />
-                        <View style={[styles.circle, styles.circle4]} />
-                        <View style={[styles.circle, styles.circle5]} />
-                        <View style={styles.searchIconContainer}>
+                        {/* <View style={[styles.circle, styles.circle1]} /> */}
+                        {/* <View style={[styles.circle, styles.circle2]} /> */}
+                        {/* <View style={[styles.circle, styles.circle3]} /> */}
+                        {/* <View style={[styles.circle, styles.circle4]} /> */}
+                        {/* <View style={[styles.circle, styles.circle5]} /> */}
+                        {/* <View style={styles.searchIconContainer}>
                             <Text style={styles.searchIcon}>🔍</Text>
-                        </View>
+                        </View> */}
+                        <Image
+                            source={IMAGES.no_order_Illustration}
+                            style={{ width: ResponsivePixels.size278, height: ResponsivePixels.size207 }}
+                        />
                     </View>
                     <Text style={styles.emptyTitle}>Ouch! Hungry</Text>
                     <Text style={styles.emptySubtitle}>Seems like you have not ordered any food yet</Text>
@@ -133,42 +171,60 @@ const CartScreen: React.FC = () => {
     return (
         <MainContainer
             statusBarStyle="dark-content"
+            statusBarBackgroundColor="transparent"
             containerBackgroundColor={Colors.SunburstFlameLight}
-            statusBarBackgroundColor={Colors.DefaultWhite}
-            showHeader={true}
+            translucent={true}
+            showHeader
             header={{
+                headerBackgroundColor: Colors.SunburstFlameLight,
                 headerTitle: "My Cart",
                 headerTitleColor: Colors.NoirBlack,
-                headerLeft: {
-                    icon: "←",
-                    onPress: () => console.log("Back pressed"),
-                    color: Colors.NoirBlack,
-                },
                 headerRight: {
-                    icon: "⋯",
+                    icon: IMAGES.ic_Menu,
                     onPress: () => console.log("Menu pressed"),
-                    color: Colors.NoirBlack,
                 },
             }}
         >
             <View style={styles.container}>
                 {/* Delivery Location */}
                 <View style={styles.deliverySection}>
-                    <Text style={styles.deliveryLabel}>Delivery Location</Text>
+
                     <View style={styles.deliveryRow}>
-                        <Text style={styles.deliveryLocation}>Home</Text>
+                        <View style={styles.locationWrapper}>
+                            <Text style={styles.deliveryLabel}>Delivery Location</Text>
+                            <Text style={styles.deliveryLocation}>Home</Text>
+                        </View>
                         <TouchableOpacity style={styles.changeLocationButton}>
                             <Text style={styles.changeLocationText}>Change Location</Text>
                         </TouchableOpacity>
                     </View>
+
                 </View>
 
                 {/* Promo Code */}
                 <View style={styles.promoSection}>
                     <View style={styles.promoRow}>
                         <View style={styles.promoLeft}>
-                            <Text style={styles.promoIcon}>%</Text>
-                            <Text style={styles.promoText}>Promo Code...</Text>
+                            <View style={{
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.1,
+                                shadowRadius: 8,
+                                elevation: 5,
+                            }}>
+                                <Image
+                                    source={IMAGES.ic_promo_code}
+                                    style={{ width: ResponsivePixels.size25, height: ResponsivePixels.size25 }}
+                                />
+
+                            </View>
+                            <TextInput
+                                style={styles.promoInput}
+                                placeholder="Promo Code . . ."
+                                placeholderTextColor={Colors.SilverHaze}
+                                value={promoCode}
+                                onChangeText={setPromoCode}
+                                underlineColorAndroid="transparent"
+                            />
                         </View>
                         <TouchableOpacity style={styles.applyButton}>
                             <Text style={styles.applyButtonText}>Apply</Text>
@@ -183,55 +239,64 @@ const CartScreen: React.FC = () => {
                     keyExtractor={(item) => item.id.toString()}
                     style={styles.cartList}
                     showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.cartItemsContainer}
+                    scrollEnabled
+                    ListFooterComponent={
+                        <>
+                            {/* Payment Summary */}
+                            <View style={styles.summarySection}>
+                                <Text style={styles.summaryTitle}>Payment Summary</Text>
+
+                                <View style={styles.summaryRow}>
+                                    <Text style={styles.summaryLabel}>Total Items (3)</Text>
+                                    <Text style={styles.summaryValue}>$48,900</Text>
+                                </View>
+
+                                <View style={styles.summaryRow}>
+                                    <Text style={styles.summaryLabel}>Delivery Fee</Text>
+                                    <Text style={styles.summaryValue}>Free</Text>
+                                </View>
+
+                                <View style={styles.summaryRow}>
+                                    <Text style={styles.summaryLabel}>Discount</Text>
+                                    <Text style={[styles.summaryValue, styles.discountValue]}>-$10,900</Text>
+                                </View>
+
+                                <View style={[styles.summaryRow, styles.totalRow]}>
+                                    <Text style={styles.totalLabel}>Total</Text>
+                                    <Text style={styles.totalValue}>${calculateTotal().toLocaleString()}</Text>
+                                </View>
+                            </View>
+
+                            {/* Order Button */}
+                            <View style={styles.orderButtonContainer}>
+                                <CustomButton title="Order Now" onPress={() => navigate('Home')} />
+                            </View>
+                        </>
+                    }
                 />
 
-                {/* Payment Summary */}
-                <View style={styles.summarySection}>
-                    <Text style={styles.summaryTitle}>Payment Summary</Text>
-
-                    <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>Total Items (3)</Text>
-                        <Text style={styles.summaryValue}>$48,900</Text>
-                    </View>
-
-                    <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>Delivery Fee</Text>
-                        <Text style={styles.summaryValue}>Free</Text>
-                    </View>
-
-                    <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>Discount</Text>
-                        <Text style={[styles.summaryValue, styles.discountValue]}>-$10,900</Text>
-                    </View>
-
-                    <View style={[styles.summaryRow, styles.totalRow]}>
-                        <Text style={styles.totalLabel}>Total</Text>
-                        <Text style={styles.totalValue}>${calculateTotal().toLocaleString()}</Text>
-                    </View>
-                </View>
-
-                {/* Order Button */}
-                <View style={styles.orderButtonContainer}>
-                    <CustomButton title="Order Now" onPress={() => console.log("Order placed")} />
-                </View>
             </View>
         </MainContainer>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: ResponsivePixels.size24,
+        // paddingHorizontal: ResponsivePixels.size20,
     },
     deliverySection: {
-        marginTop: ResponsivePixels.size20,
+        marginTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size20,
     },
     deliveryLabel: {
         fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
-        marginBottom: ResponsivePixels.size4,
+    },
+    locationWrapper: {
+        gap: ResponsivePixels.size4,
     },
     deliveryRow: {
         flexDirection: "row",
@@ -256,26 +321,38 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     promoSection: {
+        paddingHorizontal: ResponsivePixels.size20,
         marginBottom: ResponsivePixels.size20,
     },
     promoRow: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: Colors.FrostedHaze,
-        borderRadius: ResponsivePixels.size12,
+        backgroundColor: Colors.DefaultWhite,
+        borderRadius: 50,
+        borderColor: Colors.FrostedMist,
+        borderWidth: 1,
         paddingHorizontal: ResponsivePixels.size16,
         paddingVertical: ResponsivePixels.size12,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
     },
     promoLeft: {
         flexDirection: "row",
         alignItems: "center",
         flex: 1,
+        gap: ResponsivePixels.size8,
     },
-    promoIcon: {
+    promoInput: {
         fontSize: ResponsivePixels.size16,
-        color: Colors.SunburstFlame,
-        marginRight: ResponsivePixels.size12,
+        fontWeight: "bold",
+        color: Colors.SteelMist,
+        flex: 1,
+        paddingVertical: 0,
+        letterSpacing: 1,
     },
     promoText: {
         fontSize: ResponsivePixels.size14,
@@ -283,9 +360,14 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         backgroundColor: Colors.SunburstFlame,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size22,
         paddingVertical: ResponsivePixels.size8,
-        borderRadius: ResponsivePixels.size20,
+        borderRadius: 50,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
     },
     applyButtonText: {
         color: Colors.DefaultWhite,
@@ -295,17 +377,29 @@ const styles = StyleSheet.create({
     cartList: {
         flex: 1,
     },
+    cartItemsContainer: {
+        gap: ResponsivePixels.size16,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingTop: ResponsivePixels.size10,
+        paddingBottom: 100,
+    },
     cartItem: {
+        flex: 1,
         flexDirection: "row",
         alignItems: "center",
-        paddingVertical: ResponsivePixels.size16,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.CloudWhisper,
+        backgroundColor: Colors.DefaultWhite,
+        borderRadius: 16,
+        padding: ResponsivePixels.size12,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
     },
     checkbox: {
         width: ResponsivePixels.size24,
         height: ResponsivePixels.size24,
-        borderRadius: ResponsivePixels.size4,
+        borderRadius: 6,
         borderWidth: 2,
         borderColor: Colors.SteelMist,
         marginRight: ResponsivePixels.size12,
@@ -322,29 +416,29 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     itemImage: {
-        width: ResponsivePixels.size60,
-        height: ResponsivePixels.size60,
+        width: ResponsivePixels.size100,
         borderRadius: ResponsivePixels.size8,
-        marginRight: ResponsivePixels.size12,
     },
     itemDetails: {
         flex: 1,
+        gap: ResponsivePixels.size4,
+        justifyContent: "space-between",
     },
     itemName: {
         fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
+        fontWeight: "bold",
         color: Colors.NoirBlack,
-        marginBottom: ResponsivePixels.size4,
     },
     itemPrice: {
         fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
-        fontWeight: "600",
+        fontWeight: "bold",
+        marginBottom: ResponsivePixels.size4,
     },
     quantityControls: {
         flexDirection: "row",
-        alignItems: "center",
-        marginRight: ResponsivePixels.size12,
+        alignItems: "flex-end",
+        justifyContent: "space-between",
     },
     quantityButton: {
         width: ResponsivePixels.size32,
@@ -354,11 +448,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    quantityButtonText: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
-        color: Colors.NoirBlack,
-    },
     quantity: {
         fontSize: ResponsivePixels.size16,
         fontWeight: "600",
@@ -366,16 +455,19 @@ const styles = StyleSheet.create({
         marginHorizontal: ResponsivePixels.size16,
     },
     deleteButton: {
-        padding: ResponsivePixels.size8,
-    },
-    deleteIcon: {
-        fontSize: ResponsivePixels.size16,
+        paddingBottom: 4,
+        justifyContent: "flex-end",
     },
     summarySection: {
-        backgroundColor: Colors.FrostedHaze,
-        borderRadius: ResponsivePixels.size16,
+        backgroundColor: Colors.SunburstFlame,
+        borderRadius: 16,
         padding: ResponsivePixels.size20,
         marginVertical: ResponsivePixels.size20,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
     },
     summaryTitle: {
         fontSize: ResponsivePixels.size18,
@@ -391,12 +483,12 @@ const styles = StyleSheet.create({
     },
     summaryLabel: {
         fontSize: ResponsivePixels.size14,
-        color: Colors.SteelMist,
+        color: Colors.DefaultWhite,
     },
     summaryValue: {
         fontSize: ResponsivePixels.size14,
         fontWeight: "600",
-        color: Colors.NoirBlack,
+        color: Colors.DefaultWhite,
     },
     discountValue: {
         color: Colors.SunburstFlame,
@@ -425,12 +517,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal: ResponsivePixels.size40,
+        paddingHorizontal: ResponsivePixels.size20,
     },
     emptyIllustration: {
-        position: "relative",
-        width: ResponsivePixels.size200,
-        height: ResponsivePixels.size200,
+        // position: "relative",
+        // width: ResponsivePixels.size200,
+        // height: ResponsivePixels.size200,
         marginBottom: ResponsivePixels.size40,
     },
     circle: {
@@ -500,6 +592,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         lineHeight: ResponsivePixels.size24,
         marginBottom: ResponsivePixels.size40,
+        paddingHorizontal: ResponsivePixels.size45,
     },
     findFoodsButtonContainer: {
         width: "100%",
