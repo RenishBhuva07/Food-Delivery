@@ -1,9 +1,13 @@
 import type React from "react"
 import { useState } from "react"
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ImageBackground, Dimensions } from "react-native"
 import { Colors } from "../Assets/StyleUtilities/Colors"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import MainContainer from "../common/MainContainer"
+import { IMAGES } from "../Assets/Images"
+import { navigate } from "../Navigators/Navigator"
+
+const ScreenWidth = Dimensions.get('window').width;
 
 const ChatListScreen: React.FC = () => {
     const [chatList] = useState([
@@ -12,7 +16,7 @@ const ChatListScreen: React.FC = () => {
             name: "Geopart Etdsien",
             message: "Your Order Just Arrived!",
             time: "13.47",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_one,
             unreadCount: 0,
             isRead: true,
         },
@@ -21,7 +25,7 @@ const ChatListScreen: React.FC = () => {
             name: "Stevano Clirover",
             message: "Your Order Just Arrived!",
             time: "11.23",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_two,
             unreadCount: 3,
             isRead: false,
         },
@@ -30,16 +34,16 @@ const ChatListScreen: React.FC = () => {
             name: "Elisia Justin",
             message: "Your Order Just Arrived!",
             time: "11.23",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_three,
             unreadCount: 0,
-            isRead: false,
+            isRead: true,
         },
         {
             id: 4,
             name: "Geopart Etdsien",
             message: "Your Order Just Arrived!",
             time: "13.47",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_one,
             unreadCount: 0,
             isRead: true,
         },
@@ -48,7 +52,7 @@ const ChatListScreen: React.FC = () => {
             name: "Stevano Clirover",
             message: "Your Order Just Arrived!",
             time: "11.23",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_two,
             unreadCount: 3,
             isRead: false,
         },
@@ -57,24 +61,45 @@ const ChatListScreen: React.FC = () => {
             name: "Elisia Justin",
             message: "Your Order Just Arrived!",
             time: "11.23",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_three,
             unreadCount: 0,
-            isRead: false,
+            isRead: true,
         },
         {
             id: 7,
             name: "Elisia Justin",
             message: "Your Order Just Arrived!",
             time: "11.23",
-            avatar: "/placeholder.svg?height=50&width=50",
+            avatar: IMAGES.user_one,
             unreadCount: 0,
-            isRead: false,
+            isRead: true,
         },
-    ])
+        {
+            id: 8,
+            name: "Elisia Justin",
+            message: "Your Order Just Arrived!",
+            time: "11.23",
+            avatar: IMAGES.user_two,
+            unreadCount: 0,
+            isRead: true,
+        },
+        {
+            id: 7,
+            name: "Elisia Justin",
+            message: "Your Order Just Arrived!",
+            time: "11.23",
+            avatar: IMAGES.user_three,
+            unreadCount: 0,
+            isRead: true,
+        },
+    ]),
+        navigateToChat = (item: any) => {
+            navigate("ChatScreen", { chatDetails: item })
+        };
 
     const renderChatItem = ({ item }: any) => (
-        <TouchableOpacity style={styles.chatItem}>
-            <Image source={{ uri: item.avatar }} style={styles.avatar} />
+        <TouchableOpacity style={styles.chatItem} activeOpacity={0.7} onPress={() => navigateToChat(item)}>
+            <Image source={item.avatar} style={styles.avatar} />
 
             <View style={styles.chatContent}>
                 <View style={styles.chatHeader}>
@@ -83,7 +108,7 @@ const ChatListScreen: React.FC = () => {
                 </View>
                 <View style={styles.messageRow}>
                     <Text style={styles.message}>{item.message}</Text>
-                    {item.isRead && <Text style={styles.readIndicator}>✓✓</Text>}
+                    {item.isRead && <Image source={IMAGES.ic_Double_Tick} style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24 }} />}
                     {item.unreadCount > 0 && (
                         <View style={styles.unreadBadge}>
                             <Text style={styles.unreadCount}>{item.unreadCount}</Text>
@@ -102,25 +127,35 @@ const ChatListScreen: React.FC = () => {
             translucent={true}
         >
             <View style={styles.container}>
-                {/* Header */}
-                <View style={styles.header}>
-                    <Text style={styles.title}>Chat List</Text>
-                </View>
+
 
                 {/* Section Title */}
-                <View style={styles.sectionHeader}>
-                    <Text style={styles.sectionTitle}>All Message</Text>
-                </View>
+                <ImageBackground
+                    source={IMAGES.bg_pattern}
+                    resizeMode="cover"
+                    style={styles.heroImageBackground}
+                >
 
-                {/* Chat List */}
-                <FlatList
-                    data={chatList}
-                    renderItem={renderChatItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    style={styles.chatList}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={styles.chatListContent}
-                />
+                    {/* Header */}
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Chat List</Text>
+                    </View>
+
+                    <View style={styles.sectionHeader}>
+                        <Text style={styles.sectionTitle}>All Message</Text>
+                    </View>
+
+                    {/* Chat List */}
+                    <FlatList
+                        data={chatList}
+                        renderItem={renderChatItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        style={styles.chatList}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={styles.chatListContent}
+                    />
+
+                </ImageBackground>
             </View>
         </MainContainer>
     )
@@ -129,17 +164,23 @@ const ChatListScreen: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.DefaultWhite,
+    },
+    heroImageBackground: {
+        width: ScreenWidth,
+        justifyContent: 'flex-end',
+        overflow: 'hidden',
     },
     header: {
         alignItems: "center",
-        paddingVertical: ResponsivePixels.size20,
+        // paddingVertical: ResponsivePixels.size20,
+        paddingTop: ResponsivePixels.size65,
         paddingHorizontal: ResponsivePixels.size24,
     },
     title: {
-        fontSize: ResponsivePixels.size24,
-        fontWeight: "600",
+        fontSize: ResponsivePixels.size18,
+        fontWeight: '600',
         color: Colors.NoirBlack,
+        textAlign: 'center',
     },
     sectionHeader: {
         paddingHorizontal: ResponsivePixels.size24,
@@ -151,11 +192,12 @@ const styles = StyleSheet.create({
         color: Colors.NoirBlack,
     },
     chatList: {
-        flex: 1,
+        // flex: 1,
     },
     chatListContent: {
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingBottom: ResponsivePixels.size100,
+        gap: ResponsivePixels.size12,
     },
     chatItem: {
         flexDirection: "row",
@@ -163,6 +205,11 @@ const styles = StyleSheet.create({
         paddingVertical: ResponsivePixels.size16,
         borderBottomWidth: 1,
         borderBottomColor: Colors.CloudWhisper,
+
+        backgroundColor: Colors.DefaultWhite,
+        borderRadius: 16,
+        padding: ResponsivePixels.size12,
+
     },
     avatar: {
         width: ResponsivePixels.size50,
@@ -219,4 +266,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ChatListScreen
+export default ChatListScreen;

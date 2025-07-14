@@ -27,7 +27,16 @@ export const IMAGES = {
     ic_Menu: require("../Assets/Images/ic_Menu.png"),
     ic_Minus: require("../Assets/Images/ic_Minus.png"),
     ic_promo_code: require("../Assets/Images/ic_promo_code.png"),
+    ic_Attachment: require("../Assets/Images/ic_Attachment.png"),
+    ic_Attachmentic_Call: require("../Assets/Images/ic_Call.png"),
+    ic_Double_Tick: require("../Assets/Images/ic_Double_Tick.png"),
+    ic_Emoji: require("../Assets/Images/ic_Emoji.png"),
+    ic_Send: require("../Assets/Images/ic_Send.png"),
 
+    user_one: require("../Assets/Images/user_one.png"),
+    user_two: require("../Assets/Images/user_two.png"),
+    user_three: require("../Assets/Images/user_three.png"),
     ordinary_burgers: require("../Assets/Images/ordinary_burgers.png"),
     no_order_Illustration: require("../Assets/Images/no_order_Illustration.png"),
+    bg_pattern: require("../Assets/Images/bg_pattern.png"),
 }

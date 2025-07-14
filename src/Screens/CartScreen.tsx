@@ -13,41 +13,41 @@ interface ICartScreenProps {
 }
 
 const CartScreen: React.FC<ICartScreenProps> = (props) => {
-    const { } = props?.route?.params,
-        [cartItems, setCartItems] = useState([
-            {
-                id: 1,
-                name: "Burger With Meat",
-                price: 12230,
-                quantity: 1,
-                image: "/placeholder.svg?height=80&width=80",
-                isSelected: true,
-            },
-            {
-                id: 2,
-                name: "Ordinary Burgers",
-                price: 12230,
-                quantity: 1,
-                image: "/placeholder.svg?height=80&width=80",
-                isSelected: true,
-            },
-            {
-                id: 3,
-                name: "Ordinary Burgers",
-                price: 12230,
-                quantity: 1,
-                image: "/placeholder.svg?height=80&width=80",
-                isSelected: true,
-            },
-            {
-                id: 4,
-                name: "Ordinary Burgers",
-                price: 12230,
-                quantity: 1,
-                image: "/placeholder.svg?height=80&width=80",
-                isSelected: true,
-            },
-        ])
+    // const { } = props?.route?.params,
+    const [cartItems, setCartItems] = useState([
+        {
+            id: 1,
+            name: "Burger With Meat",
+            price: 12230,
+            quantity: 1,
+            image: "/placeholder.svg?height=80&width=80",
+            isSelected: true,
+        },
+        {
+            id: 2,
+            name: "Ordinary Burgers",
+            price: 12230,
+            quantity: 1,
+            image: "/placeholder.svg?height=80&width=80",
+            isSelected: true,
+        },
+        {
+            id: 3,
+            name: "Ordinary Burgers",
+            price: 12230,
+            quantity: 1,
+            image: "/placeholder.svg?height=80&width=80",
+            isSelected: true,
+        },
+        {
+            id: 4,
+            name: "Ordinary Burgers",
+            price: 12230,
+            quantity: 1,
+            image: "/placeholder.svg?height=80&width=80",
+            isSelected: true,
+        },
+    ])
 
     const [promoCode, setPromoCode] = useState("")
 
