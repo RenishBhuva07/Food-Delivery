@@ -14,7 +14,7 @@ interface HeaderOption {
 interface CustomHeaderProps {
     headerTitle?: string;
     headerTitleColor?: string;
-    backgroundColor?: string;
+    headerBackgroundColor?: string;
     headerLeft?: HeaderOption;
     headerRight?: HeaderOption;
     showHeader?: boolean;
@@ -23,7 +23,7 @@ interface CustomHeaderProps {
 const CustomHeader: React.FC<CustomHeaderProps> = ({
     headerTitle = "Header Title",
     headerTitleColor = Colors.NoirBlack,
-    backgroundColor,
+    headerBackgroundColor,
     headerLeft,
     headerRight,
     showHeader = false
@@ -68,12 +68,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
     };
 
     return (
-        <View style={[styles.headerContainer, { backgroundColor }]}>
-            <StatusBar
-                backgroundColor={backgroundColor}
-                barStyle="dark-content"
-                translucent={false}
-            />
+        <View style={[styles.headerContainer, { backgroundColor: headerBackgroundColor }]}>
             <SafeAreaView edges={['top']}>
                 <View style={styles.headerContent}>
                     <View style={styles.leftSection}>

@@ -3,46 +3,55 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "rea
 import { Colors } from "../Assets/StyleUtilities/Colors"
 import MainContainer from "../common/MainContainer"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
+import { IMAGES } from "../Assets/Images"
+import { useState } from "react"
 
 const ProfileScreen: React.FC = () => {
-    const menuItems = [
-        {
-            id: 1,
-            icon: "👤",
-            title: "Personal Data",
-            section: "profile",
-        },
-        {
-            id: 2,
-            icon: "⚙️",
-            title: "Settings",
-            section: "profile",
-        },
-        {
-            id: 3,
-            icon: "💳",
-            title: "Extra Card",
-            section: "profile",
-        },
-        {
-            id: 4,
-            icon: "ℹ️",
-            title: "Help Center",
-            section: "support",
-        },
-        {
-            id: 5,
-            icon: "🗑️",
-            title: "Request Account Deletion",
-            section: "support",
-        },
-        {
-            id: 6,
-            icon: "👥",
-            title: "Add another account",
-            section: "support",
-        },
-    ]
+    const [isScrolled, setIsScrolled] = useState(false),
+
+        menuItems = [
+            {
+                id: 1,
+                icon: "👤",
+                title: "Personal Data",
+                section: "profile",
+            },
+            {
+                id: 2,
+                icon: "⚙️",
+                title: "Settings",
+                section: "profile",
+            },
+            {
+                id: 3,
+                icon: "💳",
+                title: "Extra Card",
+                section: "profile",
+            },
+            {
+                id: 4,
+                icon: "ℹ️",
+                title: "Help Center",
+                section: "support",
+            },
+            {
+                id: 5,
+                icon: "🗑️",
+                title: "Request Account Deletion",
+                section: "support",
+            },
+            {
+                id: 6,
+                icon: "👥",
+                title: "Add another account",
+                section: "support",
+            },
+        ],
+
+        handleScroll = (event: { nativeEvent: { contentOffset: { y: any } } }) => {
+            const y = event.nativeEvent.contentOffset.y;
+            setIsScrolled(y > 0);
+        };
 
     const renderMenuItem = (item: any) => (
         <TouchableOpacity key={item.id} style={styles.menuItem}>
@@ -57,77 +66,85 @@ const ProfileScreen: React.FC = () => {
     return (
         <MainContainer
             statusBarStyle="dark-content"
-            statusBarBackgroundColor="transparent"
+            statusBarBackgroundColor={!isScrolled ? "transparent" : Colors.SunburstFlame}
             containerBackgroundColor={Colors.SunburstFlameLight}
             translucent={true}
+            showHeader
+            header={{
+                headerBackgroundColor: !isScrolled ? Colors.SunburstFlameLight : Colors.SunburstFlame,
+                headerTitle: "Profile",
+                headerTitleColor: Colors.NoirBlack,
+            }}
         >
-            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                {/* Header */}
-                <View style={styles.header}>
-                    <Text style={styles.title}>Profile Settings</Text>
-                </View>
+            <View style={styles.container}>
 
-                {/* Profile Section */}
-                <View style={styles.profileSection}>
-                    <View style={styles.avatarContainer}>
-                        <Image source={{ uri: "/placeholder.svg?height=100&width=100" }} style={styles.avatar} />
-                        <View style={styles.editBadge}>
+                <View style={[styles.profileSection, isScrolled ? styles.profileSectionSticky : {}]}>
+                    <View style={[styles.avatarContainer, { borderColor: !isScrolled ? Colors.SunburstFlame : Colors.DefaultWhite }]}>
+                        <Image source={IMAGES.user_two} style={styles.avatar} />
+                        <View style={[styles.editBadge, { backgroundColor: !isScrolled ? Colors.SunburstFlame : Colors.DefaultWhite }]}>
                             <Text style={styles.editIcon}>📷</Text>
                         </View>
                     </View>
                     <Text style={styles.userName}>Albert Stevano Bajefski</Text>
-                    <Text style={styles.userEmail}>Albertstevano@gmail.com</Text>
+                    <Text style={[styles.userEmail, { color: !isScrolled ? Colors.SteelMist : Colors.DefaultWhite }]}>Albertstevano@gmail.com</Text>
                 </View>
 
-                {/* My Orders Section */}
-                <View style={styles.ordersSection}>
-                    <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionTitle}>My Orders</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.seeAllText}>See All</Text>
-                        </TouchableOpacity>
+                <ScrollView onScroll={handleScroll} scrollEventThrottle={16} style={styles.bottomSpacing}>
+                    <View style={styles.ordersSection}>
+                        <View style={styles.orderCard}>
+
+                            <View style={styles.sectionHeader}>
+                                <Text style={styles.sectionTitle}>My Orders</Text>
+                                <TouchableOpacity>
+                                    <Text style={styles.seeAllText}>See All</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.orderHeader}>
+                                <Text style={styles.orderIdLabel}>Order ID</Text>
+                                <Text style={styles.orderId}>888333777</Text>
+                                <View style={styles.statusBadge}>
+                                    <Text style={styles.statusText}>In Delivery</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.divider} />
+
+                            <View style={styles.orderContent}>
+                                <View style={styles.foodImageContainer}>
+                                    <Image source={IMAGES.ordinary_burgers} style={styles.orderImage} />
+                                </View>
+                                <View style={styles.orderDetails}>
+                                    <Text style={styles.orderItemName}>Burger With Meat</Text>
+                                    <Text style={styles.orderPrice}>$12,230</Text>
+                                </View>
+                                <Text style={styles.orderQuantity}>14 Items</Text>
+                            </View>
+
+                        </View>
                     </View>
 
-                    <View style={styles.orderCard}>
-                        <View style={styles.orderHeader}>
-                            <Text style={styles.orderIdLabel}>Order ID</Text>
-                            <Text style={styles.orderId}>888333777</Text>
-                            <View style={styles.statusBadge}>
-                                <Text style={styles.statusText}>In Delivery</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.orderContent}>
-                            <Image source={{ uri: "/placeholder.svg?height=60&width=60" }} style={styles.orderImage} />
-                            <View style={styles.orderDetails}>
-                                <Text style={styles.orderItemName}>Burger With Meat</Text>
-                                <Text style={styles.orderPrice}>$12,230</Text>
-                            </View>
-                            <Text style={styles.orderQuantity}>14 Items</Text>
-                        </View>
+                    {/* Profile Menu */}
+                    <View style={styles.menuSection}>
+                        <Text style={styles.menuSectionTitle}>Profile</Text>
+                        {menuItems.filter((item) => item.section === "profile").map(renderMenuItem)}
                     </View>
-                </View>
 
-                {/* Profile Menu */}
-                <View style={styles.menuSection}>
-                    <Text style={styles.menuSectionTitle}>Profile</Text>
-                    {menuItems.filter((item) => item.section === "profile").map(renderMenuItem)}
-                </View>
+                    {/* Support Menu */}
+                    <View style={styles.menuSection}>
+                        <Text style={styles.menuSectionTitle}>Support</Text>
+                        {menuItems.filter((item) => item.section === "support").map(renderMenuItem)}
+                    </View>
 
-                {/* Support Menu */}
-                <View style={styles.menuSection}>
-                    <Text style={styles.menuSectionTitle}>Support</Text>
-                    {menuItems.filter((item) => item.section === "support").map(renderMenuItem)}
-                </View>
+                    {/* Sign Out Button */}
+                    <TouchableOpacity style={styles.signOutButton}>
+                        <Text style={styles.signOutIcon}>🚪</Text>
+                        <Text style={styles.signOutText}>Sign Out</Text>
+                    </TouchableOpacity>
 
-                {/* Sign Out Button */}
-                <TouchableOpacity style={styles.signOutButton}>
-                    <Text style={styles.signOutIcon}>🚪</Text>
-                    <Text style={styles.signOutText}>Sign Out</Text>
-                </TouchableOpacity>
+                </ScrollView>
 
-                <View style={styles.bottomSpacing} />
-            </ScrollView>
+            </View>
         </MainContainer>
     )
 }
@@ -135,12 +152,11 @@ const ProfileScreen: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.DefaultWhite,
     },
     header: {
         alignItems: "center",
         paddingVertical: ResponsivePixels.size20,
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size20,
     },
     title: {
         fontSize: ResponsivePixels.size24,
@@ -149,17 +165,25 @@ const styles = StyleSheet.create({
     },
     profileSection: {
         alignItems: "center",
-        paddingHorizontal: ResponsivePixels.size24,
-        paddingVertical: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingVertical: ResponsivePixels.size10,
+    },
+    profileSectionSticky: {
+        borderBottomStartRadius: 20,
+        borderBottomEndRadius: 20,
+        backgroundColor: Colors.SunburstFlame,
     },
     avatarContainer: {
         position: "relative",
+        borderRadius: 60,
+        borderWidth: 2,
+        borderColor: Colors.SunburstFlame,
         marginBottom: ResponsivePixels.size16,
     },
     avatar: {
         width: ResponsivePixels.size100,
         height: ResponsivePixels.size100,
-        borderRadius: ResponsivePixels.size50,
+        borderRadius: 50,
     },
     editBadge: {
         position: "absolute",
@@ -186,7 +210,8 @@ const styles = StyleSheet.create({
         color: Colors.SteelMist,
     },
     ordersSection: {
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size30,
     },
     sectionHeader: {
@@ -206,14 +231,13 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     orderCard: {
-        backgroundColor: Colors.FrostedHaze,
+        backgroundColor: Colors.DefaultWhite,
         borderRadius: ResponsivePixels.size16,
         padding: ResponsivePixels.size16,
     },
     orderHeader: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: ResponsivePixels.size12,
     },
     orderIdLabel: {
         fontSize: ResponsivePixels.size12,
@@ -228,9 +252,14 @@ const styles = StyleSheet.create({
     },
     statusBadge: {
         backgroundColor: Colors.SunburstFlame,
-        paddingHorizontal: ResponsivePixels.size12,
+        paddingHorizontal: ResponsivePixels.size10,
         paddingVertical: ResponsivePixels.size4,
         borderRadius: ResponsivePixels.size12,
+
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
     },
     statusText: {
         fontSize: ResponsivePixels.size12,
@@ -242,19 +271,25 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     orderImage: {
-        width: ResponsivePixels.size50,
-        height: ResponsivePixels.size50,
-        borderRadius: ResponsivePixels.size8,
-        marginRight: ResponsivePixels.size12,
+        width: "100%",
+        height: "100%",
+        borderRadius: 8,
+    },
+    foodImageContainer: {
+        width: ResponsivePixels.size54,
+        height: ResponsivePixels.size54,
+        overflow: "hidden",
+        position: "relative",
+        marginRight: ResponsivePixels.size14,
     },
     orderDetails: {
         flex: 1,
+        gap: ResponsivePixels.size4,
     },
     orderItemName: {
         fontSize: ResponsivePixels.size14,
         fontWeight: "600",
         color: Colors.NoirBlack,
-        marginBottom: ResponsivePixels.size2,
     },
     orderPrice: {
         fontSize: ResponsivePixels.size14,
@@ -263,17 +298,16 @@ const styles = StyleSheet.create({
     },
     orderQuantity: {
         fontSize: ResponsivePixels.size12,
-        color: Colors.SteelMist,
+        color: Colors.NoirBlack,
     },
     menuSection: {
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size20,
         marginBottom: ResponsivePixels.size30,
     },
     menuSectionTitle: {
         fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
-        marginBottom: ResponsivePixels.size16,
-        textTransform: "uppercase",
+        marginBottom: ResponsivePixels.size8,
     },
     menuItem: {
         flexDirection: "row",
@@ -305,12 +339,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginHorizontal: ResponsivePixels.size24,
+        marginHorizontal: ResponsivePixels.size20,
         paddingVertical: ResponsivePixels.size16,
-        borderRadius: ResponsivePixels.size12,
+        borderRadius: 60,
         borderWidth: 1,
-        borderColor: "#FF4444",
-        backgroundColor: "rgba(255, 68, 68, 0.1)",
+        borderColor: Colors.MoonDust,
     },
     signOutIcon: {
         fontSize: ResponsivePixels.size20,
@@ -322,8 +355,14 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     bottomSpacing: {
-        height: ResponsivePixels.size100,
+        marginBottom: ResponsivePixels.size100,
+    },
+    divider: {
+        borderTopWidth: 1,
+        borderTopColor: Colors.FrostedMist,
+        flex: 1,
+        marginVertical: ResponsivePixels.size12,
     },
 })
 
-export default ProfileScreen
+export default ProfileScreen;

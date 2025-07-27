@@ -145,14 +145,6 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
             >
                 <View style={styles.emptyContainer}>
                     <View style={styles.emptyIllustration}>
-                        {/* <View style={[styles.circle, styles.circle1]} /> */}
-                        {/* <View style={[styles.circle, styles.circle2]} /> */}
-                        {/* <View style={[styles.circle, styles.circle3]} /> */}
-                        {/* <View style={[styles.circle, styles.circle4]} /> */}
-                        {/* <View style={[styles.circle, styles.circle5]} /> */}
-                        {/* <View style={styles.searchIconContainer}>
-                            <Text style={styles.searchIcon}>🔍</Text>
-                        </View> */}
                         <Image
                             source={IMAGES.no_order_Illustration}
                             style={{ width: ResponsivePixels.size278, height: ResponsivePixels.size207 }}
