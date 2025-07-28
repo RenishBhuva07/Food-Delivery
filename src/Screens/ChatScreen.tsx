@@ -217,11 +217,14 @@ const styles = StyleSheet.create({
         paddingBottom: ResponsivePixels.size14,
         // paddingVertical: ResponsivePixels.size16,
         textAlignVertical: 'top',
+        ...themes.shadows.light,
+        backgroundColor: Colors.DefaultWhite
     },
     sendButton: {
         backgroundColor: Colors.SunburstFlame,
         padding: ResponsivePixels.size16,
         borderRadius: 8,
+        ...themes.shadows.light
     },
     sendButtonText: {
         color: Colors.DefaultWhite,
