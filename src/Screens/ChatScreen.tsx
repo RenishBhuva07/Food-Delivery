@@ -1,5 +1,5 @@
 import type React from "react"
-import { View, Text, StyleSheet, FlatList, ImageBackground, Dimensions, TextInput, TouchableOpacity, Platform } from "react-native"
+import { View, Text, StyleSheet, FlatList, ImageBackground, Dimensions, TextInput, TouchableOpacity, Platform, Image } from "react-native"
 import { Colors } from "../Assets/StyleUtilities/Colors"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import MainContainer from "../common/MainContainer"
@@ -7,6 +7,7 @@ import { IMAGES } from "../Assets/Images"
 import CustomHeader from "../common/CustomHeader"
 import { goBack } from "../Navigators/Navigator"
 import { useRef, useState } from "react"
+import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
 
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -15,19 +16,28 @@ interface IChatScreenProps {
     chatDetails: any;
 }
 
-type Message = { id: string; text: string; isMe: boolean };
+type Message = { id: string; text: string; isMe: boolean; time: string; profilePic?: any; };
 
 const ChatScreen: React.FC<IChatScreenProps> = (props) => {
     const { chatDetails } = props?.route?.params,
-        [messages, setMessages] = useState<{ id: string; text: string }[]>([]),
+        fakeChat = [
+            { id: '1', text: 'Hello!', isMe: false, time: '12:00 PM', profilePic: chatDetails?.avatar },
+            { id: '2', text: 'Hi there!', isMe: true, time: '12:01 PM' },
+            { id: '1', text: 'Just to order', isMe: false, time: '12:02 PM', profilePic: chatDetails?.avatar },
+            { id: '2', text: 'Okay, for what level of spiciness?', isMe: true, time: '12:03 PM' },
+            { id: '1', text: 'Okay, Wait a minute 🙏', isMe: false, time: '12:04 PM', profilePic: chatDetails?.avatar },
+            { id: '2', text: 'Okay, I’m waiting 🙌', isMe: true, time: '12:05 PM' },
+        ],
+        [messages, setMessages] = useState<Message[]>(fakeChat),
         [entry, setEntry] = useState<string>(''),
+        [isChatScrolled, setChatIsScrolled] = useState(false),
         flatListRef = useRef<FlatList>(null),
 
         onSend = () => {
             if (entry.trim() === '') return;
             setMessages(prev => [
                 ...prev,
-                { id: Date.now().toString(), text: entry.trim(), isMe: true }
+                { id: Date.now().toString(), text: entry.trim(), isMe: true, time: '12:00 PM', profilePic: IMAGES.user_two }
             ]);
             setEntry('');
             setTimeout(() => {
@@ -35,23 +45,38 @@ const ChatScreen: React.FC<IChatScreenProps> = (props) => {
             }, 200);
         },
 
-        renderMessage = ({ item }: { item: Message }) => (
-            <View
-                style={item.isMe
-                    ? styles.yourMessageContainer
-                    : styles.oppositeMessageContainer
-                }
-            >
-                <Text
-                    style={item.isMe
-                        ? styles.yourMessageText
-                        : styles.oppositeMessageText
-                    }
-                >
-                    {item.text}
-                </Text>
-            </View>
-        );
+        renderMessage = ({ item }: { item: Message }) => {
+            if (item?.isMe) {
+                return (
+                    <View style={styles.yourMessageContainer}>
+                        <Text style={styles.yourMessageText}>{item?.text}</Text>
+                        <View style={{ flexDirection: "row", gap: 10, justifyContent: "flex-end" }}>
+                            <Text style={styles.myMessageTime}>{item?.time}</Text>
+                            <Image source={IMAGES.ic_Double_Tick} style={{ width: ResponsivePixels.size20, height: ResponsivePixels.size20, tintColor: Colors.NoirBlack }} />
+                        </View>
+                    </View>
+                );
+            } else {
+                return (
+                    <View style={styles.oppositeMessageWrapper}>
+                        <Image
+                            source={item.profilePic}
+                            style={styles.oppositeProfilePic}
+                            resizeMode="cover"
+                        />
+                        <View style={styles.oppositeMessageContainer}>
+                            <Text style={styles.oppositeMessageText}>{item?.text}</Text>
+                            <Text style={styles.messageTime}>{item?.time}</Text>
+                        </View>
+                    </View>
+                );
+            }
+        },
+
+        handleChatScroll = (event: { nativeEvent: { contentOffset: { y: any } } }) => {
+            const y = event.nativeEvent.contentOffset.y;
+            setChatIsScrolled(y > 0);
+        };
 
 
     return (
@@ -79,6 +104,7 @@ const ChatScreen: React.FC<IChatScreenProps> = (props) => {
                             icon: IMAGES.ic_Back,
                             onPress: () => goBack(),
                         }}
+                        headerBackgroundColor={isChatScrolled ? Colors.SunburstFlame : "transparent"}
                     />
 
                     <FlatList
@@ -88,10 +114,13 @@ const ChatScreen: React.FC<IChatScreenProps> = (props) => {
                         keyExtractor={item => item.id}
                         contentContainerStyle={{
                             flexGrow: 1,
-                            justifyContent: 'flex-end',
+                            justifyContent: 'flex-start',
                             paddingBottom: ResponsivePixels.size20,
+                            paddingHorizontal: ResponsivePixels.size10,
                             gap: 8,
                         }}
+                        showsVerticalScrollIndicator={false}
+                        onScroll={handleChatScroll}
                     />
 
                     <View style={styles.inputArea}>
@@ -102,6 +131,7 @@ const ChatScreen: React.FC<IChatScreenProps> = (props) => {
                             placeholder="Type a message..."
                             placeholderTextColor={Colors.SteelMist}
                             multiline={true}
+                            autoFocus={true}
                         />
                         <TouchableOpacity onPress={onSend} style={styles.sendButton} activeOpacity={0.8}>
                             <Text style={styles.sendButtonText}>Send</Text>
@@ -130,15 +160,12 @@ const styles = StyleSheet.create({
         borderTopStartRadius: 18,
         borderTopEndRadius: 18,
         borderBottomStartRadius: 18,
-        marginRight: ResponsivePixels.size16,
-        paddingVertical: ResponsivePixels.size8,
+        // marginRight: ResponsivePixels.size16,
+        paddingTop: ResponsivePixels.size8,
+        paddingBottom: ResponsivePixels.size2,
         paddingHorizontal: ResponsivePixels.size16,
         maxWidth: '80%',
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        ...themes.shadows.light,
     },
     yourMessageText: {
         color: Colors.DefaultWhite,
@@ -150,15 +177,12 @@ const styles = StyleSheet.create({
         borderTopStartRadius: 18,
         borderTopEndRadius: 18,
         borderBottomEndRadius: 18,
-        marginLeft: ResponsivePixels.size16,
-        paddingVertical: ResponsivePixels.size8,
+        marginLeft: ResponsivePixels.size8,
+        paddingTop: ResponsivePixels.size8,
+        paddingBottom: ResponsivePixels.size2,
         paddingHorizontal: ResponsivePixels.size16,
         maxWidth: '80%',
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        ...themes.shadows.light,
     },
     oppositeMessageText: {
         color: Colors.NoirBlack,
@@ -185,7 +209,7 @@ const styles = StyleSheet.create({
         color: Colors.NoirBlack,
         // minHeight: ResponsivePixels.size40,
         maxHeight: ResponsivePixels.size80,
-        borderColor: Colors.SteelMist,
+        borderColor: Colors.SilverHaze,
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: ResponsivePixels.size10,
@@ -203,6 +227,26 @@ const styles = StyleSheet.create({
         color: Colors.DefaultWhite,
         fontWeight: '600',
     },
+    oppositeMessageWrapper: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        maxWidth: '80%',
+    },
+    oppositeProfilePic: {
+        width: ResponsivePixels.size40,
+        height: ResponsivePixels.size40,
+        borderRadius: 15,
+    },
+    messageTime: {
+        fontSize: ResponsivePixels.size12,
+        color: Colors.SteelMist,
+        textAlign: 'left',
+    },
+    myMessageTime: {
+        fontSize: ResponsivePixels.size12,
+        color: Colors.NoirBlack,
+        textAlign: 'right',
+    }
 })
 
 export default ChatScreen;

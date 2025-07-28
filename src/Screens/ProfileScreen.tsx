@@ -5,6 +5,7 @@ import MainContainer from "../common/MainContainer"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import { IMAGES } from "../Assets/Images"
 import { useState } from "react"
+import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
 
 const ProfileScreen: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false),
@@ -89,9 +90,9 @@ const ProfileScreen: React.FC = () => {
                     <Text style={[styles.userEmail, { color: !isScrolled ? Colors.SteelMist : Colors.DefaultWhite }]}>Albertstevano@gmail.com</Text>
                 </View>
 
-                <ScrollView onScroll={handleScroll} scrollEventThrottle={16} style={styles.bottomSpacing}>
+                <ScrollView onScroll={handleScroll} scrollEventThrottle={16} >
                     <View style={styles.ordersSection}>
-                        <View style={styles.orderCard}>
+                        <View style={[styles.orderCard]}>
 
                             <View style={styles.sectionHeader}>
                                 <Text style={styles.sectionTitle}>My Orders</Text>
@@ -103,7 +104,7 @@ const ProfileScreen: React.FC = () => {
                             <View style={styles.orderHeader}>
                                 <Text style={styles.orderIdLabel}>Order ID</Text>
                                 <Text style={styles.orderId}>888333777</Text>
-                                <View style={styles.statusBadge}>
+                                <View style={[styles.statusBadge]}>
                                     <Text style={styles.statusText}>In Delivery</Text>
                                 </View>
                             </View>
@@ -137,7 +138,7 @@ const ProfileScreen: React.FC = () => {
                     </View>
 
                     {/* Sign Out Button */}
-                    <TouchableOpacity style={styles.signOutButton}>
+                    <TouchableOpacity style={[styles.signOutButton, styles.bottomSpacing]}>
                         <Text style={styles.signOutIcon}>🚪</Text>
                         <Text style={styles.signOutText}>Sign Out</Text>
                     </TouchableOpacity>
@@ -179,6 +180,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: Colors.SunburstFlame,
         marginBottom: ResponsivePixels.size16,
+        ...themes.shadows.regular
     },
     avatar: {
         width: ResponsivePixels.size100,
@@ -195,6 +197,7 @@ const styles = StyleSheet.create({
         borderRadius: ResponsivePixels.size16,
         alignItems: "center",
         justifyContent: "center",
+        ...themes.shadows.regular
     },
     editIcon: {
         fontSize: ResponsivePixels.size16,
@@ -234,6 +237,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.DefaultWhite,
         borderRadius: ResponsivePixels.size16,
         padding: ResponsivePixels.size16,
+        ...themes.shadows.regular
     },
     orderHeader: {
         flexDirection: "row",
@@ -255,11 +259,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size10,
         paddingVertical: ResponsivePixels.size4,
         borderRadius: ResponsivePixels.size12,
-
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 5,
+        ...themes.shadows.regular
     },
     statusText: {
         fontSize: ResponsivePixels.size12,
@@ -341,9 +341,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginHorizontal: ResponsivePixels.size20,
         paddingVertical: ResponsivePixels.size16,
+        backgroundColor: Colors.DefaultWhite,
         borderRadius: 60,
         borderWidth: 1,
         borderColor: Colors.MoonDust,
+        ...themes.shadows.light
     },
     signOutIcon: {
         fontSize: ResponsivePixels.size20,
@@ -351,7 +353,7 @@ const styles = StyleSheet.create({
     },
     signOutText: {
         fontSize: ResponsivePixels.size16,
-        color: "#FF4444",
+        color: Colors.ErrorRedLight,
         fontWeight: "600",
     },
     bottomSpacing: {
