@@ -6,6 +6,7 @@ import MainContainer from "../common/MainContainer";
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { IMAGES } from "../Assets/Images";
 import { FOOD_ITEMS } from "../Database/FoodItems";
+import { navigate } from "../Navigators/Navigator";
 
 const ScreenWidth = Dimensions.get('window').width,
     foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
@@ -53,10 +54,10 @@ const HomeScreen: React.FC = () => {
                 {item?.name}
             </Text>
         </TouchableOpacity>
-    )
+    ), navigateToFoodDetails = (item: any) => navigate("FoodDetailScreen", { foodItem: item });
 
     const renderFoodCard = ({ item }: any) => (
-        <View style={styles.foodCard}>
+        <TouchableOpacity style={styles.foodCard} onPress={() => navigateToFoodDetails(item)}>
             <View style={styles.foodImageContainer}>
                 <Image source={item?.image} style={styles.foodImage} />
                 <TouchableOpacity style={styles.favoriteButton}>
@@ -77,7 +78,7 @@ const HomeScreen: React.FC = () => {
                 </View>
                 <Text style={styles.price}>{item?.price}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 
     return (

@@ -10,6 +10,7 @@ import OtpVerification from "../Screens/OtpVerification";
 import ResetPassword from "../Screens/ResetPassword";
 import Dashboard from "../Screens/Dashboard";
 import ChatScreen from "../Screens/ChatScreen";
+import FoodDetailScreen from "../Screens/FoodDetailsScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -27,6 +28,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="Dashboard" component={Dashboard} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} />
+                <Stack.Screen name="FoodDetailScreen" component={FoodDetailScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

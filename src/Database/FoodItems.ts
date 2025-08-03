@@ -9,7 +9,12 @@ export const FOOD_ITEMS = [
         price: "$17,230",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 2,
@@ -19,7 +24,12 @@ export const FOOD_ITEMS = [
         price: "$17,230",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 3,
@@ -29,7 +39,12 @@ export const FOOD_ITEMS = [
         price: "$19,500",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 4,
@@ -39,7 +54,12 @@ export const FOOD_ITEMS = [
         price: "$15,800",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 5,
@@ -49,7 +69,12 @@ export const FOOD_ITEMS = [
         price: "$18,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 6,
@@ -59,7 +84,12 @@ export const FOOD_ITEMS = [
         price: "$16,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 7,
@@ -69,7 +99,12 @@ export const FOOD_ITEMS = [
         price: "$17,500",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 8,
@@ -79,7 +114,12 @@ export const FOOD_ITEMS = [
         price: "$18,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 9,
@@ -89,7 +129,12 @@ export const FOOD_ITEMS = [
         price: "$20,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 10,
@@ -99,7 +144,12 @@ export const FOOD_ITEMS = [
         price: "$19,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Burger"
+        category: "Burger",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 11,
@@ -109,7 +159,12 @@ export const FOOD_ITEMS = [
         price: "$22,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Pizza"
+        category: "Pizza",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 12,
@@ -119,7 +174,12 @@ export const FOOD_ITEMS = [
         price: "$24,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Pizza"
+        category: "Pizza",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 13,
@@ -129,7 +189,12 @@ export const FOOD_ITEMS = [
         price: "$26,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Pizza"
+        category: "Pizza",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 14,
@@ -139,7 +204,12 @@ export const FOOD_ITEMS = [
         price: "$23,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Pizza"
+        category: "Pizza",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 15,
@@ -149,7 +219,12 @@ export const FOOD_ITEMS = [
         price: "$25,000",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Pizza"
+        category: "Pizza",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 16,
@@ -159,7 +234,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 17,
@@ -169,7 +249,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 18,
@@ -179,7 +264,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 19,
@@ -189,7 +279,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 20,
@@ -199,7 +294,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 21,
@@ -209,7 +309,12 @@ export const FOOD_ITEMS = [
         price: "$2.50",
         image: IMAGES.ordinary_burgers,
         isFavorite: false,
-        category: "Drink"
+        category: "Drink",
+        sliderImages: [
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers,
+            IMAGES.ordinary_burgers
+        ],
     },
     {
         id: 22,
