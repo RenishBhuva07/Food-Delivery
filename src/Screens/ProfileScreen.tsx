@@ -4,10 +4,13 @@ import { Colors } from "../Assets/StyleUtilities/Colors"
 import MainContainer from "../common/MainContainer"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import { IMAGES } from "../Assets/Images"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
+import CustomModal, { CustomModalRef, ModalButton } from "../common/CustomModal"
+import { navigate } from "../Navigators/Navigator"
 
 const ProfileScreen: React.FC = () => {
+    const signOutModalRef = useRef<CustomModalRef>(null);
     const [isScrolled, setIsScrolled] = useState(false),
 
         menuItems = [
@@ -28,6 +31,7 @@ const ProfileScreen: React.FC = () => {
                 icon: "💳",
                 title: "Extra Card",
                 section: "profile",
+                onPress: () => navigate("ExtraCardListScreen"),
             },
             {
                 id: 4,
@@ -49,13 +53,33 @@ const ProfileScreen: React.FC = () => {
             },
         ],
 
+        signOutButtons: ModalButton[] = [
+            {
+                text: 'Cancel',
+                style: 'secondary',
+                onPress: () => {
+                    console.log('Cancel pressed');
+                    signOutModalRef.current?.hide();
+                },
+            },
+            {
+                text: 'Log Out',
+                style: 'primary',
+                onPress: () => {
+                    console.log('Log out pressed');
+                    signOutModalRef.current?.hide();
+                    // Handle logout logic
+                },
+            },
+        ],
+
         handleScroll = (event: { nativeEvent: { contentOffset: { y: any } } }) => {
             const y = event.nativeEvent.contentOffset.y;
             setIsScrolled(y > 0);
         };
 
     const renderMenuItem = (item: any) => (
-        <TouchableOpacity key={item.id} style={styles.menuItem}>
+        <TouchableOpacity key={item.id} style={styles.menuItem} onPress={item?.onPress}>
             <View style={styles.menuItemLeft}>
                 <Text style={styles.menuIcon}>{item.icon}</Text>
                 <Text style={styles.menuTitle}>{item.title}</Text>
@@ -128,17 +152,17 @@ const ProfileScreen: React.FC = () => {
                     {/* Profile Menu */}
                     <View style={styles.menuSection}>
                         <Text style={styles.menuSectionTitle}>Profile</Text>
-                        {menuItems.filter((item) => item.section === "profile").map(renderMenuItem)}
+                        {menuItems.filter((item) => item.section === "profile")?.map(renderMenuItem)}
                     </View>
 
                     {/* Support Menu */}
                     <View style={styles.menuSection}>
                         <Text style={styles.menuSectionTitle}>Support</Text>
-                        {menuItems.filter((item) => item.section === "support").map(renderMenuItem)}
+                        {menuItems.filter((item) => item.section === "support")?.map(renderMenuItem)}
                     </View>
 
                     {/* Sign Out Button */}
-                    <TouchableOpacity style={[styles.signOutButton, styles.bottomSpacing]}>
+                    <TouchableOpacity style={[styles.signOutButton, styles.bottomSpacing]} onPress={() => signOutModalRef?.current?.show()}>
                         <Text style={styles.signOutIcon}>🚪</Text>
                         <Text style={styles.signOutText}>Sign Out</Text>
                     </TouchableOpacity>
@@ -146,6 +170,14 @@ const ProfileScreen: React.FC = () => {
                 </ScrollView>
 
             </View>
+            {/* Sign Out Modal */}
+            <CustomModal
+                ref={signOutModalRef}
+                title="Sign Out"
+                message="Do you want to log out?"
+                buttons={signOutButtons}
+                animationType="scale"
+            />
         </MainContainer>
     )
 }
