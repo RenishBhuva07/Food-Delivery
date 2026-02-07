@@ -58,7 +58,7 @@ const MainContainer = (props: IMainContainerProps) => {
                     keyboardVerticalOffset={keyboardVerticalOffset}
                 >
 
-                    <SafeAreaView style={{ flex: 1 }} edges={["bottom", "left", "right"]}>
+                    <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>
                         <View style={{ flex: 1, backgroundColor: containerBackgroundColor }}>
 
                             <CustomHeader showHeader={showHeader} {...header} />

@@ -9,9 +9,13 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-MyFoodDelivery.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-MyFoodDelivery.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		49E63F60845A44F79B1409FD /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3A90B1519654DA5B92266FC /* Inter-Medium.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		94631EE9A8F94726A5173FE5 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C885C312CC11440BBBB83F5D /* Inter-Regular.ttf */; };
 		B1FCBB8BBE27C9BEB93B89C8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		BC4B61D816894E67A38D6B9C /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83330A7EC75A46A1A717C060 /* Inter-Bold.ttf */; };
+		F0292714803A4A2591A72B10 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69C10D80B78A418B943EA8DE /* Inter-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +26,12 @@
 		3B4392A12AC88292D35C810B /* Pods-MyFoodDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFoodDelivery.debug.xcconfig"; path = "Target Support Files/Pods-MyFoodDelivery/Pods-MyFoodDelivery.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-MyFoodDelivery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFoodDelivery.release.xcconfig"; path = "Target Support Files/Pods-MyFoodDelivery/Pods-MyFoodDelivery.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-MyFoodDelivery.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFoodDelivery.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		69C10D80B78A418B943EA8DE /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../src/Assets/Fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = MyFoodDelivery/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MyFoodDelivery/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		83330A7EC75A46A1A717C060 /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../src/Assets/Fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
+		C885C312CC11440BBBB83F5D /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../src/Assets/Fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
+		D3A90B1519654DA5B92266FC /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../src/Assets/Fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -39,6 +47,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		104A18317B2D4C5CB3461B13 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D3A90B1519654DA5B92266FC /* Inter-Medium.ttf */,
+				83330A7EC75A46A1A717C060 /* Inter-Bold.ttf */,
+				C885C312CC11440BBBB83F5D /* Inter-Regular.ttf */,
+				69C10D80B78A418B943EA8DE /* Inter-SemiBold.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* MyFoodDelivery */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +95,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				104A18317B2D4C5CB3461B13 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -161,6 +182,10 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B1FCBB8BBE27C9BEB93B89C8 /* PrivacyInfo.xcprivacy in Resources */,
+				49E63F60845A44F79B1409FD /* Inter-Medium.ttf in Resources */,
+				BC4B61D816894E67A38D6B9C /* Inter-Bold.ttf in Resources */,
+				94631EE9A8F94726A5173FE5 /* Inter-Regular.ttf in Resources */,
+				F0292714803A4A2591A72B10 /* Inter-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

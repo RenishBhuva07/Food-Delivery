@@ -7,6 +7,7 @@ import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { IMAGES } from "../Assets/Images";
 import { FOOD_ITEMS } from "../Database/FoodItems";
 import { navigate } from "../Navigators/Navigator";
+import { TextStyles } from "../Theme/textStyles";
 
 const ScreenWidth = Dimensions.get('window').width,
     foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
@@ -216,8 +217,9 @@ const styles = StyleSheet.create({
     },
     locationLabel: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size14,
         marginBottom: ResponsivePixels.size4,
+
+        ...TextStyles.bodyMediumRegular,
     },
     locationRow: {
         flexDirection: "row",
@@ -229,9 +231,8 @@ const styles = StyleSheet.create({
     },
     locationText: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size18,
-        fontWeight: "600",
         marginRight: ResponsivePixels.size8,
+        ...TextStyles.bodyMediumSemiBold,
     },
     dropdownIcon: {
         color: Colors.DefaultWhite,
@@ -252,10 +253,8 @@ const styles = StyleSheet.create({
     },
     heroTitle: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size32,
-        fontWeight: "bold",
-        lineHeight: ResponsivePixels.size40,
         marginRight: ResponsivePixels.size50,
+        ...TextStyles.h4SemiBold,
     },
     categoriesSection: {
         paddingTop: ResponsivePixels.size20,
@@ -267,14 +266,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size20,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...TextStyles.bodyLargeSemiBold,
     },
     seeAllText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
-        fontWeight: "500",
+        ...TextStyles.bodyMediumMedium,
     },
     categoriesList: {
         gap: ResponsivePixels.size10,
@@ -301,9 +298,8 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size24,
     },
     categoryText: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
-        fontWeight: "bold",
+        ...TextStyles.bodyMediumMedium,
     },
     selectedCategoryText: {
         color: Colors.DefaultWhite,
@@ -359,10 +355,8 @@ const styles = StyleSheet.create({
         paddingTop: ResponsivePixels.size10,
     },
     foodName: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
         color: Colors.NoirBlack,
-        // marginBottom: ResponsivePixels.size4,
+        ...TextStyles.bodyLargeMedium,
     },
     foodDetails: {
         flexDirection: "row",
@@ -377,12 +371,10 @@ const styles = StyleSheet.create({
     },
     starIcon: {
         fontSize: ResponsivePixels.size12,
-        // marginRight: ResponsivePixels.size4,
     },
     rating: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.NoirBlack,
-        fontWeight: "500",
+        ...TextStyles.bodySmallMedium,
     },
     distanceContainer: {
         flexDirection: "row",
@@ -390,13 +382,12 @@ const styles = StyleSheet.create({
         gap: ResponsivePixels.size4,
     },
     distance: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
+        ...TextStyles.bodySmallMedium,
     },
     price: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
         color: Colors.SunburstFlame,
+        ...TextStyles.bodyLargeBold,
     },
 })
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { IMAGES } from '../Assets/Images';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
+import { TextStyles } from '../Theme/textStyles';
 
 interface HeaderOption {
     icon?: string;
@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     titleText: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         textAlign: 'center',
+
+        ...TextStyles.h6Bold,
     },
     placeholder: {
         // width: ResponsivePixels.size40,

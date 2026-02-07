@@ -6,6 +6,7 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { IMAGES } from '../Assets/Images';
 import { goBack } from '../Navigators/Navigator';
+import { TextStyles, ShadowStyles } from '../Theme/textStyles';
 
 interface NotificationItem {
     id: string;
@@ -31,8 +32,8 @@ const NOTIFICATIONS: SectionData[] = [
                 id: '1',
                 title: "30% Special Discount!",
                 description: "Special promotion only valid today",
-                icon: IMAGES.ic_promo_code, // Using promo code icon as placeholder for discount
-                iconBgColor: "rgba(255, 59, 48, 0.1)", // Light Red
+                icon: IMAGES.ic_promo_code,
+                iconBgColor: "rgba(255, 59, 48, 0.1)",
                 iconColor: Colors.ErrorRed
             },
             {
@@ -40,15 +41,15 @@ const NOTIFICATIONS: SectionData[] = [
                 title: "Your Order Has Been Taken by the Driver",
                 description: "Recently",
                 icon: IMAGES.ic_Double_Tick,
-                iconBgColor: "rgba(76, 175, 80, 0.1)", // Light Green
+                iconBgColor: "rgba(76, 175, 80, 0.1)",
                 iconColor: "#4CAF50"
             },
             {
                 id: '3',
                 title: "Your Order Has Been Canceled",
                 description: "19 Jun 2023",
-                icon: IMAGES.ic_Delete, // Using delete/cross icon
-                iconBgColor: "rgba(255, 59, 48, 0.1)", // Light Red
+                icon: IMAGES.ic_Delete,
+                iconBgColor: "rgba(255, 59, 48, 0.1)",
                 iconColor: Colors.ErrorRed
             }
         ]
@@ -60,16 +61,16 @@ const NOTIFICATIONS: SectionData[] = [
                 id: '4',
                 title: "35% Special Discount!",
                 description: "Special promotion only valid today",
-                icon: IMAGES.ic_Email, // Using email icon
-                iconBgColor: "rgba(254, 173, 29, 0.1)", // Light Orange/Yellow
+                icon: IMAGES.ic_Email,
+                iconBgColor: "rgba(254, 173, 29, 0.1)",
                 iconColor: Colors.SunburstFlame
             },
             {
                 id: '5',
-                title: "Account Setup Clean!", // "Account Setup Successful!" in image but "Clean!" text? Wait, image says "Account Setup Successful!". Text in prompt says "Account Setup Successful!". I'll stick to that.
-                description: "Special promotion only valid today", // Description in image seems to be generic "Special promotion only valid today" or similar.
+                title: "Account Setup Clean!",
+                description: "Special promotion only valid today",
                 icon: IMAGES.ic_profile,
-                iconBgColor: "rgba(76, 175, 80, 0.1)", // Light Green
+                iconBgColor: "rgba(76, 175, 80, 0.1)",
                 iconColor: "#4CAF50"
             },
             {
@@ -84,8 +85,8 @@ const NOTIFICATIONS: SectionData[] = [
                 id: '7',
                 title: "Credit Card Connected",
                 description: "Special promotion only valid today",
-                icon: IMAGES.ic_promo_code, // Using promo code as placeholder for credit card
-                iconBgColor: "rgba(255, 193, 7, 0.1)", // Light Yellow
+                icon: IMAGES.ic_promo_code,
+                iconBgColor: "rgba(255, 193, 7, 0.1)",
                 iconColor: "#FFC107"
             }
         ]
@@ -95,7 +96,7 @@ const NOTIFICATIONS: SectionData[] = [
 const NotificationScreen = () => {
 
     const renderItem = ({ item }: { item: NotificationItem }) => (
-        <TouchableOpacity style={styles.notificationItem}>
+        <TouchableOpacity style={styles.notificationItem} activeOpacity={1}>
             <View style={[styles.iconContainer, { backgroundColor: item.iconBgColor }]}>
                 <Image
                     source={item.icon}
@@ -107,10 +108,6 @@ const NotificationScreen = () => {
                 <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
                 <Text style={styles.description}>{item.description}</Text>
             </View>
-            {/* If there's a specific layout requirement (like date on right), adjust here. 
-                Based on image, date is sometimes the description itself or below it.
-                I'll keep it simple as description for now, unless date is separate.
-            */}
         </TouchableOpacity>
     );
 
@@ -154,34 +151,28 @@ const styles = StyleSheet.create({
         paddingBottom: ResponsivePixels.size20,
     },
     sectionHeader: {
-        marginTop: ResponsivePixels.size20,
-        marginBottom: ResponsivePixels.size15,
-        backgroundColor: Colors.DefaultWhite, // Ensure header covers content if sticky, though disabled here.
+        marginTop: ResponsivePixels.size10,
+        marginBottom: ResponsivePixels.size16,
     },
     sectionHeaderText: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
-        color: Colors.NoirBlack,
+        color: Colors.SteelMist,
+        ...TextStyles.bodyMediumSemiBold,
     },
     notificationItem: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: ResponsivePixels.size15,
         backgroundColor: Colors.DefaultWhite,
-        borderRadius: ResponsivePixels.size12,
+        borderRadius: 14,
 
-        shadowColor: "rgba(0,0,0,0.05)",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 10,
-        elevation: 2,
-        marginBottom: ResponsivePixels.size10, // Spacing between items
+        ...ShadowStyles.shadow,
+        marginBottom: ResponsivePixels.size10,
         paddingHorizontal: ResponsivePixels.size15,
     },
     iconContainer: {
         width: ResponsivePixels.size50,
         height: ResponsivePixels.size50,
-        borderRadius: ResponsivePixels.size25, // Circular
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: ResponsivePixels.size15,
@@ -194,15 +185,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        fontSize: ResponsivePixels.size14,
-        fontWeight: 'bold',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
+        ...TextStyles.bodyLargeSemiBold,
     },
     description: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
-        lineHeight: ResponsivePixels.size16,
+        ...TextStyles.bodyMediumRegular,
     },
 
 });
