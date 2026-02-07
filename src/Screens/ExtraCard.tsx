@@ -5,11 +5,12 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import CustomModal, { CustomModalRef, ModalButton } from '../common/CustomModal';
+import { Colors } from '../Assets/StyleUtilities/Colors';
+import { goBack, navigate } from '../Navigators/Navigator';
 
 interface PaymentMethod {
     id: string;
@@ -17,7 +18,6 @@ interface PaymentMethod {
     name: string;
     maskedNumber: string;
     isSelected: boolean;
-    logo: string;
 }
 
 interface ExtraCardListScreenProps {
@@ -36,7 +36,6 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             name: 'MasterCard',
             maskedNumber: '**** **** 0783 7873',
             isSelected: true,
-            logo: '💳'
         },
         {
             id: '2',
@@ -44,7 +43,6 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             name: 'Paypal',
             maskedNumber: '**** **** 0582 4672',
             isSelected: false,
-            logo: '💙'
         },
         {
             id: '3',
@@ -52,12 +50,11 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             name: 'Apple Pay',
             maskedNumber: '**** **** 0582 4672',
             isSelected: false,
-            logo: '🍎'
         }
     ]);
 
     const handleGoBack = () => {
-        navigation.goBack();
+        goBack();
     };
 
     const handleDeletePress = () => {
@@ -78,14 +75,13 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
     };
 
     const handleAddNewCard = () => {
-        navigation.navigate('AddCard');
+        navigate('ExtraCardFormV2Screen');
     };
 
     const confirmDelete = () => {
         if (cardToDelete) {
             setPaymentMethods(prev => prev.filter(method => method.id !== cardToDelete));
             setCardToDelete(null);
-            // If deleted card was selected, select the first remaining card
             if (cardToDelete === selectedCardId && paymentMethods.length > 1) {
                 const remainingCards = paymentMethods.filter(method => method.id !== cardToDelete);
                 if (remainingCards.length > 0) {
@@ -114,62 +110,118 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
         },
     ];
 
+    // Render MasterCard Logo
+    const renderMastercardLogo = (size: 'small' | 'large' = 'small') => {
+        const circleSize = size === 'large' ? ResponsivePixels.size32 : ResponsivePixels.size20;
+        const overlap = size === 'large' ? -ResponsivePixels.size12 : -ResponsivePixels.size8;
+
+        return (
+            <View style={styles.mastercardLogo}>
+                <View style={[
+                    styles.mastercardCircle,
+                    styles.mastercardRed,
+                    { width: circleSize, height: circleSize, borderRadius: circleSize / 2 }
+                ]} />
+                <View style={[
+                    styles.mastercardCircle,
+                    styles.mastercardYellow,
+                    { width: circleSize, height: circleSize, borderRadius: circleSize / 2, marginLeft: overlap }
+                ]} />
+            </View>
+        );
+    };
+
+    // Render PayPal Logo
+    const renderPaypalLogo = () => (
+        <Text style={styles.paypalLogo}>PayPal</Text>
+    );
+
+    // Render Apple Pay Logo
+    const renderApplePayLogo = () => (
+        <View style={styles.applePayContainer}>
+            <Text style={styles.appleIcon}></Text>
+            <Text style={styles.applePayText}>Pay</Text>
+        </View>
+    );
+
     const getCardLogo = (type: string) => {
         switch (type) {
             case 'mastercard':
-                return (
-                    <View style={styles.mastercardLogo}>
-                        <View style={[styles.mastercardCircle, styles.mastercardRed]} />
-                        <View style={[styles.mastercardCircle, styles.mastercardYellow]} />
-                    </View>
-                );
+                return renderMastercardLogo('small');
             case 'paypal':
-                return <Text style={styles.paypalLogo}>PayPal</Text>;
+                return renderPaypalLogo();
             case 'applepay':
-                return <Text style={styles.applePayLogo}> Pay</Text>;
+                return renderApplePayLogo();
             default:
                 return <Text style={styles.defaultLogo}>💳</Text>;
         }
     };
 
+    // Render card dots for card number
+    const renderCardDots = (count: number = 4) => (
+        <View style={styles.dotsContainer}>
+            {[...Array(count)].map((_, index) => (
+                <View key={index} style={styles.dot} />
+            ))}
+        </View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Header */}
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-                        <Text style={styles.backIcon}>←</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.headerTitle}>Extra Card</Text>
-                    <TouchableOpacity onPress={handleDeletePress} style={styles.deleteButton}>
-                        <Text style={styles.deleteIcon}>🗑</Text>
-                    </TouchableOpacity>
-                </View>
+            {/* Header */}
+            <View style={styles.header}>
+                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                    <Text style={styles.backIcon}>‹</Text>
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Extra Card</Text>
+                <TouchableOpacity onPress={handleDeletePress} style={styles.deleteButton}>
+                    <Text style={styles.deleteIcon}>🗑️</Text>
+                </TouchableOpacity>
+            </View>
 
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
                 {/* Featured Card Display */}
                 <View style={styles.featuredCardContainer}>
                     <View style={styles.featuredCard}>
-                        <View style={styles.cardHeader}>
+                        {/* Gradient Overlay Layers */}
+                        <View style={styles.gradientLayer1} />
+                        <View style={styles.gradientLayer2} />
+                        <View style={styles.gradientLayer3} />
+
+                        {/* Card Content */}
+                        <View style={styles.cardContent}>
+                            {/* Card Brand */}
                             <Text style={styles.cardBrand}>SoCard</Text>
-                        </View>
 
-                        <View style={styles.cardNumberContainer}>
-                            <Text style={styles.cardNumber}>•••• •••• •••• 8374</Text>
-                        </View>
+                            {/* Card Number */}
+                            <View style={styles.cardNumberRow}>
+                                {renderCardDots(4)}
+                                {renderCardDots(4)}
+                                {renderCardDots(4)}
+                                <Text style={styles.cardLastDigits}>8374</Text>
+                            </View>
 
-                        <View style={styles.cardFooter}>
-                            <View style={styles.cardInfo}>
-                                <Text style={styles.cardLabel}>Card holder name</Text>
-                                <Text style={styles.cardValue}>••• •••</Text>
-                            </View>
-                            <View style={styles.cardInfo}>
-                                <Text style={styles.cardLabel}>Expiry date</Text>
-                                <Text style={styles.cardValue}>••• / •••</Text>
-                            </View>
-                            <View style={styles.cardLogoContainer}>
-                                <View style={styles.mastercardLogo}>
-                                    <View style={[styles.mastercardCircle, styles.mastercardRed]} />
-                                    <View style={[styles.mastercardCircle, styles.mastercardYellow]} />
+                            {/* Card Footer */}
+                            <View style={styles.cardFooter}>
+                                <View style={styles.cardInfoSection}>
+                                    <View style={styles.cardInfoBlock}>
+                                        <Text style={styles.cardLabel}>Card holder name</Text>
+                                        <View style={styles.cardHolderDots}>
+                                            {renderCardDots(3)}
+                                            {renderCardDots(3)}
+                                        </View>
+                                    </View>
+                                    <View style={styles.cardInfoBlock}>
+                                        <Text style={styles.cardLabel}>Expiry date</Text>
+                                        <View style={styles.expiryDateRow}>
+                                            {renderCardDots(3)}
+                                            <Text style={styles.expirySlash}>/</Text>
+                                            {renderCardDots(3)}
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.cardLogoContainer}>
+                                    {renderMastercardLogo('large')}
                                 </View>
                             </View>
                         </View>
@@ -192,7 +244,7 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
                             >
                                 <View style={styles.paymentMethodLeft}>
                                     <View style={styles.paymentMethodIcon}>
-                                        <Text style={styles.paymentMethodIconText}>💳</Text>
+                                        <Text style={styles.cardIconText}>💳</Text>
                                     </View>
                                     <View style={styles.paymentMethodInfo}>
                                         <Text style={styles.paymentMethodName}>{method.name}</Text>
@@ -230,71 +282,117 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.DefaultWhite,
+    },
+    scrollView: {
+        flex: 1,
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: ResponsivePixels.size20,
-        paddingVertical: ResponsivePixels.size15,
+        paddingVertical: ResponsivePixels.size16,
     },
     backButton: {
-        width: ResponsivePixels.size40,
-        height: ResponsivePixels.size40,
-        borderRadius: ResponsivePixels.size20,
-        backgroundColor: '#F5F5F5',
+        width: ResponsivePixels.size44,
+        height: ResponsivePixels.size44,
+        borderRadius: ResponsivePixels.size22,
+        backgroundColor: Colors.FrostedHaze,
         alignItems: 'center',
         justifyContent: 'center',
     },
     backIcon: {
-        fontSize: ResponsivePixels.size18,
-        color: '#333333',
+        fontSize: ResponsivePixels.size28,
+        color: Colors.NoirBlack,
+        marginTop: -ResponsivePixels.size2,
     },
     headerTitle: {
         fontSize: ResponsivePixels.size18,
         fontWeight: '600',
-        color: '#333333',
+        color: Colors.NoirBlack,
     },
     deleteButton: {
-        width: ResponsivePixels.size40,
-        height: ResponsivePixels.size40,
-        borderRadius: ResponsivePixels.size20,
-        backgroundColor: '#FFE5E5',
+        width: ResponsivePixels.size44,
+        height: ResponsivePixels.size44,
+        borderRadius: ResponsivePixels.size22,
+        backgroundColor: '#FFEBEB',
         alignItems: 'center',
         justifyContent: 'center',
     },
     deleteIcon: {
         fontSize: ResponsivePixels.size18,
-        color: '#FF4444',
     },
     featuredCardContainer: {
         paddingHorizontal: ResponsivePixels.size20,
+        marginTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size30,
     },
     featuredCard: {
-        backgroundColor: '#FF8C42',
-        borderRadius: ResponsivePixels.size16,
-        padding: ResponsivePixels.size24,
-        height: ResponsivePixels.size200,
-        position: 'relative',
+        borderRadius: ResponsivePixels.size20,
+        minHeight: ResponsivePixels.size200,
         overflow: 'hidden',
+        position: 'relative',
+        backgroundColor: '#FFA756',
     },
-    cardHeader: {
-        marginBottom: ResponsivePixels.size20,
+    gradientLayer1: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#FFB366',
+        opacity: 0.6,
+    },
+    gradientLayer2: {
+        position: 'absolute',
+        top: '30%',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#FF9F43',
+        opacity: 0.5,
+    },
+    gradientLayer3: {
+        position: 'absolute',
+        top: '60%',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: Colors.SunburstFlame,
+        opacity: 0.4,
+    },
+    cardContent: {
+        flex: 1,
+        padding: ResponsivePixels.size24,
+        justifyContent: 'space-between',
+        zIndex: 1,
     },
     cardBrand: {
-        color: '#FFFFFF',
-        fontSize: ResponsivePixels.size20,
+        color: Colors.DefaultWhite,
+        fontSize: ResponsivePixels.size22,
         fontWeight: '600',
+        marginBottom: ResponsivePixels.size20,
     },
-    cardNumberContainer: {
-        flex: 1,
-        justifyContent: 'center',
+    cardNumberRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: ResponsivePixels.size14,
+        marginBottom: ResponsivePixels.size24,
     },
-    cardNumber: {
-        color: '#FFFFFF',
-        fontSize: ResponsivePixels.size24,
+    dotsContainer: {
+        flexDirection: 'row',
+        gap: ResponsivePixels.size4,
+    },
+    dot: {
+        width: ResponsivePixels.size8,
+        height: ResponsivePixels.size8,
+        borderRadius: ResponsivePixels.size4,
+        backgroundColor: Colors.DefaultWhite,
+    },
+    cardLastDigits: {
+        color: Colors.DefaultWhite,
+        fontSize: ResponsivePixels.size22,
         fontWeight: '600',
         letterSpacing: 2,
     },
@@ -303,22 +401,47 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-end',
     },
-    cardInfo: {
-        flex: 1,
+    cardInfoSection: {
+        flexDirection: 'row',
+        gap: ResponsivePixels.size24,
+    },
+    cardInfoBlock: {
+        gap: ResponsivePixels.size6,
     },
     cardLabel: {
-        color: '#FFFFFF',
-        fontSize: ResponsivePixels.size12,
-        opacity: 0.8,
-        marginBottom: ResponsivePixels.size4,
+        color: Colors.DefaultWhite,
+        fontSize: ResponsivePixels.size11,
+        opacity: 0.9,
     },
-    cardValue: {
-        color: '#FFFFFF',
+    cardHolderDots: {
+        flexDirection: 'row',
+        gap: ResponsivePixels.size8,
+    },
+    expiryDateRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: ResponsivePixels.size4,
+    },
+    expirySlash: {
+        color: Colors.DefaultWhite,
         fontSize: ResponsivePixels.size14,
         fontWeight: '500',
     },
     cardLogoContainer: {
         alignItems: 'flex-end',
+    },
+    mastercardLogo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    mastercardCircle: {
+        opacity: 0.9,
+    },
+    mastercardRed: {
+        backgroundColor: '#EB001B',
+    },
+    mastercardYellow: {
+        backgroundColor: '#F79E1B',
     },
     sectionContainer: {
         paddingHorizontal: ResponsivePixels.size20,
@@ -326,7 +449,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: ResponsivePixels.size18,
         fontWeight: '600',
-        color: '#333333',
+        color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size16,
     },
     paymentMethodsList: {
@@ -336,15 +459,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: ResponsivePixels.size16,
-        borderRadius: ResponsivePixels.size12,
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        backgroundColor: '#FAFAFA',
+        paddingVertical: ResponsivePixels.size16,
+        paddingHorizontal: ResponsivePixels.size16,
+        borderRadius: ResponsivePixels.size16,
+        borderWidth: 1.5,
+        borderColor: Colors.CloudWhisper,
+        backgroundColor: Colors.DefaultWhite,
     },
     selectedPaymentMethod: {
-        borderColor: '#FF8C42',
-        backgroundColor: '#FFF8F0',
+        borderColor: Colors.SunburstFlame,
+        backgroundColor: Colors.SunlitAlmond,
     },
     paymentMethodLeft: {
         flexDirection: 'row',
@@ -352,16 +476,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     paymentMethodIcon: {
-        width: ResponsivePixels.size40,
-        height: ResponsivePixels.size40,
-        borderRadius: ResponsivePixels.size8,
-        backgroundColor: '#F0F0F0',
+        width: ResponsivePixels.size44,
+        height: ResponsivePixels.size44,
+        borderRadius: ResponsivePixels.size10,
+        backgroundColor: Colors.FrostedHaze,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: ResponsivePixels.size12,
+        marginRight: ResponsivePixels.size14,
     },
-    paymentMethodIconText: {
-        fontSize: ResponsivePixels.size18,
+    cardIconText: {
+        fontSize: ResponsivePixels.size20,
     },
     paymentMethodInfo: {
         flex: 1,
@@ -369,65 +493,60 @@ const styles = StyleSheet.create({
     paymentMethodName: {
         fontSize: ResponsivePixels.size16,
         fontWeight: '600',
-        color: '#333333',
+        color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
     },
     paymentMethodNumber: {
         fontSize: ResponsivePixels.size14,
-        color: '#666666',
+        color: Colors.SteelMist,
     },
     paymentMethodRight: {
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    mastercardLogo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    mastercardCircle: {
-        width: ResponsivePixels.size16,
-        height: ResponsivePixels.size16,
-        borderRadius: ResponsivePixels.size8,
-    },
-    mastercardRed: {
-        backgroundColor: '#FF5F00',
-    },
-    mastercardYellow: {
-        backgroundColor: '#FFB300',
-        marginLeft: -ResponsivePixels.size8,
+        minWidth: ResponsivePixels.size60,
     },
     paypalLogo: {
         fontSize: ResponsivePixels.size14,
-        fontWeight: '600',
-        color: '#0070BA',
+        fontWeight: '700',
+        fontStyle: 'italic',
+        color: '#003087',
     },
-    applePayLogo: {
+    applePayContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    appleIcon: {
+        fontSize: ResponsivePixels.size18,
+        color: Colors.NoirBlack,
+    },
+    applePayText: {
         fontSize: ResponsivePixels.size16,
         fontWeight: '600',
-        color: '#000000',
+        color: Colors.NoirBlack,
+        marginLeft: ResponsivePixels.size2,
     },
     defaultLogo: {
         fontSize: ResponsivePixels.size20,
     },
     buttonContainer: {
         paddingHorizontal: ResponsivePixels.size20,
-        paddingBottom: ResponsivePixels.size20,
-        paddingTop: ResponsivePixels.size20,
+        paddingBottom: ResponsivePixels.size24,
+        paddingTop: ResponsivePixels.size16,
     },
     addNewCardButton: {
-        backgroundColor: '#FF8C42',
-        borderRadius: ResponsivePixels.size12,
-        paddingVertical: ResponsivePixels.size16,
+        backgroundColor: Colors.SunburstFlame,
+        borderRadius: ResponsivePixels.size30,
+        paddingVertical: ResponsivePixels.size18,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#FF8C42',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
+        shadowColor: Colors.SunburstFlame,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 12,
+        elevation: 10,
     },
     addNewCardButtonText: {
-        color: '#FFFFFF',
+        color: Colors.DefaultWhite,
         fontSize: ResponsivePixels.size16,
         fontWeight: '600',
     },

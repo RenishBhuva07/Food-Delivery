@@ -109,10 +109,10 @@ const HomeScreen: React.FC = () => {
                                     </View>
                                 </View>
                                 <View style={styles.headerIcons}>
-                                    <TouchableOpacity style={styles.iconButton}>
+                                    <TouchableOpacity style={styles.iconButton} onPress={() => navigate("SearchScreen")}>
                                         <Image source={IMAGES.ic_Search} style={{ width: "100%", height: "100%" }} />
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.iconButton}>
+                                    <TouchableOpacity style={styles.iconButton} onPress={() => navigate("NotificationScreen")}>
                                         <Image source={IMAGES.ic_Notification} style={{ width: "100%", height: "100%" }} />
                                     </TouchableOpacity>
                                 </View>

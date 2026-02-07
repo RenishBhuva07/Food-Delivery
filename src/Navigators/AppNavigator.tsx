@@ -12,7 +12,13 @@ import Dashboard from "../Screens/Dashboard";
 import ChatScreen from "../Screens/ChatScreen";
 import FoodDetailScreen from "../Screens/FoodDetailsScreen";
 import ExtraCardFormScreen from "../Screens/ExtraCardForm";
+import ExtraCardFormV2Screen from "../Screens/ExtraCardFormV2";
 import ExtraCardListScreen from "../Screens/ExtraCard";
+import PersonalData from "../Screens/PersonalData";
+import SettingsScreen from "../Screens/SettingsScreen";
+import HelpCenterScreen from "../Screens/HelpCenterScreen";
+import NotificationScreen from "../Screens/NotificationScreen";
+import SearchScreen from "../Screens/SearchScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -33,6 +39,12 @@ export default function AppNavigator() {
                 <Stack.Screen name="FoodDetailScreen" component={FoodDetailScreen} />
                 <Stack.Screen name="ExtraCardListScreen" component={ExtraCardListScreen} />
                 <Stack.Screen name="ExtraCardFormScreen" component={ExtraCardFormScreen} />
+                <Stack.Screen name="ExtraCardFormV2Screen" component={ExtraCardFormV2Screen} />
+                <Stack.Screen name="PersonalData" component={PersonalData} />
+                <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+                <Stack.Screen name="HelpCenterScreen" component={HelpCenterScreen} />
+                <Stack.Screen name="SearchScreen" component={SearchScreen} />
+                <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -19,12 +19,14 @@ const ProfileScreen: React.FC = () => {
                 icon: "👤",
                 title: "Personal Data",
                 section: "profile",
+                onPress: () => navigate("PersonalData"),
             },
             {
                 id: 2,
                 icon: "⚙️",
                 title: "Settings",
                 section: "profile",
+                onPress: () => navigate("SettingsScreen"),
             },
             {
                 id: 3,
@@ -38,6 +40,7 @@ const ProfileScreen: React.FC = () => {
                 icon: "ℹ️",
                 title: "Help Center",
                 section: "support",
+                onPress: () => navigate("HelpCenterScreen"),
             },
             {
                 id: 5,
@@ -372,7 +375,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginHorizontal: ResponsivePixels.size20,
-        paddingVertical: ResponsivePixels.size16,
+        paddingVertical: ResponsivePixels.size10,
         backgroundColor: Colors.DefaultWhite,
         borderRadius: 60,
         borderWidth: 1,
