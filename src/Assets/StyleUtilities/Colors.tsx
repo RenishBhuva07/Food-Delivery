@@ -4,6 +4,7 @@ export const Colors = {
     Defaultblack: 'black',
     NoirBlack: "#101010",
     SunburstFlame: "#FE8C00",
+    SunburstFlameFaded: "rgba(254, 140, 0, 0.08)",
     MoonDust: "#D6D6D6",
     SteelMist: "#878787",
     FrostedHaze: "#F5F5F5",
@@ -17,4 +18,5 @@ export const Colors = {
     SunburstFlameLight: "#FEAD1D05",
     SilverHaze: "#C2C2C2",
     FrostedMist: "#EDEDED",
+    BlackTransparent: "rgba(0,0,0,0.5)",
 };

@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
-import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
+import { TouchableOpacity, Text, ViewStyle, TextStyle, View } from 'react-native';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
+import * as LucideIcons from 'lucide-react-native';
+import { TextStyles } from '../Theme/textStyles';
 
 type CustomButtonProps = {
     title: string;
@@ -12,6 +14,7 @@ type CustomButtonProps = {
     buttonTextStyle?: TextStyle;
     disableAllCaps?: boolean;
     debouncePress?: boolean;
+    icon?: string;
 };
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -23,6 +26,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     buttonTextStyle,
     disableAllCaps = false,
     debouncePress = true,
+    icon,
 }) => {
 
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,6 +50,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         height: ResponsivePixels.size48,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
         opacity: disabled ? 0.5 : 1,
         ...style,
 
@@ -57,11 +62,16 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
     const textStyles: TextStyle = {
         color: bordered ? Colors.SunburstFlame : Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '700',
+        // fontSize: ResponsivePixels.size16,
+        // fontWeight: '700',
         textTransform: disableAllCaps ? 'none' : 'uppercase',
         ...buttonTextStyle,
+        ...TextStyles.h6Bold,
     };
+
+    const iconName = icon === 'Cart' ? 'ShoppingCart' : icon;
+    const IconComponent = iconName ? (LucideIcons[iconName as keyof typeof LucideIcons] as React.ElementType) : null;
+    const iconColor = bordered ? Colors.SunburstFlame : Colors.DefaultWhite;
 
     return (
         <TouchableOpacity
@@ -70,6 +80,11 @@ const CustomButton: React.FC<CustomButtonProps> = ({
             style={containerStyles}
             disabled={disabled}
         >
+            {IconComponent && (
+                <View style={{ marginRight: ResponsivePixels.size10 }}>
+                    <IconComponent color={iconColor} size={ResponsivePixels.size20} strokeWidth={2.7} />
+                </View>
+            )}
             <Text style={textStyles}>{title}</Text>
         </TouchableOpacity>
     );

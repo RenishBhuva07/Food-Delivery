@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Clock, Star, Truck, Plus, Minus } from 'lucide-react-native';
 import {
     View,
     Text,
@@ -17,6 +18,7 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import CustomHeader from '../common/CustomHeader';
 import { IMAGES } from '../Assets/Images';
 import { themes } from '../Assets/StyleUtilities/CommonStyleSheets/theme';
+import { TextStyles } from '../Theme/textStyles';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -69,7 +71,7 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
             } else {
                 goToImage(0);
             }
-        }, 4000); // Auto scroll every 4 seconds
+        }, 4000);
 
         return () => clearInterval(interval);
     }, [currentImageIndex]);
@@ -85,43 +87,7 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
             {/* Gradient overlay for better text visibility */}
             {/* <View style={styles.gradientOverlay} /> */}
 
-            {/* Header Controls - Only show on first image or all images */}
-            <View style={styles.headerControls}>
-                <CustomHeader
-                    showHeader={true}
-                    headerTitle={"About This Menu"}
-                    headerTitleColor={Colors.DefaultWhite}
-                    headerLeft={{
-                        icon: IMAGES.ic_Back,
-                        onPress: () => goBack(),
-                    }}
-                    headerRight={{
-                        icon: IMAGES.ic_Back,
-                        onPress: () => goBack(),
-                    }}
-                    headerBackgroundColor={"transparent"}
-                />
-                {/* <TouchableOpacity
-                    onPress={() => goBack()}
-                    style={styles.headerButton}
-                >
-                    <Text style={styles.headerButtonText}>←</Text>
-                </TouchableOpacity>
 
-                <Text style={styles.headerTitle}>About This Menu</Text>
-
-                <TouchableOpacity
-                    onPress={() => setIsFavorite(!isFavorite)}
-                    style={[styles.headerButton, isFavorite && styles.favoriteActive]}
-                >
-                    <Text style={[
-                        styles.headerButtonText,
-                        { color: isFavorite ? '#FF8C42' : Colors.DefaultWhite }
-                    ]}>
-                        ♥
-                    </Text>
-                </TouchableOpacity> */}
-            </View>
         </View>
     );
 
@@ -166,73 +132,111 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Header with Image */}
-                <View style={styles.imageContainer}>
-                    <Animated.FlatList
-                        ref={flatListRef}
-                        data={foodItem?.sliderImages}
-                        renderItem={renderImageItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={Animated.event(
-                            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                            {
-                                useNativeDriver: false,
-                                listener: handleScroll,
-                            }
-                        )}
-                        scrollEventThrottle={16}
-                        decelerationRate="fast"
-                        snapToInterval={screenWidth}
-                        snapToAlignment="center"
+            {/* Header with Image */}
+            <View style={styles.imageContainer}>
+                <Animated.FlatList
+                    ref={flatListRef}
+                    data={foodItem?.sliderImages}
+                    renderItem={renderImageItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                        {
+                            useNativeDriver: false,
+                            listener: handleScroll,
+                        }
+                    )}
+                    scrollEventThrottle={16}
+                    decelerationRate="fast"
+                    snapToInterval={screenWidth}
+                    snapToAlignment="center"
+                />
+
+                {/* Header Controls */}
+                <View style={styles.headerControls}>
+                    <CustomHeader
+                        showHeader={true}
+                        headerTitle={"About This Menu"}
+                        headerTitleColor={Colors.DefaultWhite}
+                        headerLeft={{
+                            icon: IMAGES.ic_Back_light,
+                            onPress: () => goBack(),
+                        }}
+                        headerRight={{
+                            icon: isFavorite ? IMAGES.ic_Like_Fill : IMAGES.ic_Favorite,
+                            onPress: () => setIsFavorite(!isFavorite),
+                        }}
+                        headerBackgroundColor={"transparent"}
                     />
+                    {/* <TouchableOpacity
+                        onPress={() => goBack()}
+                        style={styles.headerButton}
+                    >
+                        <Text style={styles.headerButtonText}>←</Text>
+                    </TouchableOpacity>
 
-                    {/* Custom Indicators */}
-                    <View style={styles.indicatorsContainer}>
-                        <View style={styles.indicators}>
-                            {foodItem?.sliderImages?.map((_: string, index: number) => renderIndicator(index))}
-                        </View>
-                    </View>
+                    <Text style={styles.headerTitle}>About This Menu</Text>
 
-                    {/* Image Counter */}
-                    <View style={styles.imageCounterContainer}>
-                        <View style={styles.imageCounter}>
-                            <Text style={styles.imageCounterText}>
-                                {currentImageIndex + 1} / {foodItem?.sliderImages?.length}
-                            </Text>
-                        </View>
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => setIsFavorite(!isFavorite)}
+                        style={[styles.headerButton, isFavorite && styles.favoriteActive]}
+                    >
+                        <Text style={[
+                            styles.headerButtonText,
+                            { color: isFavorite ? '#FF8C42' : Colors.DefaultWhite }
+                        ]}>
+                            ♥
+                        </Text>
+                    </TouchableOpacity> */}
+                </View>
 
-                    {/* Thumbnail Navigation (Optional) */}
-                    <View style={styles.thumbnailContainer}>
-                        <ScrollView
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.thumbnailScrollContainer}
-                        >
-                            {foodItem?.sliderImages?.map((image: any, index: number) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    onPress={() => goToImage(index)}
-                                    style={[
-                                        styles.thumbnail,
-                                        index === currentImageIndex && styles.activeThumbnail
-                                    ]}
-                                >
-                                    <Image
-                                        source={image}
-                                        style={styles.thumbnailImage}
-                                        resizeMode="cover"
-                                    />
-                                </TouchableOpacity>
-                            ))}
-                        </ScrollView>
+                {/* Custom Indicators */}
+                <View style={styles.indicatorsContainer}>
+                    <View style={styles.indicators}>
+                        {foodItem?.sliderImages?.map((_: string, index: number) => renderIndicator(index))}
                     </View>
                 </View>
 
+                {/* Image Counter */}
+                <View style={styles.imageCounterContainer}>
+                    <View style={styles.imageCounter}>
+                        <Text style={styles.imageCounterText}>
+                            {currentImageIndex + 1} / {foodItem?.sliderImages?.length}
+                        </Text>
+                    </View>
+                </View>
+
+                {/* Thumbnail Navigation (Optional) */}
+                <View style={styles.thumbnailContainer}>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.thumbnailScrollContainer}
+                    >
+                        {foodItem?.sliderImages?.map((image: any, index: number) => (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => goToImage(index)}
+                                style={[
+                                    styles.thumbnail,
+                                    index === currentImageIndex && styles.activeThumbnail
+                                ]}
+                            >
+                                <Image
+                                    source={image}
+                                    style={styles.thumbnailImage}
+                                    resizeMode="cover"
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Content */}
                 <View style={styles.contentContainer}>
                     <View style={styles.titleSection}>
@@ -243,15 +247,15 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
                     {/* Info Row */}
                     <View style={styles.infoRow}>
                         <View style={styles.infoItem}>
-                            <Text style={styles.infoIcon}>$</Text>
+                            <Truck color={Colors.SunburstFlame} size={ResponsivePixels.size20} />
                             <Text style={styles.infoText}>Free Delivery</Text>
                         </View>
                         <View style={styles.infoItem}>
-                            <Text style={styles.infoIcon}>🕐</Text>
+                            <Clock color={Colors.SunburstFlame} size={ResponsivePixels.size20} />
                             <Text style={styles.infoText}>20 - 30</Text>
                         </View>
                         <View style={styles.infoItem}>
-                            <Text style={styles.infoIcon}>⭐</Text>
+                            <Star color={Colors.SunburstFlame} size={ResponsivePixels.size20} fill={Colors.SunburstFlame} />
                             <Text style={styles.infoText}>4.5</Text>
                         </View>
                     </View>
@@ -271,7 +275,7 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
                                 onPress={() => handleQuantityChange(false)}
                                 style={styles.quantityButton}
                             >
-                                <Text style={styles.quantityButtonText}>−</Text>
+                                <Minus color={Colors.NoirBlack} size={ResponsivePixels.size20} />
                             </TouchableOpacity>
 
                             <Text style={styles.quantityText}>{quantity}</Text>
@@ -280,7 +284,7 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
                                 onPress={() => handleQuantityChange(true)}
                                 style={styles.quantityButton}
                             >
-                                <Text style={styles.quantityButtonText}>+</Text>
+                                <Plus color={Colors.NoirBlack} size={ResponsivePixels.size20} />
                             </TouchableOpacity>
                         </View>
 
@@ -292,7 +296,8 @@ const FoodDetailScreen: React.FC<FoodDetailScreenProps> = (props) => {
             {/* Add to Cart Button */}
             <View style={styles.buttonContainer}>
                 <CustomButton
-                    title="🛒 Add to Cart"
+                    icon="Cart"
+                    title="Add to Cart"
                     onPress={handleAddToCart}
                     style={styles.addToCartButton}
                 />
@@ -366,56 +371,49 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         padding: ResponsivePixels.size20,
+        paddingBottom: ResponsivePixels.size100,
     },
     titleSection: {
-        marginBottom: ResponsivePixels.size20,
+        marginBottom: ResponsivePixels.size16,
     },
     foodTitle: {
-        fontSize: ResponsivePixels.size24,
-        fontWeight: '700',
         color: '#333333',
         marginBottom: ResponsivePixels.size8,
+        ...TextStyles.h5SemiBold
     },
     price: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: '600',
-        color: '#FF8C42',
+        color: Colors.SunburstFlame,
+        ...TextStyles.h6Bold
     },
     infoRow: {
         borderRadius: 8,
-        backgroundColor: Colors.DefaultWhite,
+        backgroundColor: Colors.SunburstFlameFaded,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: ResponsivePixels.size30,
         padding: ResponsivePixels.size12,
-        ...themes.shadows.light
+        ...themes.shadows.light,
     },
     infoItem: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: ResponsivePixels.size8,
     },
-    infoIcon: {
-        fontSize: ResponsivePixels.size16,
-        // color: '#FF8C42',
-    },
+
     infoText: {
-        fontSize: ResponsivePixels.size14,
-        color: '#666666',
+        color: Colors.SteelMist,
+        ...TextStyles.bodyLargeRegular
     },
     descriptionSection: {
-        marginBottom: ResponsivePixels.size30,
+        marginVertical: ResponsivePixels.size20,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
-        color: '#333333',
-        marginBottom: ResponsivePixels.size12,
+        color: Colors.NoirBlack,
+        marginBottom: ResponsivePixels.size4,
+        ...TextStyles.bodyLargeSemiBold,
     },
     description: {
-        fontSize: ResponsivePixels.size14,
-        color: '#666666',
-        lineHeight: ResponsivePixels.size20,
+        color: Colors.SteelMist,
+        ...TextStyles.bodyMediumRegular,
     },
     quantitySection: {
         flexDirection: 'row',
@@ -435,29 +433,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    quantityButtonText: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: '600',
-        color: '#333333',
-    },
+
     quantityText: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
-        color: '#333333',
+        color: Colors.NoirBlack,
+        ...TextStyles.h6SemiBold
     },
     totalPrice: {
-        fontSize: ResponsivePixels.size24,
-        fontWeight: '700',
-        color: '#FF8C42',
+        color: Colors.SunburstFlame,
+        ...TextStyles.h5Medium
     },
     buttonContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
         paddingHorizontal: ResponsivePixels.size20,
         paddingBottom: ResponsivePixels.size20,
+        backgroundColor: "transparent",
     },
     addToCartButton: {
-        backgroundColor: '#FF8C42',
+        backgroundColor: Colors.SunburstFlame,
     },
-
     imageSlide: {
         width: screenWidth,
         height: ResponsivePixels.size400,
@@ -491,7 +487,7 @@ const styles = StyleSheet.create({
         padding: ResponsivePixels.size4,
     },
     imageCounter: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: Colors.BlackTransparent,
         paddingHorizontal: ResponsivePixels.size12,
         paddingVertical: ResponsivePixels.size4,
         borderRadius: ResponsivePixels.size12,
@@ -519,7 +515,7 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     activeThumbnail: {
-        borderColor: '#FF8C42',
+        borderColor: Colors.SunburstFlame,
     },
     thumbnailImage: {
         width: '100%',

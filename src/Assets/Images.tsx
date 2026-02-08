@@ -39,4 +39,8 @@ export const IMAGES = {
     ordinary_burgers: require("../Assets/Images/ordinary_burgers.png"),
     no_order_Illustration: require("../Assets/Images/no_order_Illustration.png"),
     bg_pattern: require("../Assets/Images/bg_pattern.png"),
+
+    ic_Favorite: require("../Assets/Images/ic_Love_light.png"),
+    ic_Back_light: require("../Assets/Images/ic_Back_light.png"),
+    ic_Like_Fill: require("../Assets/Images/ic_Like_Fill.png"),
 }
