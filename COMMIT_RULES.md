@@ -19,9 +19,13 @@ based on **recent changes or staged changes**.
 ### 🚀 Feature
 Use when introducing a new feature or user-facing functionality.
 ```
+[FEAT]: Description of the new feature
+```
+or
+```
 [ADD]: Description of the new feature
 ```
-Example: `[ADD]: Implement cursor commit message rules and restrict inspect element access`
+Example: `[FEAT]: Add and configure a comprehensive set of iOS app icons`
 
 ### 🐛 Bug Fix
 Use when fixing bugs or issues.
@@ -71,6 +75,20 @@ Use when deploying or preparing for production.
 [DEPLOY]: Description of deployment changes
 ```
 Example: `[DEPLOY]: Prepare for v2.0 production release`
+
+### 🧹 Chore
+Use for maintenance tasks that don't affect the code (e.g., build scripts, package updates).
+```
+[CHORE]: Description of chore
+```
+Example: `[CHORE]: Update npm dependencies`
+
+### ⚡ Performance
+Use for performance improvements.
+```
+[PERF]: Description of performance improvement
+```
+Example: `[PERF]: Optimize image loading logic`
 
 ---
 
