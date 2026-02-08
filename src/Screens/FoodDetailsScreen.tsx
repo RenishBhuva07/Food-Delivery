@@ -10,7 +10,6 @@ import {
     Animated,
     Dimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import CustomButton from '../common/CustomButton';
 import { goBack } from '../Navigators/Navigator';
