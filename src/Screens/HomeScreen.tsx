@@ -8,6 +8,7 @@ import { IMAGES } from "../Assets/Images";
 import { FOOD_ITEMS } from "../Database/FoodItems";
 import { navigate } from "../Navigators/Navigator";
 import { TextStyles } from "../Theme/textStyles";
+import { CATEGORIES } from "../Database/Categories";
 
 const ScreenWidth = Dimensions.get('window').width,
     foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
@@ -32,18 +33,7 @@ const HomeScreen: React.FC = () => {
         setSelectedFoodItem(filteredItems);
     }, [selectedCategory]);
 
-    const categories = [
-        { id: 1, name: "Burger", icon: "🍔", isSelected: false, },
-        { id: 2, name: "Taco", icon: "🌮", isSelected: false },
-        { id: 3, name: "Drink", icon: "🥤", isSelected: false },
-        { id: 4, name: "Pizza", icon: "🍕", isSelected: false },
-        { id: 5, name: "Fries", icon: "🍟", isSelected: false },
-        { id: 6, name: "Salad", icon: "🥗", isSelected: false },
-        { id: 7, name: "Dessert", icon: "🍰", isSelected: false },
-        { id: 8, name: "Sushi", icon: "🍣", isSelected: false },
-        { id: 9, name: "Pasta", icon: "🍝", isSelected: false },
-        { id: 10, name: "Sandwich", icon: "🥪", isSelected: false },
-    ];
+    const categories = CATEGORIES;
 
     const renderCategoryCard = ({ item }: any) => (
         <TouchableOpacity

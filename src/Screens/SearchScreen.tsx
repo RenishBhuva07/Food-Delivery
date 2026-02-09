@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, FlatList, ScrollView, Dimensions } from 'react-native';
+import { Search, SlidersHorizontal, X, Star, MapPin } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { IMAGES } from '../Assets/Images';
 import { FOOD_ITEMS } from '../Database/FoodItems';
 import MainContainer from '../common/MainContainer';
+import { CATEGORIES } from '../Database/Categories';
+import { TextStyles } from '../Theme/textStyles';
 
 const { width } = Dimensions.get('window');
 
@@ -14,13 +17,6 @@ const SearchScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState("Burger");
     const [recentSearches, setRecentSearches] = useState(["Burgers", "Fast food", "Dessert", "French", "Fastry"]);
-
-    const categories = [
-        { id: 1, name: "Burger", icon: "🍔" },
-        { id: 2, name: "Taco", icon: "🌮" },
-        { id: 3, name: "Drink", icon: "🥤" },
-        { id: 4, name: "Pizza", icon: "🍕" },
-    ];
 
     const removeRecentSearch = (item: string) => {
         setRecentSearches(prev => prev.filter(search => search !== item));
@@ -32,19 +28,9 @@ const SearchScreen = () => {
 
     const recentOrders = FOOD_ITEMS.slice(0, 3); // Mocking recent orders with first 3 items
 
-    const renderHeader = () => (
-        <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                <Image source={IMAGES.ic_Back} style={styles.backIcon} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Search Food</Text>
-            <View style={styles.placeholderView} />
-        </View>
-    );
-
     const renderSearchBar = () => (
         <View style={styles.searchBarContainer}>
-            <Image source={IMAGES.ic_Search} style={styles.searchIcon} />
+            <Search size={ResponsivePixels.size20} color={Colors.SteelMist} style={{ marginRight: ResponsivePixels.size12 }} />
             <TextInput
                 style={styles.searchInput}
                 placeholder="Search Food"
@@ -53,31 +39,33 @@ const SearchScreen = () => {
                 onChangeText={setSearchQuery}
             />
             <TouchableOpacity>
-                <Image source={IMAGES.ic_Menu} style={styles.filterIcon} />
+                <SlidersHorizontal size={ResponsivePixels.size20} color={Colors.SteelMist} />
             </TouchableOpacity>
         </View>
     );
 
+    const renderCategoryCard = ({ item }: any) => (
+        <TouchableOpacity
+            style={[styles.categoryCard, selectedCategory === item?.name && styles.selectedCategoryCard]}
+            onPress={() => setSelectedCategory(item?.name)}
+        >
+            <Text style={styles.categoryIcon}>{item?.icon}</Text>
+            <Text style={[styles.categoryText, selectedCategory === item?.name && styles.selectedCategoryText]}>
+                {item?.name}
+            </Text>
+        </TouchableOpacity>
+    );
+
     const renderCategories = () => (
-        <View style={styles.categoriesContainer}>
-            {categories.map((cat) => (
-                <TouchableOpacity
-                    key={cat.id}
-                    style={[
-                        styles.categoryChip,
-                        selectedCategory === cat.name && styles.categoryChipSelected
-                    ]}
-                    onPress={() => setSelectedCategory(cat.name)}
-                >
-                    <Text style={styles.categoryEmoji}>{cat.icon}</Text>
-                    <Text style={[
-                        styles.categoryLabel,
-                        selectedCategory === cat.name && styles.categoryLabelSelected
-                    ]}>
-                        {cat.name}
-                    </Text>
-                </TouchableOpacity>
-            ))}
+        <View style={styles.categoriesSection}>
+            <FlatList
+                data={CATEGORIES}
+                renderItem={renderCategoryCard}
+                keyExtractor={(item) => item.id.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.categoriesList}
+            />
         </View>
     );
 
@@ -94,11 +82,11 @@ const SearchScreen = () => {
                 {recentSearches.map((item, index) => (
                     <View key={index} style={styles.recentSearchItem}>
                         <View style={styles.recentSearchLeft}>
-                            <Image source={IMAGES.ic_Search} style={styles.recentSearchIcon} />
+                            <Search size={ResponsivePixels.size20} color={Colors.SteelMist} style={{ marginRight: ResponsivePixels.size16 }} />
                             <Text style={styles.recentSearchText}>{item}</Text>
                         </View>
                         <TouchableOpacity onPress={() => removeRecentSearch(item)}>
-                            <Text style={styles.closeIcon}>✕</Text>
+                            <X size={ResponsivePixels.size16} color={Colors.SteelMist} />
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -109,17 +97,17 @@ const SearchScreen = () => {
     const renderRecentOrders = () => (
         <View style={styles.sectionContainer}>
             <Text style={[styles.sectionTitle, { marginBottom: ResponsivePixels.size16 }]}>My recent orders</Text>
-            {recentOrders.map((item) => (
+            {recentOrders?.map((item) => (
                 <TouchableOpacity key={item.id} style={styles.orderCard}>
                     <Image source={item.image} style={styles.orderImage} />
                     <View style={styles.orderInfo}>
                         <Text style={styles.orderName}>{item.name}</Text>
                         <Text style={styles.restaurantName}>Burger Restaurant</Text>
                         <View style={styles.ratingRow}>
-                            <Text style={styles.starIcon}>⭐</Text>
+                            <Star size={ResponsivePixels.size12} color="#FFD700" fill="#FFD700" style={{ marginRight: ResponsivePixels.size4 }} />
                             <Text style={styles.ratingText}>{item.rating}</Text>
                             <View style={styles.dotSeparator} />
-                            <Image source={IMAGES.ic_location_small} style={styles.locationIcon} />
+                            <MapPin size={ResponsivePixels.size12} color={Colors.SunburstFlame} style={{ marginRight: ResponsivePixels.size4 }} />
                             <Text style={styles.distanceText}>{item.distance}</Text>
                         </View>
                     </View>
@@ -133,9 +121,20 @@ const SearchScreen = () => {
             statusBarStyle="dark-content"
             statusBarBackgroundColor="transparent"
             containerBackgroundColor={Colors.DefaultWhite}
+            showHeader={true}
+            header={{
+                headerTitle: "Search Food",
+                headerTitleColor: Colors.NoirBlack,
+                headerBackgroundColor: Colors.DefaultWhite,
+                headerLeft: {
+                    icon: IMAGES.ic_Back,
+                    onPress: () => navigation.goBack(),
+                    color: Colors.NoirBlack,
+                },
+            }}
         >
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                {renderHeader()}
+
                 {renderSearchBar()}
                 {renderCategories()}
                 {renderRecentSearches()}
@@ -151,38 +150,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.DefaultWhite,
     },
     contentContainer: {
-        paddingHorizontal: ResponsivePixels.size20,
+        // paddingHorizontal: ResponsivePixels.size20,
         paddingBottom: ResponsivePixels.size20,
+        paddingTop: ResponsivePixels.size10,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: ResponsivePixels.size20,
-        marginBottom: ResponsivePixels.size24,
-    },
-    backButton: {
-        width: ResponsivePixels.size40,
-        height: ResponsivePixels.size40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: Colors.FrostedHaze,
-        borderRadius: 12,
-    },
-    backIcon: {
-        width: ResponsivePixels.size20,
-        height: ResponsivePixels.size20,
-        resizeMode: 'contain',
-        tintColor: Colors.NoirBlack,
-    },
-    headerTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: 'bold',
-        color: Colors.NoirBlack,
-    },
-    placeholderView: {
-        width: ResponsivePixels.size40,
-    },
+
     searchBarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -190,7 +162,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: ResponsivePixels.size16,
         height: ResponsivePixels.size50,
-        marginBottom: ResponsivePixels.size24,
+        // marginBottom: ResponsivePixels.size24,
+        marginHorizontal: ResponsivePixels.size20,
     },
     searchIcon: {
         width: ResponsivePixels.size20,
@@ -211,52 +184,51 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         tintColor: Colors.SteelMist,
     },
-    categoriesContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: ResponsivePixels.size30,
+    categoriesSection: {},
+    seeAllText: {
+        color: Colors.SunburstFlame,
+        ...TextStyles.bodyMediumMedium,
     },
-    categoryChip: {
-        width: (width - ResponsivePixels.size40 - ResponsivePixels.size30) / 4,
-        aspectRatio: 0.8,
-        backgroundColor: Colors.DefaultWhite,
+    categoriesList: {
+        gap: ResponsivePixels.size10,
+        paddingVertical: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size20,
+    },
+    categoryCard: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: ResponsivePixels.size60,
+        height: ResponsivePixels.size60,
         borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: "#000",
+        backgroundColor: Colors.DefaultWhite,
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 5,
-        elevation: 2,
-
-        // Border for unselected
-        borderWidth: 1,
-        borderColor: Colors.FrostedMist,
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
     },
-    categoryChipSelected: {
+    selectedCategoryCard: {
         backgroundColor: Colors.SunburstFlame,
-        borderColor: Colors.SunburstFlame,
     },
-    categoryEmoji: {
+    categoryIcon: {
         fontSize: ResponsivePixels.size24,
-        marginBottom: ResponsivePixels.size8,
     },
-    categoryLabel: {
-        fontSize: ResponsivePixels.size12,
+    categoryText: {
         color: Colors.SteelMist,
-        fontWeight: '500',
+        ...TextStyles.bodyMediumMedium,
     },
-    categoryLabelSelected: {
+    selectedCategoryText: {
         color: Colors.DefaultWhite,
     },
     sectionContainer: {
         marginBottom: ResponsivePixels.size30,
+        paddingHorizontal: ResponsivePixels.size20,
     },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: ResponsivePixels.size16,
+        // paddingHorizontal: ResponsivePixels.size20,
     },
     sectionTitle: {
         fontSize: ResponsivePixels.size18,
