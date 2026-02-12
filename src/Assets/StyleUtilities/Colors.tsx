@@ -19,4 +19,5 @@ export const Colors = {
     SilverHaze: "#C2C2C2",
     FrostedMist: "#EDEDED",
     BlackTransparent: "rgba(0,0,0,0.5)",
+    DarkCharcoal: "#292A2E",
 };

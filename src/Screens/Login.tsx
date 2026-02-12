@@ -11,6 +11,7 @@ import { navigate } from '../Navigators/Navigator';
 import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
 import CustomButton from '../common/CustomButton';
 import { FORGOT_PIN_OPTIONS } from '../Utils/Constants';
+import { Typography } from '../Theme/Typographys';
 
 const Login: React.FC = () => {
 
@@ -81,7 +82,7 @@ const Login: React.FC = () => {
 
     return (
         <>
-            <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={Colors.DefaultWhite}>
+            <MainContainer statusBarStyle='dark-content' statusBarBackgroundColor={Colors.DefaultWhite} >
                 <View style={styles.contentWrapper}>
                     <View style={styles.header}>
                         <Text style={styles.title}>Login to your account.</Text>
@@ -182,9 +183,7 @@ const Login: React.FC = () => {
 
                         </View>
 
-                        <View style={styles.continueButtonWrapper}>
-                            <CustomButton title="Continue" onPress={navigateToForgotPin} />
-                        </View>
+                        <CustomButton title="Continue" onPress={navigateToForgotPin} />
                     </View>
                 </CustomActionSheet>
             </MainContainer>
@@ -196,23 +195,22 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
-        paddingTop: ResponsivePixels.size50,
+        paddingTop: ResponsivePixels.size76,
         backgroundColor: Colors.DefaultWhite,
     },
     header: {},
     title: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size8,
+        ...Typography.h4SemiBold
     },
     subtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium
     },
     form: {
         marginTop: ResponsivePixels.size20,
-        marginBottom: ResponsivePixels.size30,
+        marginBottom: ResponsivePixels.size24,
     },
     forgotPassword: {
         alignSelf: 'flex-end',
@@ -220,20 +218,20 @@ const styles = StyleSheet.create({
     },
     forgotPasswordText: {
         color: Colors.SunburstFlame,
-        fontSize: ResponsivePixels.size14,
+        ...Typography.bodyMediumMedium
     },
     signInButtonWrapper: {
-        marginBottom: ResponsivePixels.size30,
+        marginBottom: ResponsivePixels.size24,
     },
     socialSection: {
         alignItems: 'center',
-        marginBottom: ResponsivePixels.size40,
+        marginBottom: ResponsivePixels.size32,
     },
     orText: {
         color: Colors.SteelMist,
-        fontSize: ResponsivePixels.size14,
         marginBottom: ResponsivePixels.size20,
         paddingHorizontal: ResponsivePixels.size10,
+        ...Typography.bodyMediumMedium
     },
     socialButtons: {
         flexDirection: 'row',
@@ -241,8 +239,7 @@ const styles = StyleSheet.create({
         gap: ResponsivePixels.size16,
     },
     socialButtonWrapper: {
-        width: ResponsivePixels.size48,
-        height: ResponsivePixels.size48,
+        padding: ResponsivePixels.size8,
         borderRadius: 50,
         borderWidth: 1,
         borderColor: Colors.MoonDust,
@@ -260,13 +257,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footerText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumMedium
     },
     signUpLink: {
         color: Colors.SunburstFlame,
-        fontWeight: '500',
-        fontSize: ResponsivePixels.size14,
+        ...Typography.bodyMediumSemiBold
     },
     divider: {
         borderTopWidth: 1,
@@ -280,13 +276,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     optionsContainer: {
-        marginBottom: ResponsivePixels.size25,
+        marginBottom: ResponsivePixels.size10,
     },
     optionCard: {
         borderWidth: 1,
         borderColor: Colors.CloudWhisper,
         borderRadius: 16,
-        padding: ResponsivePixels.size20,
+        padding: ResponsivePixels.size16,
         marginBottom: ResponsivePixels.size16,
         backgroundColor: Colors.DefaultWhite,
     },
@@ -311,14 +307,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     optionLabel: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
         marginBottom: ResponsivePixels.size4,
+        ...Typography.bodySmallRegular
     },
     optionValue: {
-        fontSize: ResponsivePixels.size14,
-        color: '#000',
-        fontWeight: '500',
+        color: Colors.DarkCharcoal,
+        ...Typography.bodyMediumSemiBold
     },
     checkmark: {
         width: ResponsivePixels.size24,
@@ -332,22 +327,6 @@ const styles = StyleSheet.create({
         color: Colors.DefaultWhite,
         fontSize: ResponsivePixels.size14,
         fontWeight: 'bold',
-    },
-    continueButtonWrapper: {
-        marginBottom: ResponsivePixels.size10,
-    },
-    continueButtonText: {
-        color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
-    },
-    bottomIndicator: {
-        width: ResponsivePixels.size134,
-        height: ResponsivePixels.size5,
-        backgroundColor: '#000',
-        borderRadius: 2.5,
-        alignSelf: 'center',
-        marginBottom: ResponsivePixels.size20,
     },
     actionSheetIconStyle: {
         width: ResponsivePixels.size24,

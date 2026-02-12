@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, ViewStyle, TextStyle, View } from 'react-native
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import * as LucideIcons from 'lucide-react-native';
-import { TextStyles } from '../Theme/textStyles';
+import { Typography } from '../Theme/Typographys';
 
 type CustomButtonProps = {
     title: string;
@@ -60,13 +60,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         elevation: 5,
     };
 
-    const textStyles: TextStyle = {
+    const TypographyStyle: TextStyle = {
         color: bordered ? Colors.SunburstFlame : Colors.DefaultWhite,
         // fontSize: ResponsivePixels.size16,
         // fontWeight: '700',
         textTransform: disableAllCaps ? 'none' : 'uppercase',
         ...buttonTextStyle,
-        ...TextStyles.h6Bold,
+        ...Typography.h6Bold,
     };
 
     const iconName = icon === 'Cart' ? 'ShoppingCart' : icon;
@@ -85,7 +85,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
                     <IconComponent color={iconColor} size={ResponsivePixels.size20} strokeWidth={2.7} />
                 </View>
             )}
-            <Text style={textStyles}>{title}</Text>
+            <Text style={TypographyStyle}>{title}</Text>
         </TouchableOpacity>
     );
 };

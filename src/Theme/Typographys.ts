@@ -1,7 +1,7 @@
 import { Fonts } from "./fonts";
 
 
-export const TextStyles = {
+export const Typography = {
     // 🔹 _______________________________Headings_____________________________
 
     // H1
@@ -216,6 +216,30 @@ export const TextStyles = {
     bodySmallBold: {
         fontFamily: Fonts.bold,
         fontSize: 12,
+        lineHeight: 16,
+    },
+
+    // 🔹 Super Small
+    bodySuperSmallRegular: {
+        fontFamily: Fonts.regular,
+        fontSize: 10,
+        lineHeight: 16,
+    },
+
+    bodySuperSmallMedium: {
+        fontFamily: Fonts.medium,
+        fontSize: 10,
+        lineHeight: 16,
+    },
+    bodySuperSmallSemiBold: {
+        fontFamily: Fonts.semiBold,
+        fontSize: 10,
+        lineHeight: 16,
+    },
+
+    bodySuperSmallBold: {
+        fontFamily: Fonts.bold,
+        fontSize: 10,
         lineHeight: 16,
     },
 };

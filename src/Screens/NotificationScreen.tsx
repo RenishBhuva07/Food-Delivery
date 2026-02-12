@@ -6,7 +6,7 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { IMAGES } from '../Assets/Images';
 import { goBack } from '../Navigators/Navigator';
-import { TextStyles, ShadowStyles } from '../Theme/textStyles';
+import { Typography, ShadowStyles } from '../Theme/Typographys';
 
 interface NotificationItem {
     id: string;
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     },
     sectionHeaderText: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyMediumSemiBold,
+        ...Typography.bodyMediumSemiBold,
     },
     notificationItem: {
         flexDirection: 'row',
@@ -187,11 +187,11 @@ const styles = StyleSheet.create({
     title: {
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
-        ...TextStyles.bodyLargeSemiBold,
+        ...Typography.bodyLargeSemiBold,
     },
     description: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyMediumRegular,
+        ...Typography.bodyMediumRegular,
     },
 
 });

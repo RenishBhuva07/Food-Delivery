@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
+import { Typography } from '../Theme/Typographys';
 
 type IFloatingTextInputProps = {
     label: string;
@@ -117,9 +118,10 @@ export const FloatingTextInput = forwardRef<TextInput, IFloatingTextInputProps>(
                             top: !isFocused ? '32%' : "-50%",
                             // top: ResponsivePixels.size16 + (ResponsivePixels.size14 / 8),
                             left: !isFocused ? ResponsivePixels.size16 : 0,
-
-                            fontSize: ResponsivePixels.size14,
                             color: !isFocused ? Colors.Defaultblack : Colors.SunburstFlame,
+
+                            // fontSize: ResponsivePixels.size14,
+                            ...Typography.bodyMediumMedium
                         },
                         labelStyle
                     ]}>

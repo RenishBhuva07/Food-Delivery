@@ -8,7 +8,7 @@ import { IMAGES } from '../Assets/Images';
 import { FOOD_ITEMS } from '../Database/FoodItems';
 import MainContainer from '../common/MainContainer';
 import { CATEGORIES } from '../Database/Categories';
-import { TextStyles } from '../Theme/textStyles';
+import { Typography } from '../Theme/Typographys';
 
 const { width } = Dimensions.get('window');
 
@@ -104,7 +104,7 @@ const SearchScreen = () => {
                         <Text style={styles.orderName}>{item.name}</Text>
                         <Text style={styles.restaurantName}>Burger Restaurant</Text>
                         <View style={styles.ratingRow}>
-                            <Star size={ResponsivePixels.size12} color="#FFD700" fill="#FFD700" style={{ marginRight: ResponsivePixels.size4 }} />
+                            <Star size={ResponsivePixels.size12} color={Colors.SunburstFlame} fill={Colors.SunburstFlame} style={{ marginRight: ResponsivePixels.size4 }} />
                             <Text style={styles.ratingText}>{item.rating}</Text>
                             <View style={styles.dotSeparator} />
                             <MapPin size={ResponsivePixels.size12} color={Colors.SunburstFlame} style={{ marginRight: ResponsivePixels.size4 }} />
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     categoriesSection: {},
     seeAllText: {
         color: Colors.SunburstFlame,
-        ...TextStyles.bodyMediumMedium,
+        ...Typography.bodyMediumMedium,
     },
     categoriesList: {
         gap: ResponsivePixels.size10,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyMediumMedium,
+        ...Typography.bodyMediumMedium,
     },
     selectedCategoryText: {
         color: Colors.DefaultWhite,
@@ -227,23 +227,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: ResponsivePixels.size16,
-        // paddingHorizontal: ResponsivePixels.size20,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: 'bold',
         color: Colors.NoirBlack,
+        ...Typography.bodyLargeSemiBold,
     },
     deleteText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
+        ...Typography.bodyMediumMedium,
     },
     recentSearchItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: ResponsivePixels.size12,
+        paddingVertical: ResponsivePixels.size8,
     },
     recentSearchLeft: {
         flexDirection: 'row',
@@ -257,8 +254,8 @@ const styles = StyleSheet.create({
         marginRight: ResponsivePixels.size16,
     },
     recentSearchText: {
-        fontSize: ResponsivePixels.size16,
-        color: Colors.SteelMist, // Or darker if needed
+        color: Colors.SteelMist,
+        ...Typography.bodyLargeRegular,
     },
     closeIcon: {
         fontSize: ResponsivePixels.size16,
@@ -280,29 +277,26 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     orderName: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: 'bold',
         color: Colors.NoirBlack,
-        marginBottom: ResponsivePixels.size4,
+        ...Typography.bodyLargeSemiBold,
     },
     restaurantName: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
-        marginBottom: ResponsivePixels.size8,
+        ...Typography.bodySmallRegular,
     },
     ratingRow: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: ResponsivePixels.size4,
     },
     starIcon: {
         fontSize: ResponsivePixels.size12,
         marginRight: ResponsivePixels.size4,
-        color: '#FFD700',
+        color: Colors.SunburstFlame,
     },
     ratingText: {
-        fontSize: ResponsivePixels.size12,
-        fontWeight: 'bold',
         color: Colors.NoirBlack,
+        ...Typography.bodySmallMedium,
         marginRight: ResponsivePixels.size10,
     },
     dotSeparator: {
@@ -320,8 +314,8 @@ const styles = StyleSheet.create({
         marginRight: ResponsivePixels.size4,
     },
     distanceText: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
+        ...Typography.bodySmallMedium,
     },
 });
 

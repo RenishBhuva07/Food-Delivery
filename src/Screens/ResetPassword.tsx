@@ -13,6 +13,7 @@ import { ActionSheetRef } from "react-native-actions-sheet";
 import ActionSheetStyles from "../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles";
 import { CustomAnimation } from "../common/CustomAnimation";
 import { ANIMATIONS } from "../Animations";
+import { Typography } from "../Theme/Typographys";
 
 interface IResetPasswordProps {
     route: any;
@@ -132,30 +133,27 @@ const styles = StyleSheet.create({
         paddingTop: ResponsivePixels.size20,
     },
     header: {
-        marginBottom: ResponsivePixels.size40,
+        marginBottom: ResponsivePixels.size10,
     },
     title: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size8,
+        ...Typography.h4SemiBold,
     },
     subtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium,
     },
-    form: {
-        marginBottom: ResponsivePixels.size40,
-    },
+    form: {},
     validationText: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
         marginTop: ResponsivePixels.size5,
+        ...Typography.bodyMediumMedium,
     },
     errorText: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.ErrorRed,
         marginTop: ResponsivePixels.size5,
+        ...Typography.bodyMediumMedium,
     },
     continueButtonWrapper: {
         marginHorizontal: ResponsivePixels.size24,
@@ -169,17 +167,16 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size5,
     },
     successTitle: {
-        fontSize: ResponsivePixels.size24,
-        fontWeight: "700",
         color: "#000",
         textAlign: "center",
         marginBottom: ResponsivePixels.size10,
+        ...Typography.h5SemiBold,
     },
     successSubtitle: {
-        fontSize: ResponsivePixels.size16,
         color: "#666",
         textAlign: "center",
         marginBottom: ResponsivePixels.size30,
+        ...Typography.bodyMediumMedium,
     },
 })
 

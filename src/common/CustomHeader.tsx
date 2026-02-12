@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { Colors } from '../Assets/StyleUtilities/Colors';
-import { TextStyles } from '../Theme/textStyles';
+import { Typography } from '../Theme/Typographys';
 
 interface HeaderOption {
     icon?: string;
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         color: Colors.NoirBlack,
         textAlign: 'center',
 
-        ...TextStyles.h6Bold,
+        ...Typography.h6Bold,
     },
     placeholder: {
         // width: ResponsivePixels.size40,

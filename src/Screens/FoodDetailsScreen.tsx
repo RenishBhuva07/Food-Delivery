@@ -18,7 +18,7 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import CustomHeader from '../common/CustomHeader';
 import { IMAGES } from '../Assets/Images';
 import { themes } from '../Assets/StyleUtilities/CommonStyleSheets/theme';
-import { TextStyles } from '../Theme/textStyles';
+import { Typography } from '../Theme/Typographys';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -379,11 +379,11 @@ const styles = StyleSheet.create({
     foodTitle: {
         color: '#333333',
         marginBottom: ResponsivePixels.size8,
-        ...TextStyles.h5SemiBold
+        ...Typography.h5SemiBold
     },
     price: {
         color: Colors.SunburstFlame,
-        ...TextStyles.h6Bold
+        ...Typography.h6Bold
     },
     infoRow: {
         borderRadius: 8,
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
 
     infoText: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyLargeRegular
+        ...Typography.bodyLargeRegular
     },
     descriptionSection: {
         marginVertical: ResponsivePixels.size20,
@@ -409,11 +409,11 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
-        ...TextStyles.bodyLargeSemiBold,
+        ...Typography.bodyLargeSemiBold,
     },
     description: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyMediumRegular,
+        ...Typography.bodyMediumRegular,
     },
     quantitySection: {
         flexDirection: 'row',
@@ -436,11 +436,11 @@ const styles = StyleSheet.create({
 
     quantityText: {
         color: Colors.NoirBlack,
-        ...TextStyles.h6SemiBold
+        ...Typography.h6SemiBold
     },
     totalPrice: {
         color: Colors.SunburstFlame,
-        ...TextStyles.h5Medium
+        ...Typography.h5Medium
     },
     buttonContainer: {
         position: 'absolute',

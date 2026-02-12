@@ -14,6 +14,7 @@ import CustomButton from '../common/CustomButton';
 import { IMAGES } from '../Assets/Images';
 import OTPInput from '../common/OTPInputBox';
 import { goBack, navigate } from '../Navigators/Navigator';
+import { Typography } from '../Theme/Typographys';
 
 interface IOtpVerificationProps {
     route: any;
@@ -139,14 +140,13 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size40,
     },
     title: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size8,
+        ...Typography.h4SemiBold,
     },
     subtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium,
     },
     form: {
         marginBottom: ResponsivePixels.size40,
@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size40,
     },
     resendText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium
     },
     resendLink: {
         color: Colors.SunburstFlame,
-        fontWeight: "600",
+        ...Typography.bodyMediumSemiBold
     },
     timerContainer: {
         flexDirection: "row",

@@ -18,6 +18,7 @@ import { ActionSheetRef } from 'react-native-actions-sheet';
 import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
 import { goBack } from '../Navigators/Navigator';
 import CustomButton from '../common/CustomButton';
+import { Typography } from '../Theme/Typographys';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -179,38 +180,37 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
-        paddingTop: ResponsivePixels.size50,
+        paddingTop: ResponsivePixels.size76,
         backgroundColor: Colors.DefaultWhite,
     },
     header: {},
     title: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size8,
+        ...Typography.h4SemiBold
     },
     subtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium
     },
     form: {
-        marginBottom: ResponsivePixels.size20,
+        marginBottom: ResponsivePixels.size24,
     },
     termsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     termsText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumMedium
     },
     termsLink: {
         flex: 1,
         color: Colors.SunburstFlame,
-        fontWeight: '500',
+        ...Typography.bodyMediumSemiBold
     },
     signUpButtonWrapper: {
-        marginBottom: ResponsivePixels.size20,
+        marginBottom: ResponsivePixels.size24,
     },
     signUpButtonText: {
         color: Colors.DefaultWhite,
@@ -223,9 +223,9 @@ const styles = StyleSheet.create({
     },
     orText: {
         color: Colors.SteelMist,
-        fontSize: ResponsivePixels.size14,
         marginBottom: ResponsivePixels.size20,
         paddingHorizontal: ResponsivePixels.size10,
+        ...Typography.bodyMediumMedium
     },
     socialButtons: {
         flexDirection: 'row',
@@ -238,13 +238,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footerText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumMedium
     },
     signUpLink: {
         color: Colors.SunburstFlame,
-        fontWeight: '500',
-        fontSize: ResponsivePixels.size14,
+        ...Typography.bodyMediumSemiBold
     },
     orTextWrapper: {
         flexDirection: 'row',

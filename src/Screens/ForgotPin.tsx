@@ -12,6 +12,7 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import { FloatingTextInput } from '../common/FloatingTextInput';
 import CustomButton from '../common/CustomButton';
 import { navigate } from '../Navigators/Navigator';
+import { Typography } from '../Theme/Typographys';
 
 interface IForgotPinProps {
     route: any;
@@ -60,27 +61,22 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         paddingHorizontal: ResponsivePixels.size24,
-        paddingTop: ResponsivePixels.size50,
+        paddingTop: ResponsivePixels.size76,
     },
     header: {
-        marginBottom: ResponsivePixels.size40,
+        marginBottom: ResponsivePixels.size30,
     },
     title: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size8,
+        ...Typography.h4SemiBold,
     },
     subtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium,
     },
-    form: {
-        marginBottom: ResponsivePixels.size40,
-    },
-    inputGroup: {
-        marginBottom: ResponsivePixels.size10,
-    },
+    form: {},
+    inputGroup: {},
     label: {
         fontSize: ResponsivePixels.size16,
         color: Colors.NoirBlack,

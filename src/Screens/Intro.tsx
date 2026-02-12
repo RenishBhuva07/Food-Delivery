@@ -5,6 +5,7 @@ import { IMAGES } from '../Assets/Images';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { navigate } from '../Navigators/Navigator';
+import { Typography } from '../Theme/Typographys';
 
 const { width, height } = Dimensions.get('window');
 
@@ -120,8 +121,7 @@ const styles = StyleSheet.create({
     },
     skipText: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '500',
+        ...Typography.bodyMediumSemiBold
     },
     slide: {
         width: width,
@@ -152,19 +152,16 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size24,
-        fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: ResponsivePixels.size12,
-        lineHeight: 30,
         marginHorizontal: ResponsivePixels.size20,
+        ...Typography.h4SemiBold
     },
     subtitle: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
         textAlign: 'center',
-        lineHeight: 22,
         opacity: 0.9,
+        ...Typography.bodyMediumRegular
     },
     bottomSection: {
         flexDirection: 'row',
@@ -197,8 +194,7 @@ const styles = StyleSheet.create({
     },
     nextText: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
+        ...Typography.bodyMediumSemiBold
     },
     background: {
         width: width,

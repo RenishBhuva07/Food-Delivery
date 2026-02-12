@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { Colors } from "../Assets/StyleUtilities/Colors";
+import { Typography } from "../Theme/Typographys";
 
 interface OTPInputProps {
     otp: string[];
@@ -92,8 +93,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.PeachWhisper,
     },
     digit: {
-        fontSize: ResponsivePixels.size32,
-        fontWeight: "600",
+        ...Typography.h3SemiBold,
     },
     digitFilled: {
         color: Colors.NoirBlack,

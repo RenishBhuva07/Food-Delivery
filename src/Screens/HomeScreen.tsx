@@ -7,7 +7,7 @@ import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels";
 import { IMAGES } from "../Assets/Images";
 import { FOOD_ITEMS } from "../Database/FoodItems";
 import { navigate } from "../Navigators/Navigator";
-import { TextStyles } from "../Theme/textStyles";
+import { Typography } from '../Theme/Typographys';
 import { CATEGORIES } from "../Database/Categories";
 
 const ScreenWidth = Dimensions.get('window').width,
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
         color: Colors.DefaultWhite,
         marginBottom: ResponsivePixels.size4,
 
-        ...TextStyles.bodyMediumRegular,
+        ...Typography.bodyMediumRegular,
     },
     locationRow: {
         flexDirection: "row",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     locationText: {
         color: Colors.DefaultWhite,
         marginRight: ResponsivePixels.size8,
-        ...TextStyles.bodyMediumSemiBold,
+        ...Typography.bodyMediumSemiBold,
     },
     dropdownIcon: {
         color: Colors.DefaultWhite,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     heroTitle: {
         color: Colors.DefaultWhite,
         marginRight: ResponsivePixels.size50,
-        ...TextStyles.h4SemiBold,
+        ...Typography.h4SemiBold,
     },
     categoriesSection: {
         paddingTop: ResponsivePixels.size20,
@@ -257,11 +257,11 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         color: Colors.NoirBlack,
-        ...TextStyles.bodyLargeSemiBold,
+        ...Typography.bodyLargeSemiBold,
     },
     seeAllText: {
         color: Colors.SunburstFlame,
-        ...TextStyles.bodyMediumMedium,
+        ...Typography.bodyMediumMedium,
     },
     categoriesList: {
         gap: ResponsivePixels.size10,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         color: Colors.SteelMist,
-        ...TextStyles.bodyMediumMedium,
+        ...Typography.bodyMediumMedium,
     },
     selectedCategoryText: {
         color: Colors.DefaultWhite,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     },
     foodName: {
         color: Colors.NoirBlack,
-        ...TextStyles.bodyLargeMedium,
+        ...Typography.bodyLargeMedium,
     },
     foodDetails: {
         flexDirection: "row",
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     rating: {
         color: Colors.NoirBlack,
-        ...TextStyles.bodySmallMedium,
+        ...Typography.bodySmallMedium,
     },
     distanceContainer: {
         flexDirection: "row",
@@ -373,11 +373,11 @@ const styles = StyleSheet.create({
     },
     distance: {
         color: Colors.SteelMist,
-        ...TextStyles.bodySmallMedium,
+        ...Typography.bodySmallMedium,
     },
     price: {
         color: Colors.SunburstFlame,
-        ...TextStyles.bodyLargeBold,
+        ...Typography.bodyLargeBold,
     },
 })
 

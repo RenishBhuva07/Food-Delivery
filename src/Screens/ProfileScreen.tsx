@@ -8,6 +8,8 @@ import { useRef, useState } from "react"
 import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
 import CustomModal, { CustomModalRef, ModalButton } from "../common/CustomModal"
 import { navigate } from "../Navigators/Navigator"
+import { Typography } from "../Theme/Typographys"
+import { Camera, ChevronRight, CreditCard, HelpCircle, LogOut, Settings, Trash2, User, UserPlus } from "lucide-react-native"
 
 const ProfileScreen: React.FC = () => {
     const signOutModalRef = useRef<CustomModalRef>(null);
@@ -16,41 +18,41 @@ const ProfileScreen: React.FC = () => {
         menuItems = [
             {
                 id: 1,
-                icon: "👤",
+                Icon: User,
                 title: "Personal Data",
                 section: "profile",
                 onPress: () => navigate("PersonalData"),
             },
             {
                 id: 2,
-                icon: "⚙️",
+                Icon: Settings,
                 title: "Settings",
                 section: "profile",
                 onPress: () => navigate("SettingsScreen"),
             },
             {
                 id: 3,
-                icon: "💳",
+                Icon: CreditCard,
                 title: "Extra Card",
                 section: "profile",
                 onPress: () => navigate("ExtraCardListScreen"),
             },
             {
                 id: 4,
-                icon: "ℹ️",
+                Icon: HelpCircle,
                 title: "Help Center",
                 section: "support",
                 onPress: () => navigate("HelpCenterScreen"),
             },
             {
                 id: 5,
-                icon: "🗑️",
+                Icon: Trash2,
                 title: "Request Account Deletion",
                 section: "support",
             },
             {
                 id: 6,
-                icon: "👥",
+                Icon: UserPlus,
                 title: "Add another account",
                 section: "support",
             },
@@ -84,10 +86,10 @@ const ProfileScreen: React.FC = () => {
     const renderMenuItem = (item: any) => (
         <TouchableOpacity key={item.id} style={styles.menuItem} onPress={item?.onPress}>
             <View style={styles.menuItemLeft}>
-                <Text style={styles.menuIcon}>{item.icon}</Text>
+                <item.Icon size={20} color={Colors.NoirBlack} style={styles.menuIcon} />
                 <Text style={styles.menuTitle}>{item.title}</Text>
             </View>
-            <Text style={styles.chevron}>›</Text>
+            <ChevronRight size={20} color={Colors.SteelMist} />
         </TouchableOpacity>
     )
 
@@ -110,7 +112,7 @@ const ProfileScreen: React.FC = () => {
                     <View style={[styles.avatarContainer, { borderColor: !isScrolled ? Colors.SunburstFlame : Colors.DefaultWhite }]}>
                         <Image source={IMAGES.user_two} style={styles.avatar} />
                         <View style={[styles.editBadge, { backgroundColor: !isScrolled ? Colors.SunburstFlame : Colors.DefaultWhite }]}>
-                            <Text style={styles.editIcon}>📷</Text>
+                            <Camera size={16} color={!isScrolled ? Colors.DefaultWhite : Colors.SunburstFlame} />
                         </View>
                     </View>
                     <Text style={styles.userName}>Albert Stevano Bajefski</Text>
@@ -166,7 +168,7 @@ const ProfileScreen: React.FC = () => {
 
                     {/* Sign Out Button */}
                     <TouchableOpacity style={[styles.signOutButton, styles.bottomSpacing]} onPress={() => signOutModalRef?.current?.show()}>
-                        <Text style={styles.signOutIcon}>🚪</Text>
+                        <LogOut size={20} color={Colors.ErrorRedLight} style={styles.signOutIcon} />
                         <Text style={styles.signOutText}>Sign Out</Text>
                     </TouchableOpacity>
 
@@ -238,14 +240,13 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size16,
     },
     userName: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: "600",
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
+        ...Typography.bodyLargeBold,
     },
     userEmail: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumRegular,
     },
     ordersSection: {
         paddingHorizontal: ResponsivePixels.size20,
@@ -259,14 +260,11 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size16,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: "600",
-        color: Colors.NoirBlack,
+        ...Typography.bodyLargeSemiBold,
     },
     seeAllText: {
-        fontSize: ResponsivePixels.size14,
+        ...Typography.bodyMediumSemiBold,
         color: Colors.SunburstFlame,
-        fontWeight: "500",
     },
     orderCard: {
         backgroundColor: Colors.DefaultWhite,
@@ -279,15 +277,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     orderIdLabel: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
         marginRight: ResponsivePixels.size8,
+        ...Typography.bodySmallSemiBold,
     },
     orderId: {
-        fontSize: ResponsivePixels.size12,
-        fontWeight: "600",
         color: Colors.NoirBlack,
         flex: 1,
+        ...Typography.bodySmallSemiBold,
     },
     statusBadge: {
         backgroundColor: Colors.SunburstFlame,
@@ -297,9 +294,8 @@ const styles = StyleSheet.create({
         ...themes.shadows.regular
     },
     statusText: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.DefaultWhite,
-        fontWeight: "500",
+        ...Typography.bodySuperSmallMedium,
     },
     orderContent: {
         flexDirection: "row",
@@ -322,18 +318,16 @@ const styles = StyleSheet.create({
         gap: ResponsivePixels.size4,
     },
     orderItemName: {
-        fontSize: ResponsivePixels.size14,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumSemiBold,
     },
     orderPrice: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
-        fontWeight: "600",
+        ...Typography.bodyMediumBold,
     },
     orderQuantity: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.NoirBlack,
+        ...Typography.bodySmallMedium,
     },
     menuSection: {
         paddingHorizontal: ResponsivePixels.size20,
