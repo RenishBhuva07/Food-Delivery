@@ -8,6 +8,7 @@ import CustomHeader from "../common/CustomHeader"
 import { goBack } from "../Navigators/Navigator"
 import { useRef, useState } from "react"
 import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
+import { Typography } from "../Theme/Typographys"
 
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     },
     yourMessageText: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
+        ...Typography.bodyMediumMedium,
     },
     oppositeMessageContainer: {
         alignSelf: 'flex-start',
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     },
     oppositeMessageText: {
         color: Colors.NoirBlack,
-        fontSize: ResponsivePixels.size16,
+        ...Typography.bodyMediumMedium,
     },
     // Input area styles
     inputAreaWrapper: {
@@ -241,14 +242,14 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     messageTime: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
         textAlign: 'left',
+        ...Typography.bodySuperSmallMedium,
     },
     myMessageTime: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.NoirBlack,
         textAlign: 'right',
+        ...Typography.bodySuperSmallMedium,
     }
 })
 

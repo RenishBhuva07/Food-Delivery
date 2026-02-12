@@ -6,6 +6,7 @@ import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import MainContainer from "../common/MainContainer"
 import { IMAGES } from "../Assets/Images"
 import { navigate } from "../Navigators/Navigator"
+import { Typography } from "../Theme/Typographys"
 
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -177,19 +178,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size24,
     },
     title: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         textAlign: 'center',
+        ...Typography.h6Bold,
     },
     sectionHeader: {
         paddingHorizontal: ResponsivePixels.size24,
         paddingVertical: ResponsivePixels.size16,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...Typography.bodyLargeSemiBold,
     },
     chatList: {
         // flex: 1,
@@ -216,8 +215,8 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     avatar: {
-        width: ResponsivePixels.size50,
-        height: ResponsivePixels.size50,
+        width: ResponsivePixels.size40,
+        height: ResponsivePixels.size40,
         borderRadius: ResponsivePixels.size25,
         marginRight: ResponsivePixels.size16,
     },
@@ -231,13 +230,12 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size4,
     },
     name: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumSemiBold,
     },
     time: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
+        ...Typography.bodySmallMedium,
     },
     messageRow: {
         flexDirection: "row",
@@ -245,9 +243,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     message: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
         flex: 1,
+        ...Typography.bodySmallMedium,
     },
     readIndicator: {
         fontSize: ResponsivePixels.size12,
@@ -257,16 +255,15 @@ const styles = StyleSheet.create({
     unreadBadge: {
         backgroundColor: Colors.SunburstFlame,
         borderRadius: ResponsivePixels.size10,
-        minWidth: ResponsivePixels.size20,
-        height: ResponsivePixels.size20,
+        minWidth: ResponsivePixels.size16,
+        height: ResponsivePixels.size16,
         alignItems: "center",
         justifyContent: "center",
         marginLeft: ResponsivePixels.size8,
     },
     unreadCount: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size12,
-        fontWeight: "600",
+        ...Typography.bodySuperSmallMedium,
     },
 })
 

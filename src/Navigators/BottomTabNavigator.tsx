@@ -2,6 +2,7 @@ import type React from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import { Colors } from "../Assets/StyleUtilities/Colors"
+import { Typography } from "../Theme/Typographys"
 
 interface BottomTabNavigatorProps {
     activeTab: string
@@ -57,13 +58,12 @@ const styles = StyleSheet.create({
         opacity: 1,
     },
     tabLabel: {
-        fontSize: ResponsivePixels.size12,
         color: Colors.SteelMist,
-        fontWeight: "500",
+        ...Typography.bodySmallMedium,
     },
     activeTabLabel: {
         color: Colors.SunburstFlame,
-        fontWeight: "600",
+        ...Typography.bodySmallMedium,
     },
 })
 

@@ -7,6 +7,7 @@ import CustomButton from "../common/CustomButton"
 import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import { IMAGES } from "../Assets/Images"
 import { navigate } from "../Navigators/Navigator"
+import { Typography } from "../Theme/Typographys"
 
 interface ICartScreenProps {
     route: any;
@@ -106,18 +107,18 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
                         alignItems: "center",
                     }}>
                         <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, false)}>
-                            <Image source={IMAGES.ic_Minus} style={{ width: ResponsivePixels.size28, height: ResponsivePixels.size28, tintColor: Colors.NoirBlack }} />
+                            <Image source={IMAGES.ic_Minus} style={styles.quantityIcon} />
                         </TouchableOpacity>
 
                         <Text style={styles.quantity}>{item.quantity}</Text>
 
                         <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, true)}>
-                            <Image source={IMAGES.ic_Add} style={{ width: ResponsivePixels.size28, height: ResponsivePixels.size28, tintColor: Colors.NoirBlack }} />
+                            <Image source={IMAGES.ic_Add} style={styles.quantityIcon} />
                         </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity style={styles.deleteButton} onPress={() => removeItem(item.id)}>
-                        <Image source={IMAGES.ic_Delete} style={{ width: ResponsivePixels.size25, height: ResponsivePixels.size25 }} />
+                        <Image source={IMAGES.ic_Delete} style={styles.deleteIcon} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -284,8 +285,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size20,
     },
     deliveryLabel: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
+        ...Typography.bodyMediumRegular,
     },
     locationWrapper: {
         gap: ResponsivePixels.size4,
@@ -296,9 +297,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     deliveryLocation: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...Typography.bodyMediumSemiBold,
     },
     changeLocationButton: {
         paddingHorizontal: ResponsivePixels.size16,
@@ -308,9 +308,8 @@ const styles = StyleSheet.create({
         borderColor: Colors.SunburstFlame,
     },
     changeLocationText: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
-        fontWeight: "500",
+        ...Typography.bodySuperSmallMedium,
     },
     promoSection: {
         paddingHorizontal: ResponsivePixels.size20,
@@ -339,16 +338,11 @@ const styles = StyleSheet.create({
         gap: ResponsivePixels.size8,
     },
     promoInput: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "bold",
         color: Colors.SteelMist,
         flex: 1,
         paddingVertical: 0,
         letterSpacing: 1,
-    },
-    promoText: {
-        fontSize: ResponsivePixels.size14,
-        color: Colors.SteelMist,
+        ...Typography.bodyMediumMedium,
     },
     applyButton: {
         backgroundColor: Colors.SunburstFlame,
@@ -363,8 +357,7 @@ const styles = StyleSheet.create({
     },
     applyButtonText: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size14,
-        fontWeight: "600",
+        ...Typography.bodySmallSemiBold,
     },
     cartList: {
         flex: 1,
@@ -417,15 +410,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     itemName: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "bold",
         color: Colors.NoirBlack,
+        ...Typography.bodyLargeSemiBold,
     },
     itemPrice: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SunburstFlame,
-        fontWeight: "bold",
         marginBottom: ResponsivePixels.size4,
+        ...Typography.bodyMediumBold,
     },
     quantityControls: {
         flexDirection: "row",
@@ -433,18 +424,26 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     quantityButton: {
-        width: ResponsivePixels.size32,
-        height: ResponsivePixels.size32,
+        width: ResponsivePixels.size24,
+        height: ResponsivePixels.size24,
         borderRadius: ResponsivePixels.size16,
         backgroundColor: Colors.FrostedHaze,
         alignItems: "center",
         justifyContent: "center",
     },
+    quantityIcon: {
+        width: ResponsivePixels.size20,
+        height: ResponsivePixels.size20,
+        tintColor: Colors.NoirBlack,
+    },
+    deleteIcon: {
+        width: ResponsivePixels.size22,
+        height: ResponsivePixels.size22,
+    },
     quantity: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
         color: Colors.NoirBlack,
         marginHorizontal: ResponsivePixels.size16,
+        ...Typography.bodyMediumMedium,
     },
     deleteButton: {
         paddingBottom: 4,
@@ -462,10 +461,9 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     summaryTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: "600",
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size16,
+        ...Typography.bodyLargeSemiBold
     },
     summaryRow: {
         flexDirection: "row",
@@ -474,16 +472,16 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size12,
     },
     summaryLabel: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.DefaultWhite,
+        ...Typography.bodyMediumMedium
     },
     summaryValue: {
-        fontSize: ResponsivePixels.size14,
-        fontWeight: "600",
         color: Colors.DefaultWhite,
+        ...Typography.bodyMediumBold
     },
     discountValue: {
-        color: Colors.SunburstFlame,
+        color: Colors.NoirBlack,
+        ...Typography.bodyMediumBold
     },
     totalRow: {
         borderTopWidth: 1,
@@ -492,19 +490,16 @@ const styles = StyleSheet.create({
         marginTop: ResponsivePixels.size8,
     },
     totalLabel: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: "600",
         color: Colors.NoirBlack,
+        ...Typography.h6Bold
     },
     totalValue: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: "bold",
         color: Colors.NoirBlack,
+        ...Typography.h6Bold
     },
     orderButtonContainer: {
         marginBottom: ResponsivePixels.size20,
     },
-    // Empty state styles
     emptyContainer: {
         flex: 1,
         alignItems: "center",
@@ -512,9 +507,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: ResponsivePixels.size20,
     },
     emptyIllustration: {
-        // position: "relative",
-        // width: ResponsivePixels.size200,
-        // height: ResponsivePixels.size200,
         marginBottom: ResponsivePixels.size40,
     },
     circle: {
@@ -573,18 +565,16 @@ const styles = StyleSheet.create({
         color: Colors.DefaultWhite,
     },
     emptyTitle: {
-        fontSize: ResponsivePixels.size28,
-        fontWeight: "bold",
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size12,
+        ...Typography.h4Bold
     },
     emptySubtitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.SteelMist,
         textAlign: "center",
-        lineHeight: ResponsivePixels.size24,
         marginBottom: ResponsivePixels.size40,
         paddingHorizontal: ResponsivePixels.size45,
+        ...Typography.bodyLargeRegular
     },
     findFoodsButtonContainer: {
         width: "100%",
