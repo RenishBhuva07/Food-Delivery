@@ -12,7 +12,8 @@ const CustomActionSheet = forwardRef<ActionSheetRef, ICustomActionSheetProps>(({
         <ActionSheet ref={ref} containerStyle={styles.sheetWrapper} gestureEnabled indicatorStyle={{
             width: ResponsivePixels.size50,
             borderRadius: 50,
-            marginVertical: ResponsivePixels.size15,
+            marginTop: ResponsivePixels.size20,
+            marginBottom: ResponsivePixels.size10,
         }}>
             <View style={styles.sheetContainer}>
                 {children}
@@ -25,7 +26,8 @@ export default CustomActionSheet;
 
 const styles = StyleSheet.create({
     sheetContainer: {
-        padding: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size20,
+        paddingBottom: ResponsivePixels.size20,
     },
     sheetWrapper: {
         borderTopLeftRadius: 24,

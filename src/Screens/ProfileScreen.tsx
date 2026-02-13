@@ -86,10 +86,12 @@ const ProfileScreen: React.FC = () => {
     const renderMenuItem = (item: any) => (
         <TouchableOpacity key={item.id} style={styles.menuItem} onPress={item?.onPress}>
             <View style={styles.menuItemLeft}>
-                <item.Icon size={20} color={Colors.NoirBlack} style={styles.menuIcon} />
+                <View style={styles.menuIconContainer}>
+                    <item.Icon size={20} color={Colors.NoirBlack} style={styles.menuIcon} />
+                </View>
                 <Text style={styles.menuTitle}>{item.title}</Text>
             </View>
-            <ChevronRight size={20} color={Colors.SteelMist} />
+            <ChevronRight size={24} color={Colors.NoirBlack} />
         </TouchableOpacity>
     )
 
@@ -342,7 +344,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingVertical: ResponsivePixels.size16,
+        paddingVertical: ResponsivePixels.size12,
         borderBottomWidth: 1,
         borderBottomColor: Colors.CloudWhisper,
     },
@@ -350,15 +352,19 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         flex: 1,
+        gap: ResponsivePixels.size16,
     },
     menuIcon: {
         fontSize: ResponsivePixels.size20,
-        marginRight: ResponsivePixels.size16,
+    },
+    menuIconContainer: {
+        backgroundColor: Colors.FrostedLilacMist,
+        padding: 5,
+        borderRadius: 8,
     },
     menuTitle: {
-        fontSize: ResponsivePixels.size16,
         color: Colors.NoirBlack,
-        fontWeight: "500",
+        ...Typography.bodyMediumMedium,
     },
     chevron: {
         fontSize: ResponsivePixels.size20,

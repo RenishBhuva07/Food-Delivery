@@ -19,6 +19,7 @@ import SettingsScreen from "../Screens/SettingsScreen";
 import HelpCenterScreen from "../Screens/HelpCenterScreen";
 import NotificationScreen from "../Screens/NotificationScreen";
 import SearchScreen from "../Screens/SearchScreen";
+import CMSScreen from "../Screens/CMSScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -45,6 +46,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="HelpCenterScreen" component={HelpCenterScreen} />
                 <Stack.Screen name="SearchScreen" component={SearchScreen} />
                 <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
+                <Stack.Screen name="CMSScreen" component={CMSScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -12,10 +12,12 @@ import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { IMAGES } from '../Assets/Images';
 import { goBack } from '../Navigators/Navigator';
+import { Typography, ShadowStyles } from '../Theme/Typographys';
+import { Search, LayoutGrid, CircleDollarSign, ShoppingCart, UserRound, type LucideIcon } from 'lucide-react-native';
 
 interface HelpCategory {
     id: number;
-    icon: string;
+    icon: LucideIcon;
     iconColor: string;
     title: string;
     description: string;
@@ -24,28 +26,28 @@ interface HelpCategory {
 const HELP_CATEGORIES: HelpCategory[] = [
     {
         id: 1,
-        icon: '🔷',
+        icon: LayoutGrid,
         iconColor: '#4A90D9',
         title: 'General',
         description: 'Basic questions about FoodDelivery',
     },
     {
         id: 2,
-        icon: '💰',
+        icon: CircleDollarSign,
         iconColor: '#FE8C00',
         title: 'Orders',
         description: 'All you need to know about placing and managing orders',
     },
     {
         id: 3,
-        icon: '🛒',
+        icon: ShoppingCart,
         iconColor: '#E74C3C',
         title: 'Payments',
         description: 'Everything you need to know about payment methods',
     },
     {
         id: 4,
-        icon: '👤',
+        icon: UserRound,
         iconColor: '#9B59B6',
         title: 'Account',
         description: 'How to manage your account and profile settings',
@@ -91,7 +93,7 @@ const HelpCenterScreen: React.FC = () => {
 
                 {/* Search Bar */}
                 <View style={styles.searchContainer}>
-                    <Text style={styles.searchIcon}>🔍</Text>
+                    <Search size={ResponsivePixels.size20} color={Colors.SteelMist} style={styles.searchIcon} />
                     <TextInput
                         style={styles.searchInput}
                         placeholder="Search"
@@ -112,7 +114,7 @@ const HelpCenterScreen: React.FC = () => {
                         >
                             <View style={styles.categoryContent}>
                                 <View style={[styles.iconContainer, { backgroundColor: `${category.iconColor}15` }]}>
-                                    <Text style={styles.iconText}>{category.icon}</Text>
+                                    <category.icon size={24} color={category.iconColor} />
                                 </View>
                                 <View style={styles.categoryTextContainer}>
                                     <Text style={styles.categoryTitle}>{category.title}</Text>
@@ -134,11 +136,10 @@ const styles = StyleSheet.create({
         paddingTop: ResponsivePixels.size10,
     },
     greeting: {
-        fontSize: ResponsivePixels.size22,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size20,
         marginTop: ResponsivePixels.size10,
+        ...Typography.bodyLargeSemiBold,
     },
     searchContainer: {
         flexDirection: 'row',
@@ -152,55 +153,47 @@ const styles = StyleSheet.create({
         marginBottom: ResponsivePixels.size24,
     },
     searchIcon: {
-        fontSize: ResponsivePixels.size18,
         marginRight: ResponsivePixels.size12,
-        opacity: 0.5,
     },
     searchInput: {
         flex: 1,
-        fontSize: ResponsivePixels.size16,
         color: Colors.NoirBlack,
         padding: 0,
+        ...Typography.bodyMediumMedium
     },
     categoriesContainer: {
         gap: ResponsivePixels.size12,
     },
     categoryCard: {
         backgroundColor: Colors.DefaultWhite,
-        borderRadius: ResponsivePixels.size16,
-        paddingVertical: ResponsivePixels.size20,
-        paddingHorizontal: ResponsivePixels.size16,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.FrostedMist,
+        borderRadius: 14,
+        paddingVertical: ResponsivePixels.size15,
+        paddingHorizontal: ResponsivePixels.size15,
+        ...ShadowStyles.shadow,
     },
     categoryContent: {
         flexDirection: 'row',
         alignItems: 'flex-start',
     },
     iconContainer: {
-        width: ResponsivePixels.size44,
-        height: ResponsivePixels.size44,
+        padding: ResponsivePixels.size10,
         borderRadius: ResponsivePixels.size12,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: ResponsivePixels.size16,
     },
-    iconText: {
-        fontSize: ResponsivePixels.size22,
-    },
+
     categoryTextContainer: {
         flex: 1,
     },
     categoryTitle: {
-        fontSize: ResponsivePixels.size17,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size6,
+        ...Typography.bodyLargeSemiBold,
     },
     categoryDescription: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
-        lineHeight: ResponsivePixels.size20,
+        ...Typography.bodyMediumRegular
     },
 });
 
