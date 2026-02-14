@@ -172,6 +172,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
                             true: Colors.SunburstFlame,
                         }}
                         thumbColor={Colors.DefaultWhite}
+                        style={{ marginRight: ResponsivePixels.size12 }}
                     />
                 )}
                 {type === 'navigation' && (
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
         paddingTop: ResponsivePixels.size10,
     },
     section: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         marginBottom: ResponsivePixels.size30,
     },
     sectionTitle: {

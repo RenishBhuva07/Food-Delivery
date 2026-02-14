@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     deliverySection: {
         marginTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size20,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
     },
     deliveryLabel: {
         color: Colors.SteelMist,
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
         ...Typography.bodySuperSmallMedium,
     },
     promoSection: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         marginBottom: ResponsivePixels.size20,
     },
     promoRow: {
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     cartItemsContainer: {
         gap: ResponsivePixels.size16,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingTop: ResponsivePixels.size10,
         paddingBottom: 100,
     },

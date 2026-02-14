@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
 
     // Background Card Decoration
     backgroundCardContainer: {
-        paddingHorizontal: ResponsivePixels.size40,
+        paddingHorizontal: ResponsivePixels.size25,
         marginTop: ResponsivePixels.size20,
     },
     backgroundCard: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
 
     // Main Card Preview
     cardPreviewContainer: {
-        paddingHorizontal: ResponsivePixels.size30,
+        paddingHorizontal: ResponsivePixels.size12,
         marginTop: -ResponsivePixels.size30,
     },
     cardPreview: {
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
 
     // Edit Card Button
     editCardButton: {
-        marginHorizontal: ResponsivePixels.size30,
+        marginHorizontal: ResponsivePixels.size12,
         marginTop: ResponsivePixels.size30,
         paddingVertical: ResponsivePixels.size16,
         borderRadius: ResponsivePixels.size16,

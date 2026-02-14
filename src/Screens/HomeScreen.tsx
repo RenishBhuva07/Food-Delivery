@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     heroSection: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingTop: ResponsivePixels.size50,
         paddingBottom: ResponsivePixels.size20,
     },
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
     },
     sectionTitle: {
         color: Colors.NoirBlack,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     },
     categoriesList: {
         gap: ResponsivePixels.size10,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingVertical: ResponsivePixels.size10,
     },
     categoryCard: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     },
     foodRow: {
         justifyContent: "space-between",
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingTop: ResponsivePixels.size10,
     },
     foodCard: {

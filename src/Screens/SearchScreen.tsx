@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.DefaultWhite,
     },
     contentContainer: {
-        // paddingHorizontal: ResponsivePixels.size20,
         paddingBottom: ResponsivePixels.size20,
         paddingTop: ResponsivePixels.size10,
     },
@@ -162,8 +161,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: ResponsivePixels.size16,
         height: ResponsivePixels.size50,
-        // marginBottom: ResponsivePixels.size24,
-        marginHorizontal: ResponsivePixels.size20,
+        marginHorizontal: ResponsivePixels.size12,
     },
     searchIcon: {
         width: ResponsivePixels.size20,
@@ -192,7 +190,7 @@ const styles = StyleSheet.create({
     categoriesList: {
         gap: ResponsivePixels.size10,
         paddingVertical: ResponsivePixels.size20,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
     },
     categoryCard: {
         alignItems: "center",
@@ -221,7 +219,7 @@ const styles = StyleSheet.create({
     },
     sectionContainer: {
         marginBottom: ResponsivePixels.size30,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
     },
     sectionHeader: {
         flexDirection: 'row',

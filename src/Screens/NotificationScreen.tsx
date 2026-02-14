@@ -147,7 +147,7 @@ const NotificationScreen = () => {
 
 const styles = StyleSheet.create({
     listContent: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingBottom: ResponsivePixels.size20,
     },
     sectionHeader: {

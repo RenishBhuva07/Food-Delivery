@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         ...Typography.h6Bold,
     },
     sectionHeader: {
-        paddingHorizontal: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingVertical: ResponsivePixels.size16,
     },
     sectionTitle: {

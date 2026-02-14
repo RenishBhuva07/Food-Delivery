@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         ...Typography.bodyMediumRegular,
     },
     ordersSection: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size30,
     },
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
         ...Typography.bodySmallMedium,
     },
     menuSection: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         marginBottom: ResponsivePixels.size30,
     },
     menuSectionTitle: {
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginHorizontal: ResponsivePixels.size20,
+        marginHorizontal: ResponsivePixels.size12,
         paddingVertical: ResponsivePixels.size10,
         backgroundColor: Colors.DefaultWhite,
         borderRadius: 60,

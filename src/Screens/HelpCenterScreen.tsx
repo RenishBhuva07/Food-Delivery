@@ -132,7 +132,7 @@ const HelpCenterScreen: React.FC = () => {
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingTop: ResponsivePixels.size10,
     },
     greeting: {

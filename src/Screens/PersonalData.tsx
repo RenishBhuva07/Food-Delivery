@@ -168,7 +168,7 @@ const PersonalData: React.FC = () => {
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingBottom: ResponsivePixels.size20,
     },
     avatarSection: {

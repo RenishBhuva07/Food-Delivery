@@ -370,7 +370,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.DefaultWhite,
     },
     contentContainer: {
-        padding: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
+        paddingVertical: ResponsivePixels.size20,
         paddingBottom: ResponsivePixels.size100,
     },
     titleSection: {
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingBottom: ResponsivePixels.size20,
         backgroundColor: "transparent",
     },

@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingVertical: ResponsivePixels.size16,
     },
     backButton: {
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size18,
     },
     featuredCardContainer: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         marginTop: ResponsivePixels.size10,
         marginBottom: ResponsivePixels.size30,
     },
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F79E1B',
     },
     sectionContainer: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
     },
     sectionTitle: {
         fontSize: ResponsivePixels.size18,
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
         fontSize: ResponsivePixels.size20,
     },
     buttonContainer: {
-        paddingHorizontal: ResponsivePixels.size20,
+        paddingHorizontal: ResponsivePixels.size12,
         paddingBottom: ResponsivePixels.size24,
         paddingTop: ResponsivePixels.size16,
     },
