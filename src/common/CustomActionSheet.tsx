@@ -5,11 +5,12 @@ import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 
 type ICustomActionSheetProps = {
     children: ReactNode;
+    onClose?: () => void;
 };
 
-const CustomActionSheet = forwardRef<ActionSheetRef, ICustomActionSheetProps>(({ children }, ref) => {
+const CustomActionSheet = forwardRef<ActionSheetRef, ICustomActionSheetProps>(({ children, onClose }, ref) => {
     return (
-        <ActionSheet ref={ref} containerStyle={styles.sheetWrapper} gestureEnabled indicatorStyle={{
+        <ActionSheet ref={ref} containerStyle={styles.sheetWrapper} gestureEnabled onClose={onClose} indicatorStyle={{
             width: ResponsivePixels.size50,
             borderRadius: 50,
             marginTop: ResponsivePixels.size20,

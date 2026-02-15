@@ -9,6 +9,7 @@ import { FOOD_ITEMS } from "../Database/FoodItems";
 import { navigate } from "../Navigators/Navigator";
 import { Typography } from '../Theme/Typographys';
 import { CATEGORIES } from "../Database/Categories";
+import LocationSelector from '../Components/LocationSelector';
 
 const ScreenWidth = Dimensions.get('window').width,
     foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
@@ -89,16 +90,7 @@ const HomeScreen: React.FC = () => {
                     >
                         <View style={styles.heroSection}>
                             <View style={styles.headerRow}>
-                                <View style={styles.locationContainer}>
-                                    <View style={[styles.locationRow, { gap: ResponsivePixels.size8 }]}>
-                                        <Text style={styles.locationLabel}>Your Location</Text>
-                                        <Image source={IMAGES.ic_down_arrow} style={{ width: ResponsivePixels.size16, height: ResponsivePixels.size16 }} />
-                                    </View>
-                                    <View style={[styles.locationRow, { gap: ResponsivePixels.size8 }]}>
-                                        <Image source={IMAGES.ic_location} style={{ width: ResponsivePixels.size24, height: ResponsivePixels.size24 }} />
-                                        <Text style={styles.locationText}>New York City</Text>
-                                    </View>
-                                </View>
+                                <LocationSelector />
                                 <View style={styles.headerIcons}>
                                     <TouchableOpacity style={styles.iconButton} onPress={() => navigate("SearchScreen")}>
                                         <Image source={IMAGES.ic_Search} style={{ width: "100%", height: "100%" }} />
@@ -200,33 +192,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "flex-start",
         marginBottom: ResponsivePixels.size24,
-    },
-    locationContainer: {
-        flex: 1,
-        gap: ResponsivePixels.size5,
-    },
-    locationLabel: {
-        color: Colors.DefaultWhite,
-        marginBottom: ResponsivePixels.size4,
-
-        ...Typography.bodyMediumRegular,
-    },
-    locationRow: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    locationIcon: {
-        fontSize: ResponsivePixels.size16,
-        marginRight: ResponsivePixels.size8,
-    },
-    locationText: {
-        color: Colors.DefaultWhite,
-        marginRight: ResponsivePixels.size8,
-        ...Typography.bodyMediumSemiBold,
-    },
-    dropdownIcon: {
-        color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size12,
     },
     headerIcons: {
         flexDirection: "row",
