@@ -11,9 +11,11 @@ import {
     StatusBar,
     ViewStyle,
 } from 'react-native';
+import { X } from 'lucide-react-native';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { themes } from '../Assets/StyleUtilities/CommonStyleSheets/theme';
 import { Colors } from '../Assets/StyleUtilities/Colors';
+import { Typography } from '../Theme/Typographys';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -268,7 +270,7 @@ const CustomModal = forwardRef<CustomModalRef, CustomModalProps>(
                         ...baseStyle,
                         backgroundColor: 'transparent',
                         borderWidth: 1,
-                        borderColor: '#E0E0E0',
+                        borderColor: Colors.MoonDust,
                     };
                 case 'danger':
                     return {
@@ -290,8 +292,7 @@ const CustomModal = forwardRef<CustomModalRef, CustomModalProps>(
 
         const getButtonTextStyle = (buttonStyle: string) => {
             const baseStyle = {
-                fontSize: ResponsivePixels.size16,
-                fontWeight: '600' as const,
+                ...Typography.bodyMediumSemiBold
             };
 
             switch (buttonStyle) {
@@ -305,7 +306,7 @@ const CustomModal = forwardRef<CustomModalRef, CustomModalProps>(
                 case 'secondary':
                     return {
                         ...baseStyle,
-                        color: '#666666',
+                        color: Colors.NoirBlack,
                     };
                 default:
                     return {
@@ -332,7 +333,7 @@ const CustomModal = forwardRef<CustomModalRef, CustomModalProps>(
                                 getButtonStyle(button.style || 'secondary'),
                                 button.customStyle,
                                 button.disabled && styles.disabledButton,
-                                buttonLayout === 'horizontal' && index > 0 && { marginLeft: ResponsivePixels.size12 },
+                                // buttonLayout === 'horizontal' && index > 0 && { marginLeft: ResponsivePixels.size12 },
                                 buttonLayout === 'vertical' && index > 0 && { marginTop: ResponsivePixels.size12 },
                             ]}
                         >
@@ -393,7 +394,7 @@ const CustomModal = forwardRef<CustomModalRef, CustomModalProps>(
                         {/* Close Button */}
                         {showCloseButton && (
                             <TouchableOpacity onPress={hideModal} style={styles.closeButton}>
-                                <Text style={styles.closeButtonText}>×</Text>
+                                <X size={24} color={Colors.NoirBlack} strokeWidth={3} />
                             </TouchableOpacity>
                         )}
 
@@ -448,40 +449,34 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         position: 'absolute',
-        top: ResponsivePixels.size16,
+        top: ResponsivePixels.size19,
         right: ResponsivePixels.size16,
-        width: ResponsivePixels.size32,
-        height: ResponsivePixels.size32,
+        padding: ResponsivePixels.size8,
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1,
-    },
-    closeButtonText: {
-        fontSize: ResponsivePixels.size24,
-        color: '#666666',
-        fontWeight: '300',
+        borderRadius: ResponsivePixels.size12,
+        borderWidth: 1,
+        borderColor: Colors.MoonDust,
     },
     title: {
-        fontSize: ResponsivePixels.size20,
-        fontWeight: '600',
-        color: '#333333',
+        color: Colors.NoirBlack,
         textAlign: 'center',
-        marginBottom: ResponsivePixels.size16,
-        paddingRight: ResponsivePixels.size32,
+        ...Typography.h5SemiBold
     },
     message: {
-        fontSize: ResponsivePixels.size14,
-        color: '#666666',
+        color: Colors.SteelMist,
         textAlign: 'center',
-        lineHeight: ResponsivePixels.size20,
+        marginTop: ResponsivePixels.size28,
         marginBottom: ResponsivePixels.size24,
+        ...Typography.bodyMediumMedium
     },
     customContent: {
         marginBottom: ResponsivePixels.size24,
     },
     buttonContainer: {
         flexDirection: 'row',
-        gap: ResponsivePixels.size12,
+        gap: ResponsivePixels.size16,
     },
     verticalButtonContainer: {
         flexDirection: 'column',

@@ -13,6 +13,7 @@ import { Camera, ChevronRight, CreditCard, HelpCircle, LogOut, Settings, Trash2,
 
 const ProfileScreen: React.FC = () => {
     const signOutModalRef = useRef<CustomModalRef>(null);
+    const accountDeletionModalRef = useRef<CustomModalRef>(null);
     const [isScrolled, setIsScrolled] = useState(false),
 
         menuItems = [
@@ -49,6 +50,7 @@ const ProfileScreen: React.FC = () => {
                 Icon: Trash2,
                 title: "Request Account Deletion",
                 section: "support",
+                onPress: () => accountDeletionModalRef.current?.show(),
             },
             {
                 id: 6,
@@ -74,6 +76,26 @@ const ProfileScreen: React.FC = () => {
                     console.log('Log out pressed');
                     signOutModalRef.current?.hide();
                     // Handle logout logic
+                },
+            },
+        ],
+
+        accountDeletionButtons: ModalButton[] = [
+            {
+                text: 'Cancel',
+                style: 'secondary',
+                onPress: () => {
+                    console.log('Cancel deletion pressed');
+                    accountDeletionModalRef.current?.hide();
+                },
+            },
+            {
+                text: 'Delete',
+                style: 'primary',
+                onPress: () => {
+                    console.log('Delete account pressed');
+                    accountDeletionModalRef.current?.hide();
+                    // Handle account deletion logic
                 },
             },
         ],
@@ -183,6 +205,14 @@ const ProfileScreen: React.FC = () => {
                 title="Sign Out"
                 message="Do you want to log out?"
                 buttons={signOutButtons}
+                animationType="scale"
+            />
+
+            <CustomModal
+                ref={accountDeletionModalRef}
+                title="Account Deletion"
+                message="Are you sure you want to delete your account? This action cannot be undone."
+                buttons={accountDeletionButtons}
                 animationType="scale"
             />
         </MainContainer>
