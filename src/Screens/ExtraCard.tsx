@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { CreditCard } from 'lucide-react-native';
 import {
     View,
     Text,
@@ -6,11 +7,17 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import CustomModal, { CustomModalRef, ModalButton } from '../common/CustomModal';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import { goBack, navigate } from '../Navigators/Navigator';
+import CustomButton from '../common/CustomButton';
+import MainContainer from '../common/MainContainer';
+import { Typography } from '../Theme/Typographys';
+import { IMAGES } from '../Assets/Images';
+import MastercardLogo from '../Assets/SVGs/MastercardLogo';
+import PaypalLogo from '../Assets/SVGs/PaypalLogo';
+import ApplePayLogo from '../Assets/SVGs/ApplePayLogo';
 
 interface PaymentMethod {
     id: string;
@@ -53,9 +60,6 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
         }
     ]);
 
-    const handleGoBack = () => {
-        goBack();
-    };
 
     const handleDeletePress = () => {
         if (selectedCardId) {
@@ -112,36 +116,19 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
 
     // Render MasterCard Logo
     const renderMastercardLogo = (size: 'small' | 'large' = 'small') => {
-        const circleSize = size === 'large' ? ResponsivePixels.size32 : ResponsivePixels.size20;
-        const overlap = size === 'large' ? -ResponsivePixels.size12 : -ResponsivePixels.size8;
-
-        return (
-            <View style={styles.mastercardLogo}>
-                <View style={[
-                    styles.mastercardCircle,
-                    styles.mastercardRed,
-                    { width: circleSize, height: circleSize, borderRadius: circleSize / 2 }
-                ]} />
-                <View style={[
-                    styles.mastercardCircle,
-                    styles.mastercardYellow,
-                    { width: circleSize, height: circleSize, borderRadius: circleSize / 2, marginLeft: overlap }
-                ]} />
-            </View>
-        );
+        const logoWidth = size === 'large' ? ResponsivePixels.size60 : ResponsivePixels.size44;
+        const logoHeight = size === 'large' ? ResponsivePixels.size40 : ResponsivePixels.size28;
+        return <MastercardLogo width={logoWidth} height={logoHeight} />;
     };
 
     // Render PayPal Logo
     const renderPaypalLogo = () => (
-        <Text style={styles.paypalLogo}>PayPal</Text>
+        <PaypalLogo width={ResponsivePixels.size50} height={ResponsivePixels.size20} />
     );
 
     // Render Apple Pay Logo
     const renderApplePayLogo = () => (
-        <View style={styles.applePayContainer}>
-            <Text style={styles.appleIcon}></Text>
-            <Text style={styles.applePayText}>Pay</Text>
-        </View>
+        <ApplePayLogo width={ResponsivePixels.size44} height={ResponsivePixels.size20} />
     );
 
     const getCardLogo = (type: string) => {
@@ -153,7 +140,7 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             case 'applepay':
                 return renderApplePayLogo();
             default:
-                return <Text style={styles.defaultLogo}>💳</Text>;
+                return <CreditCard size={ResponsivePixels.size20} color={Colors.NoirBlack} />;
         }
     };
 
@@ -167,19 +154,27 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-                    <Text style={styles.backIcon}>‹</Text>
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Extra Card</Text>
-                <TouchableOpacity onPress={handleDeletePress} style={styles.deleteButton}>
-                    <Text style={styles.deleteIcon}>🗑️</Text>
-                </TouchableOpacity>
-            </View>
-
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <MainContainer
+            statusBarStyle="dark-content"
+            containerBackgroundColor={Colors.DefaultWhite}
+            showHeader
+            header={{
+                headerTitle: "Extra Card",
+                headerTitleColor: Colors.NoirBlack,
+                headerBackgroundColor: Colors.DefaultWhite,
+                headerLeft: {
+                    icon: IMAGES.ic_Back,
+                    onPress: () => goBack(),
+                    color: Colors.NoirBlack,
+                },
+                headerRight: {
+                    icon: IMAGES.ic_Delete,
+                    onPress: () => handleDeletePress(),
+                    color: Colors.ErrorRed,
+                },
+            }}
+        >
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
                 {/* Featured Card Display */}
                 <View style={styles.featuredCardContainer}>
                     <View style={styles.featuredCard}>
@@ -244,7 +239,7 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
                             >
                                 <View style={styles.paymentMethodLeft}>
                                     <View style={styles.paymentMethodIcon}>
-                                        <Text style={styles.cardIconText}>💳</Text>
+                                        <CreditCard size={ResponsivePixels.size22} color={Colors.NoirBlack} />
                                     </View>
                                     <View style={styles.paymentMethodInfo}>
                                         <Text style={styles.paymentMethodName}>{method.name}</Text>
@@ -262,9 +257,11 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
 
             {/* Add New Card Button */}
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={handleAddNewCard} style={styles.addNewCardButton}>
-                    <Text style={styles.addNewCardButtonText}>Add New Card</Text>
-                </TouchableOpacity>
+                <CustomButton
+                    title="Add New Card"
+                    onPress={handleAddNewCard}
+                    style={styles.addNewCardButton}
+                />
             </View>
 
             {/* Delete Confirmation Modal */}
@@ -275,54 +272,18 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
                 buttons={deleteButtons}
                 animationType="scale"
             />
-        </SafeAreaView>
+        </MainContainer>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.DefaultWhite,
-    },
     scrollView: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: ResponsivePixels.size12,
-        paddingVertical: ResponsivePixels.size16,
+    scrollViewContent: {
+        paddingBottom: ResponsivePixels.size100,
     },
-    backButton: {
-        width: ResponsivePixels.size44,
-        height: ResponsivePixels.size44,
-        borderRadius: ResponsivePixels.size22,
-        backgroundColor: Colors.FrostedHaze,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backIcon: {
-        fontSize: ResponsivePixels.size28,
-        color: Colors.NoirBlack,
-        marginTop: -ResponsivePixels.size2,
-    },
-    headerTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
-        color: Colors.NoirBlack,
-    },
-    deleteButton: {
-        width: ResponsivePixels.size44,
-        height: ResponsivePixels.size44,
-        borderRadius: ResponsivePixels.size22,
-        backgroundColor: '#FFEBEB',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    deleteIcon: {
-        fontSize: ResponsivePixels.size18,
-    },
+
     featuredCardContainer: {
         paddingHorizontal: ResponsivePixels.size12,
         marginTop: ResponsivePixels.size10,
@@ -370,9 +331,8 @@ const styles = StyleSheet.create({
     },
     cardBrand: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size22,
-        fontWeight: '600',
         marginBottom: ResponsivePixels.size20,
+        ...Typography.h6SemiBold
     },
     cardNumberRow: {
         flexDirection: 'row',
@@ -392,9 +352,8 @@ const styles = StyleSheet.create({
     },
     cardLastDigits: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size22,
-        fontWeight: '600',
         letterSpacing: 2,
+        ...Typography.h5SemiBold
     },
     cardFooter: {
         flexDirection: 'row',
@@ -410,8 +369,8 @@ const styles = StyleSheet.create({
     },
     cardLabel: {
         color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size11,
         opacity: 0.9,
+        ...Typography.bodySuperSmallRegular
     },
     cardHolderDots: {
         flexDirection: 'row',
@@ -430,27 +389,14 @@ const styles = StyleSheet.create({
     cardLogoContainer: {
         alignItems: 'flex-end',
     },
-    mastercardLogo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    mastercardCircle: {
-        opacity: 0.9,
-    },
-    mastercardRed: {
-        backgroundColor: '#EB001B',
-    },
-    mastercardYellow: {
-        backgroundColor: '#F79E1B',
-    },
+
     sectionContainer: {
         paddingHorizontal: ResponsivePixels.size12,
     },
     sectionTitle: {
-        fontSize: ResponsivePixels.size18,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size16,
+        ...Typography.bodyLargeSemiBold
     },
     paymentMethodsList: {
         gap: ResponsivePixels.size12,
@@ -484,71 +430,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: ResponsivePixels.size14,
     },
-    cardIconText: {
-        fontSize: ResponsivePixels.size20,
-    },
     paymentMethodInfo: {
         flex: 1,
     },
     paymentMethodName: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
         color: Colors.NoirBlack,
         marginBottom: ResponsivePixels.size4,
+        ...Typography.bodyMediumSemiBold
     },
     paymentMethodNumber: {
-        fontSize: ResponsivePixels.size14,
         color: Colors.SteelMist,
+        ...Typography.bodySmallRegular
     },
     paymentMethodRight: {
         alignItems: 'center',
         justifyContent: 'center',
-        minWidth: ResponsivePixels.size60,
+        // minWidth: ResponsivePixels.size60,
     },
-    paypalLogo: {
-        fontSize: ResponsivePixels.size14,
-        fontWeight: '700',
-        fontStyle: 'italic',
-        color: '#003087',
-    },
-    applePayContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    appleIcon: {
-        fontSize: ResponsivePixels.size18,
-        color: Colors.NoirBlack,
-    },
-    applePayText: {
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
-        color: Colors.NoirBlack,
-        marginLeft: ResponsivePixels.size2,
-    },
-    defaultLogo: {
-        fontSize: ResponsivePixels.size20,
-    },
+
     buttonContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
         paddingHorizontal: ResponsivePixels.size12,
-        paddingBottom: ResponsivePixels.size24,
-        paddingTop: ResponsivePixels.size16,
+        paddingBottom: ResponsivePixels.size20,
+        backgroundColor: "transparent",
     },
     addNewCardButton: {
         backgroundColor: Colors.SunburstFlame,
-        borderRadius: ResponsivePixels.size30,
-        paddingVertical: ResponsivePixels.size18,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: Colors.SunburstFlame,
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.35,
-        shadowRadius: 12,
-        elevation: 10,
-    },
-    addNewCardButtonText: {
-        color: Colors.DefaultWhite,
-        fontSize: ResponsivePixels.size16,
-        fontWeight: '600',
     },
 });
 
