@@ -12,7 +12,9 @@ import { CATEGORIES } from "../Database/Categories";
 import LocationSelector from '../Components/LocationSelector';
 
 const ScreenWidth = Dimensions.get('window').width,
-    foodCardWidth = ScreenWidth / 2 - ResponsivePixels.size25;
+    HORIZONTAL_PADDING = ResponsivePixels.size12,
+    CARD_GAP = ResponsivePixels.size10,
+    foodCardWidth = (ScreenWidth - HORIZONTAL_PADDING * 2 - CARD_GAP) / 2;
 
 type FoodItems = {
     id: number | string;
@@ -263,15 +265,15 @@ const styles = StyleSheet.create({
         // flex: 1,
     },
     foodRow: {
-        justifyContent: "space-between",
-        paddingHorizontal: ResponsivePixels.size12,
-        paddingTop: ResponsivePixels.size10,
+        paddingHorizontal: HORIZONTAL_PADDING,
+        paddingTop: CARD_GAP,
+        gap: CARD_GAP,
     },
     foodCard: {
         width: foodCardWidth,
         backgroundColor: Colors.DefaultWhite,
         borderRadius: 16,
-        padding: ResponsivePixels.size10,
+        padding: ResponsivePixels.size8,
 
         shadowColor: Colors.NoirBlack,
         shadowOffset: { width: 0, height: 2 },
@@ -296,7 +298,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: ResponsivePixels.size8,
         right: ResponsivePixels.size8,
-        padding: 3,
+        padding: 2,
         borderRadius: 50,
         backgroundColor: Colors.DefaultWhite,
         alignItems: "center",

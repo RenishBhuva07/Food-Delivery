@@ -20,6 +20,10 @@ import HelpCenterScreen from "../Screens/HelpCenterScreen";
 import NotificationScreen from "../Screens/NotificationScreen";
 import SearchScreen from "../Screens/SearchScreen";
 import CMSScreen from "../Screens/CMSScreen";
+import MyOrdersScreen from "../Screens/MyOrdersScreen";
+import TrackOrderScreen from "../Screens/TrackOrderScreen";
+import PaymentScreen from "../Screens/PaymentScreen";
+import OrderSuccessScreen from "../Screens/OrderSuccessScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -47,6 +51,10 @@ export default function AppNavigator() {
                 <Stack.Screen name="SearchScreen" component={SearchScreen} />
                 <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
                 <Stack.Screen name="CMSScreen" component={CMSScreen} />
+                <Stack.Screen name="MyOrdersScreen" component={MyOrdersScreen} />
+                <Stack.Screen name="TrackOrderScreen" component={TrackOrderScreen} />
+                <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+                <Stack.Screen name="OrderSuccessScreen" component={OrderSuccessScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

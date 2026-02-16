@@ -263,7 +263,14 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
 
                             {/* Order Button */}
                             <View style={styles.orderButtonContainer}>
-                                <CustomButton title="Order Now" onPress={() => navigate('Home')} />
+                                <CustomButton title="Order Now" onPress={() => navigate('PaymentScreen', {
+                                    orderData: {
+                                        totalAmount: `$${calculateTotal().toLocaleString()}`,
+                                        totalItems: cartItems.filter(item => item.isSelected).length,
+                                        deliveryLocation: 'Home',
+                                        cartItems: cartItems.filter(item => item.isSelected),
+                                    },
+                                })} />
                             </View>
                         </>
                     }

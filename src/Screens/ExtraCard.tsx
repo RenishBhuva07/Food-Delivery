@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { CreditCard } from 'lucide-react-native';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
+import { CreditCard, Eye, EyeOff } from 'lucide-react-native';
 import {
     View,
     Text,
@@ -10,12 +10,13 @@ import {
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import CustomModal, { CustomModalRef, ModalButton } from '../common/CustomModal';
 import { Colors } from '../Assets/StyleUtilities/Colors';
-import { goBack, navigate } from '../Navigators/Navigator';
+import { goBack } from '../Navigators/Navigator';
 import CustomButton from '../common/CustomButton';
 import MainContainer from '../common/MainContainer';
 import { Typography } from '../Theme/Typographys';
 import { IMAGES } from '../Assets/Images';
 import MastercardLogo from '../Assets/SVGs/MastercardLogo';
+import AddCardSheet, { AddCardSheetRef } from '../Components/AddCardSheet';
 import PaypalLogo from '../Assets/SVGs/PaypalLogo';
 import ApplePayLogo from '../Assets/SVGs/ApplePayLogo';
 
@@ -23,7 +24,10 @@ interface PaymentMethod {
     id: string;
     type: 'mastercard' | 'paypal' | 'applepay' | 'visa';
     name: string;
+    fullNumber: string;
     maskedNumber: string;
+    holderName: string;
+    expiryDate: string;
     isSelected: boolean;
 }
 
@@ -33,32 +37,51 @@ interface ExtraCardListScreenProps {
 
 const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation }) => {
     const deleteModalRef = useRef<CustomModalRef>(null);
+    const addCardSheetRef = useRef<AddCardSheetRef>(null);
     const [selectedCardId, setSelectedCardId] = useState<string>('1');
     const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+    const [showCardNumber, setShowCardNumber] = useState<boolean>(false);
 
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([
         {
             id: '1',
             type: 'mastercard',
             name: 'MasterCard',
+            fullNumber: '2684 5765 0783 7873',
             maskedNumber: '**** **** 0783 7873',
+            holderName: 'John Doe',
+            expiryDate: '08/25',
             isSelected: true,
         },
         {
             id: '2',
             type: 'paypal',
             name: 'Paypal',
+            fullNumber: '4312 8901 0582 4672',
             maskedNumber: '**** **** 0582 4672',
+            holderName: 'John Doe',
+            expiryDate: '11/26',
             isSelected: false,
         },
         {
             id: '3',
             type: 'applepay',
             name: 'Apple Pay',
+            fullNumber: '5198 3420 0582 4672',
             maskedNumber: '**** **** 0582 4672',
+            holderName: 'John Doe',
+            expiryDate: '03/27',
             isSelected: false,
         }
     ]);
+
+    const selectedCard = useMemo(() => {
+        return paymentMethods.find(m => m.id === selectedCardId) || paymentMethods[0];
+    }, [selectedCardId, paymentMethods]);
+
+    const toggleCardNumberVisibility = () => {
+        setShowCardNumber(prev => !prev);
+    };
 
 
     const handleDeletePress = () => {
@@ -79,8 +102,28 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
     };
 
     const handleAddNewCard = () => {
-        navigate('ExtraCardFormV2Screen');
+        addCardSheetRef.current?.show();
     };
+
+    const handleSaveNewCard = useCallback((cardData: {
+        cardholderName: string;
+        cardNumber: string;
+        expiryDate: string;
+        cvv: string;
+    }) => {
+        const newId = String(Date.now());
+        const newCard: PaymentMethod = {
+            id: newId,
+            type: 'visa',
+            name: 'Visa',
+            fullNumber: cardData.cardNumber,
+            maskedNumber: '**** **** ' + cardData.cardNumber.slice(-9),
+            holderName: cardData.cardholderName,
+            expiryDate: cardData.expiryDate,
+            isSelected: false,
+        };
+        setPaymentMethods(prev => [...prev, newCard]);
+    }, []);
 
     const confirmDelete = () => {
         if (cardToDelete) {
@@ -108,7 +151,7 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             onPress: cancelDelete,
         },
         {
-            text: 'Yes, Of course',
+            text: 'Yes, Delete',
             style: 'secondary',
             onPress: confirmDelete,
         },
@@ -122,25 +165,29 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
     };
 
     // Render PayPal Logo
-    const renderPaypalLogo = () => (
-        <PaypalLogo width={ResponsivePixels.size50} height={ResponsivePixels.size20} />
-    );
+    const renderPaypalLogo = (size: 'small' | 'large' = 'small') => {
+        const logoWidth = size === 'large' ? ResponsivePixels.size60 : ResponsivePixels.size50;
+        const logoHeight = size === 'large' ? ResponsivePixels.size30 : ResponsivePixels.size20;
+        return <PaypalLogo width={logoWidth} height={logoHeight} />;
+    };
 
     // Render Apple Pay Logo
-    const renderApplePayLogo = () => (
-        <ApplePayLogo width={ResponsivePixels.size44} height={ResponsivePixels.size20} />
-    );
+    const renderApplePayLogo = (size: 'small' | 'large' = 'small') => {
+        const logoWidth = size === 'large' ? ResponsivePixels.size60 : ResponsivePixels.size44;
+        const logoHeight = size === 'large' ? ResponsivePixels.size30 : ResponsivePixels.size20;
+        return <ApplePayLogo width={logoWidth} height={logoHeight} />;
+    };
 
-    const getCardLogo = (type: string) => {
+    const getCardLogo = (type: string, size: 'small' | 'large' = 'small') => {
         switch (type) {
             case 'mastercard':
-                return renderMastercardLogo('small');
+                return renderMastercardLogo(size);
             case 'paypal':
-                return renderPaypalLogo();
+                return renderPaypalLogo(size);
             case 'applepay':
-                return renderApplePayLogo();
+                return renderApplePayLogo(size);
             default:
-                return <CreditCard size={ResponsivePixels.size20} color={Colors.NoirBlack} />;
+                return <CreditCard size={size === 'large' ? ResponsivePixels.size40 : ResponsivePixels.size20} color={size === 'large' ? Colors.DefaultWhite : Colors.NoirBlack} />;
         }
     };
 
@@ -152,6 +199,27 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
             ))}
         </View>
     );
+
+    // Format full card number into groups for display
+    const renderCardNumber = () => {
+        if (!selectedCard) return null;
+        if (showCardNumber) {
+            const groups = selectedCard.fullNumber.split(' ');
+            return groups.map((group, idx) => (
+                <Text key={idx} style={styles.cardLastDigits}>{group}</Text>
+            ));
+        } else {
+            const lastFour = selectedCard.fullNumber.slice(-4);
+            return (
+                <>
+                    {renderCardDots(4)}
+                    {renderCardDots(4)}
+                    {renderCardDots(4)}
+                    <Text style={styles.cardLastDigits}>{lastFour}</Text>
+                </>
+            );
+        }
+    };
 
     return (
         <MainContainer
@@ -185,15 +253,25 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
 
                         {/* Card Content */}
                         <View style={styles.cardContent}>
-                            {/* Card Brand */}
-                            <Text style={styles.cardBrand}>SoCard</Text>
+                            {/* Card Brand & Eye Toggle */}
+                            <View style={styles.cardTopRow}>
+                                <Text style={styles.cardBrand}>{selectedCard?.name || 'SoCard'}</Text>
+                                <TouchableOpacity
+                                    onPress={toggleCardNumberVisibility}
+                                    style={styles.eyeButton}
+                                    activeOpacity={0.7}
+                                >
+                                    {showCardNumber ? (
+                                        <EyeOff size={ResponsivePixels.size22} color={Colors.DefaultWhite} />
+                                    ) : (
+                                        <Eye size={ResponsivePixels.size22} color={Colors.DefaultWhite} />
+                                    )}
+                                </TouchableOpacity>
+                            </View>
 
                             {/* Card Number */}
                             <View style={styles.cardNumberRow}>
-                                {renderCardDots(4)}
-                                {renderCardDots(4)}
-                                {renderCardDots(4)}
-                                <Text style={styles.cardLastDigits}>8374</Text>
+                                {renderCardNumber()}
                             </View>
 
                             {/* Card Footer */}
@@ -201,22 +279,30 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
                                 <View style={styles.cardInfoSection}>
                                     <View style={styles.cardInfoBlock}>
                                         <Text style={styles.cardLabel}>Card holder name</Text>
-                                        <View style={styles.cardHolderDots}>
-                                            {renderCardDots(3)}
-                                            {renderCardDots(3)}
-                                        </View>
+                                        {showCardNumber ? (
+                                            <Text style={styles.cardHolderName}>{selectedCard?.holderName}</Text>
+                                        ) : (
+                                            <View style={styles.cardHolderDots}>
+                                                {renderCardDots(3)}
+                                                {renderCardDots(3)}
+                                            </View>
+                                        )}
                                     </View>
                                     <View style={styles.cardInfoBlock}>
                                         <Text style={styles.cardLabel}>Expiry date</Text>
-                                        <View style={styles.expiryDateRow}>
-                                            {renderCardDots(3)}
-                                            <Text style={styles.expirySlash}>/</Text>
-                                            {renderCardDots(3)}
-                                        </View>
+                                        {showCardNumber ? (
+                                            <Text style={styles.cardHolderName}>{selectedCard?.expiryDate}</Text>
+                                        ) : (
+                                            <View style={styles.expiryDateRow}>
+                                                {renderCardDots(3)}
+                                                <Text style={styles.expirySlash}>/</Text>
+                                                {renderCardDots(3)}
+                                            </View>
+                                        )}
                                     </View>
                                 </View>
                                 <View style={styles.cardLogoContainer}>
-                                    {renderMastercardLogo('large')}
+                                    {getCardLogo(selectedCard?.type || 'mastercard', 'large')}
                                 </View>
                             </View>
                         </View>
@@ -271,6 +357,12 @@ const ExtraCardListScreen: React.FC<ExtraCardListScreenProps> = ({ navigation })
                 message="Are you sure to delete this card?"
                 buttons={deleteButtons}
                 animationType="scale"
+            />
+
+            {/* Add Card Sheet */}
+            <AddCardSheet
+                ref={addCardSheetRef}
+                onSave={handleSaveNewCard}
             />
         </MainContainer>
     );
@@ -329,10 +421,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         zIndex: 1,
     },
+    cardTopRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: ResponsivePixels.size20,
+    },
     cardBrand: {
         color: Colors.DefaultWhite,
-        marginBottom: ResponsivePixels.size20,
         ...Typography.h6SemiBold
+    },
+    eyeButton: {
+        padding: ResponsivePixels.size6,
+        borderRadius: ResponsivePixels.size20,
+        backgroundColor: 'rgba(255,255,255,0.2)',
     },
     cardNumberRow: {
         flexDirection: 'row',
@@ -375,6 +477,10 @@ const styles = StyleSheet.create({
     cardHolderDots: {
         flexDirection: 'row',
         gap: ResponsivePixels.size8,
+    },
+    cardHolderName: {
+        color: Colors.DefaultWhite,
+        ...Typography.bodyMediumSemiBold
     },
     expiryDateRow: {
         flexDirection: 'row',

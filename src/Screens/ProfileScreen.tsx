@@ -10,10 +10,12 @@ import CustomModal, { CustomModalRef, ModalButton } from "../common/CustomModal"
 import { navigate } from "../Navigators/Navigator"
 import { Typography } from "../Theme/Typographys"
 import { Camera, ChevronRight, CreditCard, HelpCircle, LogOut, Settings, Trash2, User, UserPlus } from "lucide-react-native"
+import AddAccountSheet, { AddAccountSheetRef } from "../Components/AddAccountSheet"
 
 const ProfileScreen: React.FC = () => {
     const signOutModalRef = useRef<CustomModalRef>(null);
     const accountDeletionModalRef = useRef<CustomModalRef>(null);
+    const addAccountSheetRef = useRef<AddAccountSheetRef>(null);
     const [isScrolled, setIsScrolled] = useState(false),
 
         menuItems = [
@@ -57,6 +59,7 @@ const ProfileScreen: React.FC = () => {
                 Icon: UserPlus,
                 title: "Add another account",
                 section: "support",
+                onPress: () => addAccountSheetRef.current?.show(),
             },
         ],
 
@@ -149,7 +152,7 @@ const ProfileScreen: React.FC = () => {
 
                             <View style={styles.sectionHeader}>
                                 <Text style={styles.sectionTitle}>My Orders</Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigate("MyOrdersScreen")}>
                                     <Text style={styles.seeAllText}>See All</Text>
                                 </TouchableOpacity>
                             </View>
@@ -214,6 +217,16 @@ const ProfileScreen: React.FC = () => {
                 message="Are you sure you want to delete your account? This action cannot be undone."
                 buttons={accountDeletionButtons}
                 animationType="scale"
+            />
+
+            <AddAccountSheet
+                ref={addAccountSheetRef}
+                onAccountSwitch={(account) => {
+                    console.log('Switched to account:', account.email);
+                }}
+                onAccountAdded={(account) => {
+                    console.log('New account added:', account.email);
+                }}
             />
         </MainContainer>
     )
