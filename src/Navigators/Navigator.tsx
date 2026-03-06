@@ -49,3 +49,18 @@ export const resetNavigation = (name: string, params?: any) => {
         })
     );
 };
+
+export const resetToDashboardWithRoute = (name: string, params?: any) => {
+    navigationRef.current?.dispatch(
+        CommonActions.reset({
+            index: 1,
+            routes: [
+                { name: "Dashboard" },
+                {
+                    name: name,
+                    params: params,
+                },
+            ],
+        })
+    );
+};

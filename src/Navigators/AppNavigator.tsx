@@ -24,6 +24,7 @@ import MyOrdersScreen from "../Screens/MyOrdersScreen";
 import TrackOrderScreen from "../Screens/TrackOrderScreen";
 import PaymentScreen from "../Screens/PaymentScreen";
 import OrderSuccessScreen from "../Screens/OrderSuccessScreen";
+import DeliveryMapScreen from "../Screens/DeliveryMapScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -55,6 +56,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="TrackOrderScreen" component={TrackOrderScreen} />
                 <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
                 <Stack.Screen name="OrderSuccessScreen" component={OrderSuccessScreen} />
+                <Stack.Screen name="DeliveryMapScreen" component={DeliveryMapScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

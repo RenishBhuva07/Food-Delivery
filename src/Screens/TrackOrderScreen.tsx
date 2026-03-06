@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -7,13 +7,21 @@ import {
     ScrollView,
     Animated,
     TouchableOpacity,
+    TextInput,
 } from 'react-native';
 import MainContainer from '../common/MainContainer';
 import { Colors } from '../Assets/StyleUtilities/Colors';
 import ResponsivePixels from '../Assets/StyleUtilities/ResponsivePixels';
 import { IMAGES } from '../Assets/Images';
-import { goBack } from '../Navigators/Navigator';
+import { goBack, navigate, resetToDashboardWithRoute } from '../Navigators/Navigator';
 import { Typography, ShadowStyles } from '../Theme/Typographys';
+import CustomModal, { CustomModalRef, ModalButton } from '../common/CustomModal';
+import CustomActionSheet from '../common/CustomActionSheet';
+import { ActionSheetRef } from 'react-native-actions-sheet';
+import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
+import { CustomAnimation } from '../common/CustomAnimation';
+import { ANIMATIONS } from '../Animations';
+import CustomButton from '../common/CustomButton';
 import {
     ClipboardCheck,
     CookingPot,
@@ -45,6 +53,24 @@ const TrackOrderScreen: React.FC = ({ route }: any) => {
         new Animated.Value(0),
         new Animated.Value(0),
     ]).current;
+
+    const cancelModalRef = useRef<CustomModalRef>(null);
+    const cancelSuccessSheetRef = useRef<ActionSheetRef>(null);
+
+    const CANCEL_REASONS = useMemo(
+        () => [
+            'Ordered by mistake',
+            'Found a better price elsewhere',
+            'Delivery is taking too long',
+            'Changed my mind',
+            'Other',
+        ],
+        []
+    );
+
+    const [selectedCancelReason, setSelectedCancelReason] = useState<string>(CANCEL_REASONS[0]);
+    const [cancelNote, setCancelNote] = useState<string>('');
+    const [isOrderCancelled, setIsOrderCancelled] = useState<boolean>(order?.status === 'Cancelled');
 
     const TRACKING_STEPS: TrackingStep[] = [
         {
@@ -107,6 +133,46 @@ const TrackOrderScreen: React.FC = ({ route }: any) => {
 
     const activeStepIndex = TRACKING_STEPS.findIndex(s => s.isActive);
     const progressPercent = (activeStepIndex + 0.5) / TRACKING_STEPS.length;
+
+    const openCancelOrderModal = () => {
+        if (isOrderCancelled) return;
+        setSelectedCancelReason(CANCEL_REASONS[0]);
+        setCancelNote('');
+        cancelModalRef.current?.show();
+    };
+
+    const handleCancelOrder = () => {
+        setIsOrderCancelled(true);
+        cancelModalRef.current?.hide();
+        setTimeout(() => cancelSuccessSheetRef.current?.show(), 350);
+    };
+
+    const handleCancelSuccessDone = () => {
+        cancelSuccessSheetRef.current?.hide();
+        const cancelledOrderId = order?.id ?? order?.orderId;
+        resetToDashboardWithRoute(
+            'MyOrdersScreen',
+            cancelledOrderId ? { cancelledOrderId } : undefined
+        );
+    };
+
+    const isOtherReason = selectedCancelReason === 'Other';
+    const isCancelConfirmDisabled = isOtherReason && cancelNote.trim().length === 0;
+
+    const cancelOrderButtons: ModalButton[] = [
+        {
+            text: 'Keep Order',
+            style: 'secondary',
+            onPress: () => cancelModalRef.current?.hide(),
+        },
+        {
+            text: 'Cancel Order',
+            style: 'danger',
+            customStyle: { backgroundColor: Colors.ErrorRedLight },
+            disabled: isCancelConfirmDisabled,
+            onPress: handleCancelOrder,
+        },
+    ];
 
     const renderTrackingStep = (step: TrackingStep, index: number) => {
         const isLast = index === TRACKING_STEPS.length - 1;
@@ -195,181 +261,284 @@ const TrackOrderScreen: React.FC = ({ route }: any) => {
     };
 
     return (
-        <MainContainer
-            statusBarStyle="dark-content"
-            containerBackgroundColor={Colors.DefaultWhite}
-            showHeader
-            header={{
-                headerTitle: 'Track Order',
-                headerTitleColor: Colors.NoirBlack,
-                headerBackgroundColor: Colors.DefaultWhite,
-                headerLeft: {
-                    icon: IMAGES.ic_Back,
-                    onPress: () => goBack(),
-                    color: Colors.NoirBlack,
-                },
-            }}
-        >
-            <ScrollView
-                contentContainerStyle={styles.scrollContainer}
-                showsVerticalScrollIndicator={false}
+        <>
+            <MainContainer
+                statusBarStyle="dark-content"
+                containerBackgroundColor={Colors.DefaultWhite}
+                showHeader
+                header={{
+                    headerTitle: 'Track Order',
+                    headerTitleColor: Colors.NoirBlack,
+                    headerBackgroundColor: Colors.DefaultWhite,
+                    headerLeft: {
+                        icon: IMAGES.ic_Back,
+                        onPress: () => goBack(),
+                        color: Colors.NoirBlack,
+                    },
+                }}
             >
-                {/* Order Summary Card */}
-                <View style={styles.orderSummaryCard}>
-                    <View style={styles.orderSummaryHeader}>
-                        <View>
-                            <Text style={styles.orderIdLabel}>Order ID</Text>
-                            <Text style={styles.orderIdValue}>
-                                #{order?.orderId ?? '888333777'}
-                            </Text>
-                        </View>
-                        <View style={styles.estimatedTimeContainer}>
-                            <Text style={styles.estimatedLabel}>Estimated</Text>
-                            <Text style={styles.estimatedTime}>25 min</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.orderSummaryDivider} />
-
-                    <View style={styles.orderItemRow}>
-                        <View style={styles.orderItemImageContainer}>
-                            <Image
-                                source={order?.image ?? IMAGES.ordinary_burgers}
-                                style={styles.orderItemImage}
-                            />
-                        </View>
-                        <View style={styles.orderItemDetails}>
-                            <Text style={styles.orderItemName}>
-                                {order?.itemName ?? 'Burger With Meat'}
-                            </Text>
-                            <Text style={styles.orderItemQuantity}>
-                                {order?.quantity ?? '14 Items'}
-                            </Text>
-                        </View>
-                        <Text style={styles.orderItemPrice}>
-                            {order?.price ?? '$12,230'}
-                        </Text>
-                    </View>
-                </View>
-
-                {/* Progress Bar */}
-                <View style={styles.progressSection}>
-                    <View style={styles.progressBarBackground}>
-                        <Animated.View
-                            style={[
-                                styles.progressBarFill,
-                                {
-                                    width: progressAnim.interpolate({
-                                        inputRange: [0, 1],
-                                        outputRange: ['0%', `${progressPercent * 100}%`],
-                                    }),
-                                },
-                            ]}
-                        />
-                    </View>
-                    <Text style={styles.progressLabel}>
-                        {Math.round(progressPercent * 100)}% completed
-                    </Text>
-                </View>
-
-                {/* Tracking Steps */}
-                <View style={styles.trackingCard}>
-                    <Text style={styles.trackingTitle}>Order Status</Text>
-                    <View style={styles.stepsContainer}>
-                        {TRACKING_STEPS.map(renderTrackingStep)}
-                    </View>
-                </View>
-
-                {/* Delivery Partner Card */}
-                <View style={styles.deliveryPartnerCard}>
-                    <Text style={styles.deliveryPartnerTitle}>Delivery Partner</Text>
-                    <View style={styles.partnerRow}>
-                        <Image
-                            source={IMAGES.user_three}
-                            style={styles.partnerAvatar}
-                        />
-                        <View style={styles.partnerInfo}>
-                            <Text style={styles.partnerName}>James Rodriguez</Text>
-                            <View style={styles.partnerRatingRow}>
-                                <Image
-                                    source={IMAGES.ic_Star}
-                                    style={styles.starIcon}
-                                />
-                                <Text style={styles.partnerRating}>4.8</Text>
-                                <Text style={styles.partnerTrips}>• 234 deliveries</Text>
+                <ScrollView
+                    contentContainerStyle={styles.scrollContainer}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {/* Order Summary Card */}
+                    <View style={styles.orderSummaryCard}>
+                        <View style={styles.orderSummaryHeader}>
+                            <View>
+                                <Text style={styles.orderIdLabel}>Order ID</Text>
+                                <Text style={styles.orderIdValue}>
+                                    #{order?.orderId ?? '888333777'}
+                                </Text>
+                            </View>
+                            <View style={styles.estimatedTimeContainer}>
+                                <Text style={styles.estimatedLabel}>Estimated</Text>
+                                <Text style={styles.estimatedTime}>25 min</Text>
                             </View>
                         </View>
-                        <View style={styles.partnerActions}>
-                            <TouchableOpacity
-                                style={styles.partnerActionButton}
-                                activeOpacity={0.7}
-                            >
-                                <Phone size={18} color={Colors.SunburstFlame} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.partnerActionButton}
-                                activeOpacity={0.7}
-                            >
-                                <MessageCircle size={18} color={Colors.SunburstFlame} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
 
-                {/* Delivery Address Card */}
-                <View style={styles.addressCard}>
-                    <Text style={styles.addressTitle}>Delivery Address</Text>
-                    <View style={styles.addressRow}>
-                        <View style={styles.addressIconContainer}>
-                            <MapPin size={20} color={Colors.SunburstFlame} />
-                        </View>
-                        <View style={styles.addressDetails}>
-                            <Text style={styles.addressName}>Home</Text>
-                            <Text style={styles.addressText}>
-                                2464 Royal Ln. Mesa, New Jersey 45463
+                        <View style={styles.orderSummaryDivider} />
+
+                        <View style={styles.orderItemRow}>
+                            <View style={styles.orderItemImageContainer}>
+                                <Image
+                                    source={order?.image ?? IMAGES.ordinary_burgers}
+                                    style={styles.orderItemImage}
+                                />
+                            </View>
+                            <View style={styles.orderItemDetails}>
+                                <Text style={styles.orderItemName}>
+                                    {order?.itemName ?? 'Burger With Meat'}
+                                </Text>
+                                <Text style={styles.orderItemQuantity}>
+                                    {order?.quantity ?? '14 Items'}
+                                </Text>
+                            </View>
+                            <Text style={styles.orderItemPrice}>
+                                {order?.price ?? '$12,230'}
                             </Text>
                         </View>
-                        <ChevronRight size={20} color={Colors.SteelMist} />
                     </View>
+
+                    {/* Progress Bar */}
+                    <View style={styles.progressSection}>
+                        <View style={styles.progressBarBackground}>
+                            <Animated.View
+                                style={[
+                                    styles.progressBarFill,
+                                    {
+                                        width: progressAnim.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: ['0%', `${progressPercent * 100}%`],
+                                        }),
+                                    },
+                                ]}
+                            />
+                        </View>
+                        <Text style={styles.progressLabel}>
+                            {Math.round(progressPercent * 100)}% completed
+                        </Text>
+                    </View>
+
+                    {/* Delivery Map Entry */}
+                    <View style={styles.mapButtonContainer}>
+                        <CustomButton
+                            title="View Delivery Map"
+                            onPress={() =>
+                                navigate('DeliveryMapScreen', {
+                                    order,
+                                })
+                            }
+                            disableAllCaps
+                        />
+                    </View>
+
+                    {/* Tracking Steps */}
+                    <View style={styles.trackingCard}>
+                        <Text style={styles.trackingTitle}>Order Status</Text>
+                        <View style={styles.stepsContainer}>
+                            {TRACKING_STEPS.map(renderTrackingStep)}
+                        </View>
+                    </View>
+
+                    {/* Delivery Partner Card */}
+                    <View style={styles.deliveryPartnerCard}>
+                        <Text style={styles.deliveryPartnerTitle}>Delivery Partner</Text>
+                        <View style={styles.partnerRow}>
+                            <Image
+                                source={IMAGES.user_three}
+                                style={styles.partnerAvatar}
+                            />
+                            <View style={styles.partnerInfo}>
+                                <Text style={styles.partnerName}>James Rodriguez</Text>
+                                <View style={styles.partnerRatingRow}>
+                                    <Image
+                                        source={IMAGES.ic_Star}
+                                        style={styles.starIcon}
+                                    />
+                                    <Text style={styles.partnerRating}>4.8</Text>
+                                    <Text style={styles.partnerTrips}>• 234 deliveries</Text>
+                                </View>
+                            </View>
+                            <View style={styles.partnerActions}>
+                                <TouchableOpacity
+                                    style={styles.partnerActionButton}
+                                    activeOpacity={0.7}
+                                >
+                                    <Phone size={18} color={Colors.SunburstFlame} />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.partnerActionButton}
+                                    activeOpacity={0.7}
+                                >
+                                    <MessageCircle size={18} color={Colors.SunburstFlame} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+
+                    {/* Delivery Address Card */}
+                    <View style={styles.addressCard}>
+                        <Text style={styles.addressTitle}>Delivery Address</Text>
+                        <View style={styles.addressRow}>
+                            <View style={styles.addressIconContainer}>
+                                <MapPin size={20} color={Colors.SunburstFlame} />
+                            </View>
+                            <View style={styles.addressDetails}>
+                                <Text style={styles.addressName}>Home</Text>
+                                <Text style={styles.addressText}>
+                                    2464 Royal Ln. Mesa, New Jersey 45463
+                                </Text>
+                            </View>
+                            <ChevronRight size={20} color={Colors.SteelMist} />
+                        </View>
+                    </View>
+
+                    {/* Order Details Card */}
+                    <View style={styles.orderDetailsCard}>
+                        <Text style={styles.orderDetailsTitle}>Order Details</Text>
+
+                        <View style={styles.detailRow}>
+                            <Text style={styles.detailLabel}>Subtotal</Text>
+                            <Text style={styles.detailValue}>
+                                {order?.price ?? '$12,230'}
+                            </Text>
+                        </View>
+                        <View style={styles.detailRow}>
+                            <Text style={styles.detailLabel}>Delivery Fee</Text>
+                            <Text style={styles.detailValue}>$2.50</Text>
+                        </View>
+                        <View style={styles.detailRow}>
+                            <Text style={styles.detailLabel}>Discount</Text>
+                            <Text style={[styles.detailValue, styles.discountValue]}>
+                                -$3.00
+                            </Text>
+                        </View>
+
+                        <View style={styles.totalDivider} />
+
+                        <View style={styles.detailRow}>
+                            <Text style={styles.totalLabel}>Total</Text>
+                            <Text style={styles.totalValue}>
+                                {order?.price ?? '$12,230'}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/* Cancel Order Button */}
+                    {!isOrderCancelled && (
+                        <TouchableOpacity
+                            style={styles.cancelButton}
+                            activeOpacity={0.7}
+                            onPress={openCancelOrderModal}
+                        >
+                            <Text style={styles.cancelButtonText}>Cancel Order</Text>
+                        </TouchableOpacity>
+                    )}
+                </ScrollView>
+            </MainContainer>
+
+            {/* Cancel Order Modal */}
+            <CustomModal
+                ref={cancelModalRef}
+                title="Cancel Order"
+                message="Please select a reason for cancelling this order."
+                buttons={cancelOrderButtons}
+                animationType="scale"
+                buttonLayout="vertical"
+                customContent={
+                    <View>
+                        <View style={styles.reasonsContainer}>
+                            {CANCEL_REASONS.map((reason) => {
+                                const isSelected = selectedCancelReason === reason;
+                                return (
+                                    <TouchableOpacity
+                                        key={reason}
+                                        activeOpacity={0.8}
+                                        onPress={() => setSelectedCancelReason(reason)}
+                                        style={[
+                                            styles.reasonRow,
+                                            isSelected && styles.reasonRowSelected,
+                                        ]}
+                                    >
+                                        <View style={[styles.radioOuter, isSelected && styles.radioOuterSelected]}>
+                                            {isSelected && <View style={styles.radioInner} />}
+                                        </View>
+                                        <Text style={styles.reasonText}>{reason}</Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
+
+                        {isOtherReason && (
+                            <View style={styles.otherReasonContainer}>
+                                <Text style={styles.otherReasonLabel}>Tell us more</Text>
+                                <TextInput
+                                    value={cancelNote}
+                                    onChangeText={setCancelNote}
+                                    placeholder="Type here..."
+                                    placeholderTextColor={Colors.SteelMist}
+                                    style={styles.otherReasonInput}
+                                    multiline
+                                />
+                                {isCancelConfirmDisabled && (
+                                    <Text style={styles.otherReasonError}>
+                                        Please add a short note for “Other”.
+                                    </Text>
+                                )}
+                            </View>
+                        )}
+                    </View>
+                }
+            />
+
+            {/* Cancel Success Sheet */}
+            <CustomActionSheet ref={cancelSuccessSheetRef}>
+                <View style={ActionSheetStyles.actionSheetContent}>
+                    <View style={styles.cancelSuccessContent}>
+                        <View style={styles.cancelSuccessIcon}>
+                            <CustomAnimation
+                                animationFile={ANIMATIONS.Success}
+                                animationStyle={{
+                                    width: ResponsivePixels.size180,
+                                    height: ResponsivePixels.size180,
+                                }}
+                            />
+                        </View>
+                        <Text style={styles.cancelSuccessTitle}>Order Cancelled</Text>
+                        <Text style={styles.cancelSuccessSubtitle}>
+                            Your order has been cancelled successfully.
+                        </Text>
+                    </View>
+
+                    <CustomButton
+                        style={{ marginBottom: ResponsivePixels.size10 }}
+                        title="Back to Orders"
+                        onPress={handleCancelSuccessDone}
+                        disableAllCaps
+                    />
                 </View>
-
-                {/* Order Details Card */}
-                <View style={styles.orderDetailsCard}>
-                    <Text style={styles.orderDetailsTitle}>Order Details</Text>
-
-                    <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Subtotal</Text>
-                        <Text style={styles.detailValue}>
-                            {order?.price ?? '$12,230'}
-                        </Text>
-                    </View>
-                    <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Delivery Fee</Text>
-                        <Text style={styles.detailValue}>$2.50</Text>
-                    </View>
-                    <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Discount</Text>
-                        <Text style={[styles.detailValue, styles.discountValue]}>
-                            -$3.00
-                        </Text>
-                    </View>
-
-                    <View style={styles.totalDivider} />
-
-                    <View style={styles.detailRow}>
-                        <Text style={styles.totalLabel}>Total</Text>
-                        <Text style={styles.totalValue}>
-                            {order?.price ?? '$12,230'}
-                        </Text>
-                    </View>
-                </View>
-
-                {/* Cancel Order Button */}
-                <TouchableOpacity style={styles.cancelButton} activeOpacity={0.7}>
-                    <Text style={styles.cancelButtonText}>Cancel Order</Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </MainContainer>
+            </CustomActionSheet>
+        </>
     );
 };
 
@@ -472,6 +641,10 @@ const styles = StyleSheet.create({
         color: Colors.SteelMist,
         textAlign: 'right',
         ...Typography.bodySuperSmallMedium,
+    },
+
+    mapButtonContainer: {
+        marginBottom: ResponsivePixels.size20,
     },
 
     // Tracking Card
@@ -733,6 +906,97 @@ const styles = StyleSheet.create({
     cancelButtonText: {
         color: Colors.ErrorRedLight,
         ...Typography.bodyMediumSemiBold,
+    },
+
+    // Cancel Flow (Modal)
+    reasonsContainer: {
+        marginTop: ResponsivePixels.size12,
+        gap: ResponsivePixels.size10,
+    },
+    reasonRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: Colors.CloudWhisper,
+        borderRadius: ResponsivePixels.size14,
+        paddingVertical: ResponsivePixels.size12,
+        paddingHorizontal: ResponsivePixels.size14,
+        backgroundColor: Colors.DefaultWhite,
+        gap: ResponsivePixels.size12,
+    },
+    reasonRowSelected: {
+        borderColor: Colors.SunburstFlame,
+        backgroundColor: Colors.SunlitAlmond,
+    },
+    radioOuter: {
+        width: ResponsivePixels.size18,
+        height: ResponsivePixels.size18,
+        borderRadius: ResponsivePixels.size18,
+        borderWidth: 2,
+        borderColor: Colors.MoonDust,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    radioOuterSelected: {
+        borderColor: Colors.SunburstFlame,
+    },
+    radioInner: {
+        width: ResponsivePixels.size8,
+        height: ResponsivePixels.size8,
+        borderRadius: ResponsivePixels.size8,
+        backgroundColor: Colors.SunburstFlame,
+    },
+    reasonText: {
+        flex: 1,
+        color: Colors.NoirBlack,
+        ...Typography.bodyMediumMedium,
+    },
+    otherReasonContainer: {
+        marginTop: ResponsivePixels.size14,
+    },
+    otherReasonLabel: {
+        color: Colors.NoirBlack,
+        marginBottom: ResponsivePixels.size8,
+        ...Typography.bodySmallSemiBold,
+    },
+    otherReasonInput: {
+        minHeight: ResponsivePixels.size90,
+        borderWidth: 1,
+        borderColor: Colors.CloudWhisper,
+        borderRadius: ResponsivePixels.size14,
+        paddingHorizontal: ResponsivePixels.size14,
+        paddingVertical: ResponsivePixels.size12,
+        color: Colors.NoirBlack,
+        backgroundColor: Colors.DefaultWhite,
+        textAlignVertical: 'top',
+        ...Typography.bodyMediumRegular,
+    },
+    otherReasonError: {
+        marginTop: ResponsivePixels.size8,
+        color: Colors.ErrorRedLight,
+        ...Typography.bodySmallRegular,
+    },
+
+    // Cancel Flow (Success Sheet)
+    cancelSuccessContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cancelSuccessIcon: {
+        marginBottom: ResponsivePixels.size6,
+    },
+    cancelSuccessTitle: {
+        color: Colors.NoirBlack,
+        textAlign: 'center',
+        marginBottom: ResponsivePixels.size8,
+        ...Typography.h5SemiBold,
+    },
+    cancelSuccessSubtitle: {
+        color: Colors.SteelMist,
+        textAlign: 'center',
+        marginBottom: ResponsivePixels.size24,
+        paddingHorizontal: ResponsivePixels.size10,
+        ...Typography.bodyMediumMedium,
     },
 });
 

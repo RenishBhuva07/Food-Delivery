@@ -31,6 +31,7 @@ import AddCardSheet, { AddCardSheetRef } from '../Components/AddCardSheet';
 import MastercardLogo from '../Assets/SVGs/MastercardLogo';
 import PaypalLogo from '../Assets/SVGs/PaypalLogo';
 import ApplePayLogo from '../Assets/SVGs/ApplePayLogo';
+import { useVerifyUPI } from '../hooks/useVerifyUPI';
 
 interface PaymentMethod {
     id: string;
@@ -58,7 +59,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route }) => {
 
     const [selectedPaymentType, setSelectedPaymentType] = useState<'card' | 'upi'>('card');
     const [selectedPaymentId, setSelectedPaymentId] = useState<string>('1');
-    const [upiId, setUpiId] = useState<string>('');
+    const upi = useVerifyUPI();
     const [isProcessing, setIsProcessing] = useState(false);
 
     // Animations
@@ -157,6 +158,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route }) => {
                     paymentMethod: selectedPaymentType === 'card'
                         ? savedCards.find(c => c.id === selectedPaymentId)?.name
                         : UPI_METHODS.find(u => u.id === selectedPaymentId)?.name ?? 'UPI',
+                    upiId: selectedPaymentType === 'upi' ? upi.verifiedUpiId ?? undefined : undefined,
                     orderId: '#' + Math.random().toString(36).substring(2, 8).toUpperCase(),
                     totalAmount,
                     totalItems,
@@ -171,6 +173,14 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route }) => {
         }
         return UPI_METHODS.find(u => u.id === selectedPaymentId);
     }, [selectedPaymentType, selectedPaymentId, savedCards]);
+
+    const isUpiPaymentReady = useMemo(() => {
+        if (selectedPaymentType !== 'upi') return true;
+        // If user typed a UPI ID, require verification before paying.
+        const hasUpiId = upi.upiId.trim().length > 0;
+        if (!hasUpiId) return true;
+        return upi.status === 'verified';
+    }, [selectedPaymentType, upi.status, upi.upiId]);
 
     return (
         <MainContainer
@@ -384,27 +394,39 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route }) => {
                                     style={styles.upiIdInput}
                                     placeholder="yourname@upi"
                                     placeholderTextColor={Colors.SilverHaze}
-                                    value={upiId}
-                                    onChangeText={setUpiId}
+                                    value={upi.upiId}
+                                    onChangeText={upi.onChangeUpiId}
                                     autoCapitalize="none"
                                     keyboardType="email-address"
                                 />
                                 <TouchableOpacity
                                     style={[
                                         styles.verifyButton,
-                                        upiId.includes('@') && styles.verifyButtonActive,
+                                        upi.canVerify && styles.verifyButtonActive,
                                     ]}
-                                    disabled={!upiId.includes('@')}
+                                    disabled={!upi.canVerify}
                                     activeOpacity={0.7}
+                                    onPress={upi.verifyUpiId}
                                 >
                                     <Text style={[
                                         styles.verifyButtonText,
-                                        upiId.includes('@') && styles.verifyButtonTextActive,
+                                        upi.canVerify && styles.verifyButtonTextActive,
                                     ]}>
                                         Verify
                                     </Text>
                                 </TouchableOpacity>
                             </View>
+                            {!!upi.message && (
+                                <Text
+                                    style={[
+                                        styles.upiVerifyMessage,
+                                        upi.status === 'verified' && styles.upiVerifyMessageSuccess,
+                                        upi.status === 'error' && styles.upiVerifyMessageError,
+                                    ]}
+                                >
+                                    {upi.message}
+                                </Text>
+                            )}
                         </View>
                     </View>
                 )}
@@ -470,7 +492,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route }) => {
                     <CustomButton
                         title={isProcessing ? 'Processing...' : `Pay ${totalAmount}`}
                         onPress={handlePayNow}
-                        disabled={isProcessing}
+                        disabled={isProcessing || !isUpiPaymentReady}
                         style={styles.payButton}
                     />
                 </View>
@@ -743,6 +765,17 @@ const styles = StyleSheet.create({
     },
     verifyButtonTextActive: {
         color: Colors.DefaultWhite,
+    },
+    upiVerifyMessage: {
+        marginTop: ResponsivePixels.size10,
+        ...Typography.bodySmallRegular,
+        color: Colors.SteelMist,
+    },
+    upiVerifyMessageSuccess: {
+        color: '#2ECC71',
+    },
+    upiVerifyMessageError: {
+        color: '#E74C3C',
     },
 
     // Security Badge

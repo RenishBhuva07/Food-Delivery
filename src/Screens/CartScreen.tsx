@@ -8,6 +8,7 @@ import ResponsivePixels from "../Assets/StyleUtilities/ResponsivePixels"
 import { IMAGES } from "../Assets/Images"
 import { navigate } from "../Navigators/Navigator"
 import { Typography } from "../Theme/Typographys"
+import { usePromoCode } from "../hooks/usePromoCode"
 
 interface ICartScreenProps {
     route: any;
@@ -50,8 +51,6 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
         },
     ])
 
-    const [promoCode, setPromoCode] = useState("")
-
     const updateQuantity = (id: number, increment: boolean) => {
         setCartItems((items) =>
             items.map((item) =>
@@ -68,11 +67,20 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
         setCartItems((items) => items.map((item) => (item.id === id ? { ...item, isSelected: !item.isSelected } : item)))
     }
 
-    const calculateTotal = () => {
-        const subtotal = cartItems?.filter((item) => item.isSelected)?.reduce((sum, item) => sum + item.price * item.quantity, 0)
-        const discount = 10900
-        return subtotal - discount
-    }
+    const selectedItems = cartItems.filter((item) => item.isSelected)
+    const subtotal = selectedItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    const selectedItemsCount = selectedItems.reduce((sum, item) => sum + item.quantity, 0)
+
+    const {
+        promoCode,
+        onChangePromoCode,
+        appliedPromo,
+        promoStatus,
+        discount,
+        total,
+        applyPromoCode,
+        removePromoCode,
+    } = usePromoCode({ subtotal })
 
     const renderCartItem = ({ item }: any) => (
         <View style={styles.cartItem}>
@@ -215,14 +223,24 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
                                 placeholder="Promo Code . . ."
                                 placeholderTextColor={Colors.SilverHaze}
                                 value={promoCode}
-                                onChangeText={setPromoCode}
+                                onChangeText={onChangePromoCode}
+                                autoCapitalize="characters"
                                 underlineColorAndroid="transparent"
                             />
                         </View>
-                        <TouchableOpacity style={styles.applyButton}>
-                            <Text style={styles.applyButtonText}>Apply</Text>
+                        <TouchableOpacity
+                            style={[styles.applyButton, (!promoCode.trim() && !appliedPromo) ? { opacity: 0.6 } : null]}
+                            onPress={appliedPromo ? removePromoCode : applyPromoCode}
+                            disabled={!promoCode.trim() && !appliedPromo}
+                        >
+                            <Text style={styles.applyButtonText}>{appliedPromo ? "Remove" : "Apply"}</Text>
                         </TouchableOpacity>
                     </View>
+                    {promoStatus ? (
+                        <Text style={[styles.promoStatusText, promoStatus.type === "error" ? styles.promoErrorText : styles.promoSuccessText]}>
+                            {promoStatus.message}
+                        </Text>
+                    ) : null}
                 </View>
 
                 {/* Cart Items */}
@@ -241,8 +259,8 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
                                 <Text style={styles.summaryTitle}>Payment Summary</Text>
 
                                 <View style={styles.summaryRow}>
-                                    <Text style={styles.summaryLabel}>Total Items (3)</Text>
-                                    <Text style={styles.summaryValue}>$48,900</Text>
+                                    <Text style={styles.summaryLabel}>Total Items ({selectedItemsCount})</Text>
+                                    <Text style={styles.summaryValue}>${subtotal.toLocaleString()}</Text>
                                 </View>
 
                                 <View style={styles.summaryRow}>
@@ -252,12 +270,12 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
 
                                 <View style={styles.summaryRow}>
                                     <Text style={styles.summaryLabel}>Discount</Text>
-                                    <Text style={[styles.summaryValue, styles.discountValue]}>-$10,900</Text>
+                                    <Text style={[styles.summaryValue, styles.discountValue]}>-${discount.toLocaleString()}</Text>
                                 </View>
 
                                 <View style={[styles.summaryRow, styles.totalRow]}>
                                     <Text style={styles.totalLabel}>Total</Text>
-                                    <Text style={styles.totalValue}>${calculateTotal().toLocaleString()}</Text>
+                                    <Text style={styles.totalValue}>${total.toLocaleString()}</Text>
                                 </View>
                             </View>
 
@@ -265,10 +283,12 @@ const CartScreen: React.FC<ICartScreenProps> = (props) => {
                             <View style={styles.orderButtonContainer}>
                                 <CustomButton title="Order Now" onPress={() => navigate('PaymentScreen', {
                                     orderData: {
-                                        totalAmount: `$${calculateTotal().toLocaleString()}`,
-                                        totalItems: cartItems.filter(item => item.isSelected).length,
+                                        totalAmount: `$${total.toLocaleString()}`,
+                                        totalItems: selectedItemsCount,
                                         deliveryLocation: 'Home',
-                                        cartItems: cartItems.filter(item => item.isSelected),
+                                        cartItems: selectedItems,
+                                        promoCode: appliedPromo ? appliedPromo.code : "",
+                                        discountAmount: discount,
                                     },
                                 })} />
                             </View>
@@ -350,6 +370,17 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         letterSpacing: 1,
         ...Typography.bodyMediumMedium,
+    },
+    promoStatusText: {
+        marginTop: ResponsivePixels.size10,
+        paddingHorizontal: ResponsivePixels.size10,
+        ...Typography.bodySuperSmallMedium,
+    },
+    promoErrorText: {
+        color: Colors.NoirBlack,
+    },
+    promoSuccessText: {
+        color: Colors.SunburstFlame,
     },
     applyButton: {
         backgroundColor: Colors.SunburstFlame,

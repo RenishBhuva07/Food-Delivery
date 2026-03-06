@@ -7,7 +7,7 @@ import { IMAGES } from "../Assets/Images"
 import { useRef, useState } from "react"
 import { themes } from "../Assets/StyleUtilities/CommonStyleSheets/theme"
 import CustomModal, { CustomModalRef, ModalButton } from "../common/CustomModal"
-import { navigate } from "../Navigators/Navigator"
+import { navigate, resetNavigation } from "../Navigators/Navigator"
 import { Typography } from "../Theme/Typographys"
 import { Camera, ChevronRight, CreditCard, HelpCircle, LogOut, Settings, Trash2, User, UserPlus } from "lucide-react-native"
 import AddAccountSheet, { AddAccountSheetRef } from "../Components/AddAccountSheet"
@@ -78,7 +78,7 @@ const ProfileScreen: React.FC = () => {
                 onPress: () => {
                     console.log('Log out pressed');
                     signOutModalRef.current?.hide();
-                    // Handle logout logic
+                    resetNavigation("Login");
                 },
             },
         ],

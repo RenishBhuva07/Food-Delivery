@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -122,10 +122,27 @@ const getStatusIcon = (status: OrderStatus) => {
     }
 };
 
-const MyOrdersScreen: React.FC = () => {
+const MyOrdersScreen: React.FC = ({ route }: any) => {
     const [activeTab, setActiveTab] = useState<FilterTab>('All');
+    const [orders, setOrders] = useState<Order[]>(ORDERS);
+    const lastCancelledRef = useRef<string | null>(null);
 
-    const filteredOrders = ORDERS.filter(order => {
+    useEffect(() => {
+        const cancelledOrderId = route?.params?.cancelledOrderId;
+        if (!cancelledOrderId || cancelledOrderId === lastCancelledRef.current) return;
+
+        lastCancelledRef.current = cancelledOrderId;
+        setOrders(prev =>
+            prev.map(o =>
+                o.id === cancelledOrderId || o.orderId === cancelledOrderId
+                    ? { ...o, status: 'Cancelled' }
+                    : o
+            )
+        );
+        setActiveTab('Cancelled');
+    }, [route?.params?.cancelledOrderId]);
+
+    const filteredOrders = orders.filter(order => {
         if (activeTab === 'All') return true;
         if (activeTab === 'Active') return order.status === 'In Delivery';
         return order.status === activeTab;
