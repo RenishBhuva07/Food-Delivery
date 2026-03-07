@@ -43,4 +43,5 @@ export const IMAGES = {
     ic_Favorite: require("../Assets/Images/ic_Love_light.png"),
     ic_Back_light: require("../Assets/Images/ic_Back_light.png"),
     ic_Like_Fill: require("../Assets/Images/ic_Like_Fill.png"),
+    Map: require("../Assets/Images/Map.png"),
 }

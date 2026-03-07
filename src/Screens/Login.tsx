@@ -7,7 +7,7 @@ import { FloatingTextInput } from '../common/FloatingTextInput';
 import { IMAGES } from '../Assets/Images';
 import CustomActionSheet from '../common/CustomActionSheet';
 import { ActionSheetRef } from 'react-native-actions-sheet';
-import { navigate } from '../Navigators/Navigator';
+import { navigate, resetNavigation } from '../Navigators/Navigator';
 import ActionSheetStyles from '../Assets/StyleUtilities/CommonStyleSheets/ActionSheetStyles';
 import CustomButton from '../common/CustomButton';
 import { FORGOT_PIN_OPTIONS } from '../Utils/Constants';
@@ -47,7 +47,7 @@ const Login: React.FC = () => {
         });
     };
     const navigateToRegister = () => navigate('Register');
-    const navigateToDashboard = () => navigate('Dashboard');
+    const navigateToDashboard = () => resetNavigation('Dashboard');
 
     const renderForgotPinOptions = ({ item }: any) => (
         <TouchableOpacity
